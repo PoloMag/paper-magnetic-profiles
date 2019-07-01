@@ -58,4 +58,37 @@ Common parameters:
 - Cold side temperature of 270.5 K
 - Hot side temperature of 305.5 K
 - Particle diameter of 350 um
-- Regenerators with three layers, with Curie temperatures of {273, 283, 290} K and respective length fractions of {20, 20, 60} % of the regenerator length 
+- Regenerators with three layers, with Curie temperatures of {273, 283, 290} K and respective length fractions of {20, 20, 60} % of the regenerator length
+
+### Columns
+
+The columns name for the `Instantaneous.txt` dataset are as follows (the units are indicated between square brackets):
+
+* `f[Hz]`: AMR cycle frequency
+* `H_max[T]`: maximum applied field (actually is $\mu_0 H$, where $\mu_0$ is the magnetic permeability of free space)
+* `H_min[T]`: minimum applied field
+* `F[%]`: blow fraction
+* `U_HB[-]`: hot blow utilization factor
+* `dPCB[kPa]`: cold blow pressure drop through one regenerator
+* `Tspan[K]`: system temperature span (equivalent to regenerator span, since this data set assumes ideal heat exchangers)
+* `Qc[W]`: cooling capacity
+* `Qh[W]`: heat rejection rate
+* `Wpump[W]`: pumping power
+* `Wvalv[W]`: valve consumption 	
+* `Wmotor[W]`: motor/magnetic power (assumed identical to the Carnot ideal power)
+* `COP[-]`: coefficient of performance
+
+For the `RectifiedCosine.txt` dataset, there is an additional column, `H_max_equiv[T]`, which represents the equivalent instantaneous magnetic profile with the same average field *during the entire half-cycle period*, i.e. this value is not dependent on blow fraction. In addition for this dataset, the minimum applied field is set fixed to 0.1 T.
+
+The file `Ramp.txt`, in addition of the columns shown above, also has the following fields:
+
+* `RampFraction[%]`: fraction of the cycle where the magnetic field is changing
+* `MagnetizationFraction[%]`: fraction of the cycle where the magnetic field is at its maximum level
+* `ReDp_CB[-]`: particle diameter-based Reynolds number during cold blow
+* `ReDp_HB[-]`: particle diameter-based Reynolds number during hot blow
+* `U_CB[-]`: cold blow utilization factor
+* `dPHB[kPa]`: hot blow pressure drop through one regenerator
+* `dT_reg[K]`: regenerator temperature span (and `Tspan[K]` then represents the system temperature span)
+* `Q_wall-Loss[W]`: heat leakage through the regenerators wall
+
+The identifiers `Test` and `Re_w[-]` can be ignored.
