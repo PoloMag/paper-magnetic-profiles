@@ -67,7 +67,7 @@ The columns name for the `Instantaneous.txt` dataset are as follows (the units a
 * `f[Hz]`: AMR cycle frequency
 * `H_max[T]`: maximum applied field (actually is $\mu_0 H$, where $\mu_0$ is the magnetic permeability of free space)
 * `H_min[T]`: minimum applied field
-* `F[%]`: blow fraction
+* `F_B[%]`: blow fraction
 * `U_HB[-]`: hot blow utilization factor
 * `dPCB[kPa]`: cold blow pressure drop through one regenerator
 * `Tspan[K]`: system temperature span (equivalent to regenerator span, since this data set assumes ideal heat exchangers)
@@ -82,8 +82,8 @@ For the `RectifiedCosine.txt` dataset, there is an additional column, `H_max_equ
 
 The file `Ramp.txt`, in addition of the columns shown above, also has the following fields:
 
-* `RampFraction[%]`: fraction of the cycle where the magnetic field is changing
-* `MagnetizationFraction[%]`: fraction of the cycle where the magnetic field is at its maximum level
+* `F_R[%]`: fraction of the cycle where the magnetic field is changing (the "ramp fraction")
+* `F_M_High[%]`: fraction of the cycle where the magnetic field is at its maximum level (the suffix 2 is to indicate )
 * `ReDp_CB[-]`: particle diameter-based Reynolds number during cold blow
 * `ReDp_HB[-]`: particle diameter-based Reynolds number during hot blow
 * `U_CB[-]`: cold blow utilization factor
