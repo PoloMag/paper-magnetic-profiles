@@ -21,7 +21,7 @@ itdf = pd.read_csv(INSTANTANEOUS_DATASET,sep="\s+")
 rcdf = pd.read_csv(RECTIFIED_COSINE_DATASET,sep="\s+")
 rmdf = pd.read_csv(RAMP_DATASET,sep="\s+")
 
-# The columns of interest can be nicely identified as:
+# The columns of interest can be ly identified as:
 
 FREQUENCY_COLUMN = 'f[Hz]'
 MAXIMUM_PROFILE_COLUMN = 'H_max[T]'

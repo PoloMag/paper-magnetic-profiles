@@ -92,3 +92,15 @@ The file `Ramp.txt`, in addition of the columns shown above, also has the follow
 * `Q_wall-Loss[W]`: heat leakage through the regenerators wall
 
 The identifiers `Test` and `Re_w[-]` can be ignored.
+
+## Python scripts
+
+The figures for the paper are generated via Python scripts. To reproduce them, it is recommended that you create a conda environment with the specified conda file:
+
+    conda env create -f environment.yml
+
+The scripts are purposed as follows:
+
+* `plotprofiles.py`: generates figures illustrating the different profiles waveforms
+
+The scripts are set to be saved on disk so that they can be loaded into the LaTeX manuscript.

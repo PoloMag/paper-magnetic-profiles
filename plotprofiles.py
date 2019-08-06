@@ -1,20 +1,33 @@
 import numpy as np
 
+import matplotlib
+matplotlib.use("pdf")
 from matplotlib import patches
-
-import nemplot
-from nemplot import nemplot_parameters
-
-nemplot.set_dpi(800)
-nemplot.set_figsize_cm(12)
-nemplot.set_fontsize(14)
-nemplot.set_latex_font("Palatino")
-nemplot.set_plot_extension('.pdf')
-
-nemplot.set_main_path(".")
-nemplot.set_figures_dir('.')
+import matplotlib.pyplot as plt
 
 N_POINTS_LINEPLOT = 2000
+
+FIGSIZE_IN = (8,6)
+DPI = 800
+
+# stolen from https://stackoverflow.com/questions/3899980/how-to-change-the-font-size-on-a-matplotlib-plot
+
+SMALL_SIZE = 16
+MEDIUM_SIZE = 20
+BIGGER_SIZE = 24
+
+plt.rc('text', usetex=True)
+plt.rc(
+    'font', 
+    size=MEDIUM_SIZE,
+    family='serif',
+    serif='Palatino')          # controls default text sizes
+plt.rc('axes', titlesize=MEDIUM_SIZE)     # fontsize of the axes title
+plt.rc('axes', labelsize=MEDIUM_SIZE)    # fontsize of the x and y labels
+plt.rc('xtick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+plt.rc('ytick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+plt.rc('legend', fontsize=SMALL_SIZE)    # legend fontsize
+plt.rc('figure', titlesize=BIGGER_SIZE,figsize=FIGSIZE_IN)  # fontsize of the figure title
 
 def calculate_instantaneous_profile(phi, B_low, B_high):
     """
@@ -34,7 +47,6 @@ def calculate_rectified_cosine_profile(phi, B_low, B_high):
     
     """
     
-               
     return B_low + (B_high-B_low)*np.abs(np.cos((np.deg2rad(phi)-np.pi/2)/2))
 
 def calculate_ramp_profile(phi, B_low, B_high, field_fraction):
@@ -108,7 +120,7 @@ def plot_all_profiles():
     B_apl_inst = calculate_instantaneous_profile(time_deg,B_min,B_max)
     B_apl_ramp = calculate_ramp_profile(time_deg,B_min,B_max,F_M)
 
-    profile_fig, profile_axes = nemplot.create_plot()
+    profile_fig, profile_axes = plt.subplots()
 
     profile_axes.plot(time,B_apl_cos,'k-',label="Rectified Cosine")
     profile_axes.plot(time,B_apl_inst,'k--',label="Instantaneous")
@@ -116,25 +128,23 @@ def plot_all_profiles():
     profile_axes.set_xlim(0,np.max(time))
     profile_axes.set_xticks(np.linspace(0,np.max(time),5))
     profile_axes.xaxis.grid(True)
-    profile_axes.set_xticklabels([r'$0$', r'$\nicefrac{\tau}{4}$', r'$\nicefrac{\tau}{2}$',r'$\nicefrac{3\tau}{4}$',r'$\tau$'])
+    profile_axes.set_xticklabels([r'$0$', r'$\frac{\tau}{4}$', r'$\frac{\tau}{2}$',r'$\frac{3\tau}{4}$',r'$\tau$'])
 
     profile_axes.set_yticks([B_min,(B_max+B_min)/2,B_max])
-    profile_axes.set_yticklabels([r'${B}\ped{min}$',
-                                  r'$\nicefrac{\left({B}\ped{max}+{B}\ped{min}\right)}{2}$',
-                                  r'${B}\ped{max}$'])
+    profile_axes.set_yticklabels([r'${B}_\mathrm{min}$',
+                                  r'$\frac{\left({B}_\mathrm{max}+{B}_\mathrm{min}\right)}{2}$',
+                                  r'${B}_\mathrm{max}$'])
     profile_axes.yaxis.grid(True)
 
-    profile_axes.set_xlabel(r'$t$',
-                           fontsize=1.1*nemplot_parameters["FONTSIZE"])
+    profile_axes.set_xlabel(r'$t$')
 
     profile_axes.set_ylabel(r'$B$',
-                           rotation='horizontal',
-                           fontsize=1.1*nemplot_parameters["FONTSIZE"])
+                           rotation='horizontal')
 
     profile_axes.xaxis.set_label_coords(1.04,-0.02)
     profile_axes.yaxis.set_label_coords(-0.03,1.0)
 
-    profile_axes.legend(loc='upper left',fontsize=0.8*nemplot_parameters["FONTSIZE"],
+    profile_axes.legend(loc='upper left',
                        bbox_to_anchor=(1.0,1.0))
 
     profile_axes.set_ylim(0,1.1*B_max)
@@ -146,11 +156,10 @@ def plot_all_profiles():
     # and using the 'arrowprops' dictionary
     profile_axes.annotate("", xy=(tau_R,1.02*B_max), xytext=(tau_R+tau_M,1.02*B_max), arrowprops=dict(arrowstyle='<->'))
 
-    profile_axes.text(tau/4,1.035*B_max,r'$\tau\ped{M}$',
-                      fontsize=nemplot_parameters["FONTSIZE"],
-                      horizontalalignment='center')
+    profile_axes.text(0.99*tau/4,1.035*B_max,r'$\tau_\mathrm{M}$',
+                      horizontalalignment='right')
 
-    return profile_fig
+    profile_fig.savefig("profiles_all.pdf",dpi=800,bbox_inches="tight")
 
 def plot_it_and_rc_profiles():
     B_max= 1.0
@@ -165,36 +174,34 @@ def plot_it_and_rc_profiles():
     B_apl_cos = calculate_rectified_cosine_profile(time_deg,B_min,B_max)
     B_apl_inst = calculate_instantaneous_profile(time_deg,B_min,B_max)
 
-    profile_fig, profile_axes = nemplot.create_plot()
+    profile_fig, profile_axes = plt.subplots()
 
     profile_axes.plot(time,B_apl_cos,'k-',label="Rectified Cosine")
     profile_axes.plot(time,B_apl_inst,'k--',label="Instantaneous")
     profile_axes.set_xlim(0,np.max(time))
     profile_axes.set_xticks(np.linspace(0,np.max(time),5))
     profile_axes.xaxis.grid(True)
-    profile_axes.set_xticklabels([r'$0$', r'$\nicefrac{\tau}{4}$', r'$\nicefrac{\tau}{2}$',r'$\nicefrac{3\tau}{4}$',r'$\tau$'])
+    profile_axes.set_xticklabels([r'$0$', r'$\frac{\tau}{4}$', r'$\frac{\tau}{2}$',r'$\frac{3\tau}{4}$',r'$\tau$'])
 
     profile_axes.set_yticks([B_min,B_max])
-    profile_axes.set_yticklabels([r'$B\ped{min}$',
-                                  r'$B\ped{max}$'])
+    profile_axes.set_yticklabels([r'$B_\mathrm{min}$',
+                                  r'$B_\mathrm{max}$'])
     profile_axes.yaxis.grid(True)
 
-    profile_axes.set_xlabel(r'$t$',
-                           fontsize=1.1*nemplot_parameters["FONTSIZE"])
+    profile_axes.set_xlabel(r'$t$')
 
     profile_axes.set_ylabel(r'$B$',
-                           rotation='horizontal',
-                           fontsize=1.1*nemplot_parameters["FONTSIZE"])
+                           rotation='horizontal')
 
     profile_axes.xaxis.set_label_coords(1.04,-0.02)
     profile_axes.yaxis.set_label_coords(-0.03,1.0)
 
-    profile_axes.legend(loc='upper left',fontsize=0.8*nemplot_parameters["FONTSIZE"],
+    profile_axes.legend(loc='upper left',
                        bbox_to_anchor=(1.0,1.0))
 
     profile_axes.set_ylim(0,1.1*B_max)
 
-    return profile_fig
+    profile_fig.savefig("profiles_it_and_rc",dpi=DPI,bbox_inches='tight')
 
 def plot_it_and_rc_profiles_same_minimum():
 
@@ -210,36 +217,34 @@ def plot_it_and_rc_profiles_same_minimum():
     B_apl_cos = calculate_rectified_cosine_profile(time_deg,B_min,B_max_cos)
     B_apl_inst = calculate_instantaneous_profile(time_deg,B_min,B_max_ins)
 
-    profile_fig, profile_axes = nemplot.create_plot()
+    profile_fig, profile_axes = plt.subplots()
 
     profile_axes.plot(time,B_apl_cos,'k-',label="Rectified Cosine")
     profile_axes.plot(time,B_apl_inst,'k--',label="Instantaneous")
     profile_axes.set_xlim(0,np.max(time))
     profile_axes.set_xticks(np.linspace(0,np.max(time),5))
     profile_axes.xaxis.grid(True)
-    profile_axes.set_xticklabels([r'$0$', r'$\nicefrac{\tau}{4}$', r'$\nicefrac{\tau}{2}$',r'$\nicefrac{3\tau}{4}$',r'$\tau$'])
+    profile_axes.set_xticklabels([r'$0$', r'$\frac{\tau}{4}$', r'$\frac{\tau}{2}$',r'$\frac{3\tau}{4}$',r'$\tau$'])
 
     profile_axes.set_yticks([B_min,B_max_ins,])
-    profile_axes.set_yticklabels([r'$B\ped{min}$',
-                                  r'$\average{B}\ped{high}$'])
+    profile_axes.set_yticklabels([r'$B_\mathrm{min}$',
+                                  r'$\overline{B}_\mathrm{high}$'])
     profile_axes.yaxis.grid(True)
 
-    profile_axes.set_xlabel(r'$t$',
-                           fontsize=1.1*nemplot_parameters["FONTSIZE"])
+    profile_axes.set_xlabel(r'$t$')
 
     profile_axes.set_ylabel(r'$B$',
-                           rotation='horizontal',
-                           fontsize=1.1*nemplot_parameters["FONTSIZE"])
+                           rotation='horizontal')
 
     profile_axes.xaxis.set_label_coords(1.04,-0.02)
     profile_axes.yaxis.set_label_coords(-0.03,1.0)
 
-    profile_axes.legend(loc='upper left',fontsize=0.8*nemplot_parameters["FONTSIZE"],
+    profile_axes.legend(loc='upper left',
                        bbox_to_anchor=(1.0,1.0))
     B_max = max(B_max_cos,B_max_ins)
     profile_axes.set_ylim(0,1.2*B_max)
 
-    return profile_fig
+    profile_fig.savefig("profiles_it_and_rc_same_minimum.pdf",dpi=DPI,bbox_inches="tight")
 
 def plot_it_and_rc_profiles_same_average():
     B_max_ins= 1.0
@@ -255,38 +260,36 @@ def plot_it_and_rc_profiles_same_average():
     B_apl_cos = calculate_rectified_cosine_profile(time_deg,B_min_cos,B_max_cos)
     B_apl_inst = calculate_instantaneous_profile(time_deg,B_min_ins,B_max_ins)
 
-    profile_fig, profile_axes = nemplot.create_plot()
+    profile_fig, profile_axes = plt.subplots()
 
     profile_axes.plot(time,B_apl_cos,'k-',label="Rectified Cosine")
     profile_axes.plot(time,B_apl_inst,'k--',label="Instantaneous")
     profile_axes.set_xlim(0,np.max(time))
     profile_axes.set_xticks(np.linspace(0,np.max(time),5))
     profile_axes.xaxis.grid(True)
-    profile_axes.set_xticklabels([r'$0$', r'$\nicefrac{\tau}{4}$', r'$\nicefrac{\tau}{2}$',r'$\nicefrac{3\tau}{4}$',r'$\tau$'])
+    profile_axes.set_xticklabels([r'$0$', r'$\frac{\tau}{4}$', r'$\frac{\tau}{2}$',r'$\frac{3\tau}{4}$',r'$\tau$'])
 
     profile_axes.set_yticks([B_min_cos,B_min_ins,B_max_ins])
-    profile_axes.set_yticklabels([r'${B}\ped{min}$',
-                                  r'$\average{B}\ped{low}$',
-                                  r'$\average{B}\ped{high}$'])
+    profile_axes.set_yticklabels([r'${B}_\mathrm{min}$',
+                                  r'$\overline{B}_\mathrm{low}$',
+                                  r'$\overline{B}_\mathrm{high}$'])
     profile_axes.yaxis.grid(True)
 
-    profile_axes.set_xlabel(r'$t$',
-                           fontsize=1.1*nemplot_parameters["FONTSIZE"])
+    profile_axes.set_xlabel(r'$t$')
 
     profile_axes.set_ylabel(r'${B}$',
-                           rotation='horizontal',
-                           fontsize=1.1*nemplot_parameters["FONTSIZE"])
+                           rotation='horizontal')
 
     profile_axes.xaxis.set_label_coords(1.04,-0.02)
     profile_axes.yaxis.set_label_coords(-0.03,1.0)
 
-    profile_axes.legend(loc='upper left',fontsize=0.8*nemplot_parameters["FONTSIZE"],
+    profile_axes.legend(loc='upper left',
                        bbox_to_anchor=(1.0,1.0))
 
     B_max = max(B_max_cos,B_max_ins)
     profile_axes.set_ylim(0,1.2*B_max)
 
-    return profile_fig
+    profile_fig.savefig("profiles_it_and_rc_same_average.pdf",dpi=DPI,bbox_inches="tight")
 
 def plot_it_profile():
     B_max= 1.0
@@ -302,7 +305,7 @@ def plot_it_profile():
     B_apl_inst = calculate_instantaneous_profile(time_deg,B_min,B_max)
 
 
-    profile_fig, profile_axes = nemplot.create_plot()
+    profile_fig, profile_axes = plt.subplots()
 
 
     profile_axes.plot(time,B_apl_inst,'k-',label="Instantaneous")
@@ -310,19 +313,17 @@ def plot_it_profile():
     profile_axes.set_xlim(0,np.max(time))
     profile_axes.set_xticks(np.linspace(0,np.max(time),5))
     profile_axes.xaxis.grid(True)
-    profile_axes.set_xticklabels([r'$0$', r'$\nicefrac{\tau}{4}$', r'$\nicefrac{\tau}{2}$',r'$\nicefrac{3\tau}{4}$',r'$\tau$'])
+    profile_axes.set_xticklabels([r'$0$', r'$\frac{\tau}{4}$', r'$\frac{\tau}{2}$',r'$\frac{3\tau}{4}$',r'$\tau$'])
 
     profile_axes.set_yticks([B_min,B_max])
-    profile_axes.set_yticklabels([r'$B\ped{min}$',
-                                  r'$B\ped{max}$'])
+    profile_axes.set_yticklabels([r'$B_\mathrm{min}$',
+                                  r'$B_\mathrm{max}$'])
     profile_axes.yaxis.grid(True)
 
-    profile_axes.set_xlabel(r'$t$',
-                           fontsize=1.1*nemplot_parameters["FONTSIZE"])
+    profile_axes.set_xlabel(r'$t$')
 
     profile_axes.set_ylabel(r'${B}$',
-                           rotation='horizontal',
-                           fontsize=1.1*nemplot_parameters["FONTSIZE"])
+                           rotation='horizontal')
 
     profile_axes.xaxis.set_label_coords(1.04,-0.02)
     profile_axes.yaxis.set_label_coords(-0.03,1.0)
@@ -330,7 +331,7 @@ def plot_it_profile():
 
     profile_axes.set_ylim(0,1.1*B_max)
 
-    return profile_fig
+    profile_fig.savefig("profile_it.pdf",dpi=DPI,bbox_inches="tight")
 
 def plot_rc_profile():
     B_max= 1.0
@@ -345,33 +346,31 @@ def plot_rc_profile():
     B_apl_cos = calculate_rectified_cosine_profile(time_deg,B_min,B_max)
 
 
-    profile_fig, profile_axes = nemplot.create_plot()
+    profile_fig, profile_axes = plt.subplots()
 
     profile_axes.plot(time,B_apl_cos,'k-',label="Rectified Cosine")
 
     profile_axes.set_xlim(0,np.max(time))
     profile_axes.set_xticks(np.linspace(0,np.max(time),5))
     profile_axes.xaxis.grid(True)
-    profile_axes.set_xticklabels([r'$0$', r'$\nicefrac{\tau}{4}$', r'$\nicefrac{\tau}{2}$',r'$\nicefrac{3\tau}{4}$',r'$\tau$'])
+    profile_axes.set_xticklabels([r'$0$', r'$\frac{\tau}{4}$', r'$\frac{\tau}{2}$',r'$\frac{3\tau}{4}$',r'$\tau$'])
 
     profile_axes.set_yticks([B_min,B_max])
-    profile_axes.set_yticklabels([r'${B}\ped{min}$',
-                                  r'${B}\ped{max}$'])
+    profile_axes.set_yticklabels([r'${B}_\mathrm{min}$',
+                                  r'${B}_\mathrm{max}$'])
     profile_axes.yaxis.grid(True)
 
-    profile_axes.set_xlabel(r'$t$',
-                           fontsize=1.1*nemplot_parameters["FONTSIZE"])
+    profile_axes.set_xlabel(r'$t$')
 
     profile_axes.set_ylabel(r'${B}$',
-                           rotation='horizontal',
-                           fontsize=1.1*nemplot_parameters["FONTSIZE"])
+                           rotation='horizontal')
 
     profile_axes.xaxis.set_label_coords(1.04,-0.02)
     profile_axes.yaxis.set_label_coords(-0.03,1.0)
 
     profile_axes.set_ylim(0,1.1*B_max)
 
-    return profile_fig
+    profile_fig.savefig("profile_rc.pdf",dpi=DPI,bbox_inches="tight")
 
 def plot_rm_profile():
     B_max= 1.0
@@ -385,27 +384,24 @@ def plot_rm_profile():
 
     B_apl_ramp = calculate_ramp_profile(time_deg,B_min,B_max,F_M)
 
-    profile_fig, profile_axes = nemplot.create_plot()
-
+    profile_fig, profile_axes = plt.subplots()
 
     profile_axes.plot(time,B_apl_ramp,'k-',label="Ramp")
     profile_axes.set_xlim(0,np.max(time))
     profile_axes.set_xticks(np.linspace(0,np.max(time),5))
     profile_axes.xaxis.grid(True)
-    profile_axes.set_xticklabels([r'$0$', r'$\nicefrac{\tau}{4}$', r'$\nicefrac{\tau}{2}$',r'$\nicefrac{3\tau}{4}$',r'$\tau$'])
+    profile_axes.set_xticklabels([r'$0$', r'$\frac{\tau}{4}$', r'$\frac{\tau}{2}$',r'$\frac{3\tau}{4}$',r'$\tau$'])
 
     profile_axes.set_yticks([B_min,(B_max+B_min)/2,B_max])
-    profile_axes.set_yticklabels([r'${B}\ped{min}$',
-                                  r'$\nicefrac{\left({B}\ped{max}+{B}\ped{min}\right)}{2}$',
-                                  r'${B}\ped{max}$'])
+    profile_axes.set_yticklabels([r'${B}_\mathrm{min}$',
+                                  r'$\frac{\left({B}_\mathrm{max}+{B}_\mathrm{min}\right)}{2}$',
+                                  r'${B}_\mathrm{max}$'])
     profile_axes.yaxis.grid(True)
 
-    profile_axes.set_xlabel(r'$t$',
-                           fontsize=1.1*nemplot_parameters["FONTSIZE"])
+    profile_axes.set_xlabel(r'$t$')
 
     profile_axes.set_ylabel(r'${B}$',
-                           rotation='horizontal',
-                           fontsize=1.1*nemplot_parameters["FONTSIZE"])
+                           rotation='horizontal')
 
     profile_axes.xaxis.set_label_coords(1.04,-0.02)
     profile_axes.yaxis.set_label_coords(-0.03,1.0)
@@ -421,13 +417,11 @@ def plot_rm_profile():
     # and using the 'arrowprops' dictionary
     profile_axes.annotate("", xy=(tau_R,1.02*B_max), xytext=(tau_R+tau_M,1.02*B_max), arrowprops=dict(arrowstyle='<->'))
 
-    profile_axes.text(tau/4,1.035*B_max,r'$\tau\ped{M}$',
-                      fontsize=nemplot_parameters["FONTSIZE"],
-                      horizontalalignment='center')
+    profile_axes.text(0.99*tau/4,1.035*B_max,r'$\tau_\mathrm{M}$',
+                      horizontalalignment='right')
 
     # add annotation for the ramp rate
-    profile_axes.text(0.9*tau/2,1.4*B_min,r'$\theta\ped{R}$',
-                      fontsize=nemplot_parameters["FONTSIZE"],
+    profile_axes.text(0.9*tau/2,1.4*B_min,r'$\theta_\mathrm{R}$',
                       horizontalalignment='center')
 
     xcenter_arc = tau/2 + tau_R
@@ -451,7 +445,7 @@ def plot_rm_profile():
 
     profile_axes.annotate("", xy=(3*tau/8,B_min), xytext=(tau/2+tau_R,B_min) ,arrowprops=dict(arrowstyle='-',linestyle='--'))
 
-    return profile_fig
+    profile_fig.savefig("profile_rm.pdf",dpi=DPI,bbox_inches="tight")
 
 def plot_rc_and_flow_instantaneous_profiles():
     B_max= 1.0
@@ -466,26 +460,24 @@ def plot_rc_and_flow_instantaneous_profiles():
     B_apl_ramp = calculate_rectified_cosine_profile(time_deg, B_min, B_max)
     m_inst = calculate_flow_instantaneous_profile(time_deg,m_max,F_B)
 
-    profile_fig, profile_axes, profile_axes_right = nemplot.create_two_axes_plot()
-
+    profile_fig, profile_axes = plt.subplots()
+    profile_axes_right = profile_axes.twinx()
 
     profile_axes.plot(time,B_apl_ramp,'k-')
     profile_axes.set_xlim(0,np.max(time))
     profile_axes.set_xticks(np.linspace(0,np.max(time),5))
     profile_axes.xaxis.grid(True)
-    profile_axes.set_xticklabels([r'$0$', r'$\nicefrac{\tau}{4}$', r'$\nicefrac{\tau}{2}$',r'$\nicefrac{3\tau}{4}$',r'$\tau$'])
+    profile_axes.set_xticklabels([r'$0$', r'$\frac{\tau}{4}$', r'$\frac{\tau}{2}$',r'$\frac{3\tau}{4}$',r'$\tau$'])
 
     profile_axes.set_yticks([B_min,B_max])
-    profile_axes.set_yticklabels([r'${B}\ped{min}$',
-                                  r'${B}\ped{max}$'])
+    profile_axes.set_yticklabels([r'${B}_\mathrm{min}$',
+                                  r'${B}_\mathrm{max}$'])
     profile_axes.yaxis.grid(True)
 
-    profile_axes.set_xlabel(r'$t$',
-                           fontsize=1.1*nemplot_parameters["FONTSIZE"])
+    profile_axes.set_xlabel(r'$t$')
 
     profile_axes.set_ylabel(r'${B}$',
-                           rotation='horizontal',
-                           fontsize=1.1*nemplot_parameters["FONTSIZE"])
+                           rotation='horizontal')
 
     profile_axes.xaxis.set_label_coords(1.04,-0.02)
     profile_axes.yaxis.set_label_coords(-0.03,1.0)
@@ -494,18 +486,17 @@ def plot_rc_and_flow_instantaneous_profiles():
 
     profile_axes_right.plot(time,m_inst,'k--')
     profile_axes_right.set_yticks([-m_max,0,m_max])
-    profile_axes_right.set_yticklabels([r'$-\rate{m}\ped{f,max}$',
+    profile_axes_right.set_yticklabels([r'$-\dot{m}_\mathrm{f,max}$',
                                   r'0',
-                                  r'$\rate{m}\ped{f,max}$'])
+                                  r'$\dot{m}_\mathrm{f,max}$'])
 
-    profile_axes_right.set_ylabel(r'$\rate{m}\ped{f}$',
-                           rotation='horizontal',
-                           fontsize=1.1*nemplot_parameters["FONTSIZE"])
+    profile_axes_right.set_ylabel(r'$\dot{m}_\mathrm{f}$',
+                           rotation='horizontal')
     profile_axes_right.set_ylim(-1.3*B_max,1.3*B_max)
     profile_axes_right.yaxis.grid(True)
     profile_axes_right.yaxis.set_label_coords(1.05,1.05)
 
-    return profile_fig
+    profile_fig.savefig("profiles_rc_and_flow_instantaneous.pdf",dpi=DPI,bbox_inches="tight")
 
 def plot_rm_and_flow_instantaneous_profile():
 
@@ -522,27 +513,25 @@ def plot_rm_and_flow_instantaneous_profile():
     B_apl_ramp = calculate_ramp_profile(time_deg,B_min,B_max,F_M)
     m_inst = calculate_flow_instantaneous_profile(time_deg,m_max,F_B)
 
-    profile_fig, profile_axes, profile_axes_right = nemplot.create_two_axes_plot()
-
+    profile_fig, profile_axes = plt.subplots()
+    profile_axes_right = profile_axes.twinx()
 
     profile_axes.plot(time,B_apl_ramp,'k-')
     profile_axes.set_xlim(0,np.max(time))
     profile_axes.set_xticks(np.linspace(0,np.max(time),5))
     profile_axes.xaxis.grid(True)
-    profile_axes.set_xticklabels([r'$0$', r'$\nicefrac{\tau}{4}$', r'$\nicefrac{\tau}{2}$',r'$\nicefrac{3\tau}{4}$',r'$\tau$'])
+    profile_axes.set_xticklabels([r'$0$', r'$\frac{\tau}{4}$', r'$\frac{\tau}{2}$',r'$\frac{3\tau}{4}$',r'$\tau$'])
 
     profile_axes.set_yticks([B_min,(B_max+B_min)/2,B_max])
-    profile_axes.set_yticklabels([r'${B}\ped{min}$',
-                                  r'$\nicefrac{\left({B}\ped{max}+{B}\ped{min}\right)}{2}$',
-                                  r'${B}\ped{max}$'])
+    profile_axes.set_yticklabels([r'${B}_\mathrm{min}$',
+                                  r'$\frac{\left({B}_\mathrm{max}+{B}_\mathrm{min}\right)}{2}$',
+                                  r'${B}_\mathrm{max}$'])
     profile_axes.yaxis.grid(True)
 
-    profile_axes.set_xlabel(r'$t$',
-                           fontsize=1.1*nemplot_parameters["FONTSIZE"])
+    profile_axes.set_xlabel(r'$t$')
 
     profile_axes.set_ylabel(r'${B}$',
-                           rotation='horizontal',
-                           fontsize=1.1*nemplot_parameters["FONTSIZE"])
+                           rotation='horizontal')
 
     profile_axes.xaxis.set_label_coords(1.04,-0.02)
     profile_axes.yaxis.set_label_coords(-0.03,1.0)
@@ -556,19 +545,17 @@ def plot_rm_and_flow_instantaneous_profile():
     # and using the 'arrowprops' dictionary
     profile_axes.annotate("", xy=(tau_R,1.07*B_max), xytext=(tau_R+tau_M,1.07*B_max), arrowprops=dict(arrowstyle='<->'))
 
-    profile_axes.text(tau/4,1.12*B_max,r'$\tau\ped{M}$',
-                      fontsize=nemplot_parameters["FONTSIZE"],
-                      horizontalalignment='center')
+    profile_axes.text(0.99*tau/4,1.12*B_max,r'$\tau_\mathrm{M}$',
+                      horizontalalignment='right')
 
     profile_axes_right.plot(time,m_inst,'k--')
     profile_axes_right.set_yticks([-m_max,0,m_max])
-    profile_axes_right.set_yticklabels([r'$-\rate{m}\ped{f,max}$',
+    profile_axes_right.set_yticklabels([r'$-\dot{m}_\mathrm{f,max}$',
                                   r'0',
-                                  r'$\rate{m}\ped{f,max}$'])
+                                  r'$\dot{m}_\mathrm{f,max}$'])
 
-    profile_axes_right.set_ylabel(r'$\rate{m}\ped{f}$',
-                           rotation='horizontal',
-                           fontsize=1.1*nemplot_parameters["FONTSIZE"])
+    profile_axes_right.set_ylabel(r'$\dot{m}_\mathrm{f}$',
+                           rotation='horizontal')
     profile_axes_right.set_ylim(-1.3*B_max,1.3*B_max)
     profile_axes_right.yaxis.grid(True)
     profile_axes_right.yaxis.set_label_coords(1.05,1.05)
@@ -579,19 +566,20 @@ def plot_rm_and_flow_instantaneous_profile():
     # it seems the way to create a bidiretional arrow is to create an "annotation" with an empty text,
     # and using the 'arrowprops' dictionary
     profile_axes_right.annotate("", xy=(tau/2+tau_0,-1.1*m_max), xytext=(tau - tau_0,-1.1*m_max), arrowprops=dict(arrowstyle='<->'))
-    profile_axes_right.text(3*tau/4,-1.3*m_max,r'$\tau\ped{B}$',
-                      fontsize=nemplot_parameters["FONTSIZE"],
-                      horizontalalignment='center')
+    profile_axes_right.text(2.99*tau/4,-1.3*m_max,r'$\tau_\mathrm{B}$',
+                      horizontalalignment='right')
 
 
-    return profile_fig
+    profile_fig.savefig("profiles_rm_and_flow_instantaneous.pdf",dpi=DPI,bbox_inches="tight")
 
-fig_all_profiles = plot_all_profiles()
-fig_it_and_rc = plot_it_and_rc_profiles()
-fig_it_and_rc_same_average = plot_it_and_rc_profiles_same_average()
-fig_it_and_rc_same_minimum = plot_it_and_rc_profiles_same_minimum()
-fig_it_profile = plot_it_profile()
-fig_rc_profile = plot_rc_profile()
-fig_rm_profile = plot_rm_profile()
-fig_rc_and_flow = plot_rc_and_flow_instantaneous_profiles()
-fig_rm_and_flow = plot_rm_and_flow_instantaneous_profile()
+plot_all_profiles()
+plot_it_and_rc_profiles()
+plot_it_and_rc_profiles_same_average()
+plot_it_and_rc_profiles_same_minimum()
+plot_it_profile()
+plot_rc_profile()
+plot_rm_profile()
+plot_rc_and_flow_instantaneous_profiles()
+plot_rm_and_flow_instantaneous_profile()
+
+plt.close('all')
