@@ -15,39 +15,158 @@ from scipy.interpolate import griddata
 from scipy.constants import mu_0
 from scipy.integrate import simps
 import matplotlib.pyplot as plt
-
-
-import nemplot
-from nemplot import nemplot_parameters
-
 import loaddatasets as ld
 
+FIG_FILE_PATH = Path('.')
+PLOT_EXTENSION = ".pdf"
 
-nemplot.set_dpi(800)
-nemplot.set_figsize_cm(12)
-nemplot.set_fontsize(14)
-nemplot.set_latex_font("Palatino")
-nemplot.set_plot_extension('.pdf')
+FIGSIZE_IN = (8,6)
+DPI = 800
 
-nemplot.set_main_path(".")
-nemplot.set_figures_dir('fig')
+# stolen from https://stackoverflow.com/questions/3899980/how-to-change-the-font-size-on-a-matplotlib-plot
 
-# In[3]:
+SMALL_SIZE = 16
+MEDIUM_SIZE = 20
+BIGGER_SIZE = 24
+
 
 N_POINTS_LINEPLOT = 2000
 
 DENSITY_GD = 7900 # kg/m3, from Trevizoli et al (2016), IJR volume 72
 
-B_LABEL = r'$\average{B}\ped{high}\,[\si{\tesla}]$'
-Q_LABEL = r'$\qc\,[\si{\watt}]$'
-COP_LABEL = r'$\cop$'
-W_PUMP_LABEL = r'$\w\ped{pump}\,[\si{\watt}]$'
+B_LABEL = r'$\overline{B}_\mathrm{high}\,[\mathrm{T}]$'
+Q_LABEL = r'$\dot{Q}_{\mathrm{C}}\,[\mathrm{W}]$'
+COP_LABEL = r'$\mathrm{COP}$'
+W_PUMP_LABEL = r'$\w_\mathrm{pump}\,[\mathrm{W}]$'
 PHI_LABEL = r'$\Phi$'
-H_REG_LABEL = r'$H\ped{r}\,[\si{\milli\meter}]$'
-F_B_LABEL = r'$F\ped{B}\,[\si{\percent}]$'
-RATIO_F_LABEL = r'$\frac{F\ped{M}}{F\ped{B}}$'
-F_M_LABEL = r'$F\ped{M}\,[\si{\percent}]$'
-H_MAX_LABEL = r'${B}\ped{max}\,[\si{\tesla}]$'
+H_REG_LABEL = r'$H_\mathrm{r}\,[\mathrm{mm}]$'
+F_B_LABEL = r'$F_\mathrm{B}\,[\%]$'
+RATIO_F_LABEL = r'$\frac{F_\mathrm{M}}{F_\mathrm{B}}$'
+F_M_LABEL = r'$F_\mathrm{M}\,[\%]$'
+H_MAX_LABEL = r'${B}_\mathrm{max}\,[\mathrm{T}]$'
+
+plt.rc('text', usetex=True)
+plt.rc(
+    'font', 
+    size=MEDIUM_SIZE,
+    family='serif',
+    serif='Palatino')          # controls default text sizes
+plt.rc('axes', titlesize=MEDIUM_SIZE)     # fontsize of the axes title
+plt.rc('axes', labelsize=MEDIUM_SIZE)    # fontsize of the x and y labels
+plt.rc('xtick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+plt.rc('ytick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+plt.rc('legend', fontsize=SMALL_SIZE)    # legend fontsize
+plt.rc('figure', titlesize=BIGGER_SIZE,figsize=FIGSIZE_IN)  # fontsize of the figure title
+
+def refine_list(original_list, factor):
+    """
+    Return a new list, inserting more elements between the number in
+    'original_list'.
+    
+    Assumes 'original_list' is evenly-spaced. The spacing between each
+    element is divided by 'factor'
+    
+    >>>refine_list([1,2,3],factor=2)
+    [1.0,1.5,2.0,2.5,3.0]
+    """
+    
+    # calculate the original spacing between elements and refine it
+    d = original_list[1] - original_list[0]
+    d_refined = d / factor
+        
+    max_value = max(original_list)
+    min_value = min(original_list)
+    
+    # the number of elements is the number of divisions between
+    # the limit values, plus one aditional
+    n_refined = ((max_value - min_value) / d_refined) + 1
+        
+    return np.linspace(min_value,max_value,math.ceil(n_refined))
+
+
+def refine_yticks(ax,factor):
+    """
+    Take an Axis object 'ax' and refine the y-ticks on it by 'factor'
+    
+    Parameters
+    ----------
+    ax : matplotlib.pyplot.Axex.Axis() object 
+    factor: int
+    Returns
+    -------
+    out : None 
+    """
+
+    ax.set_yticks(refine_list(ax.get_yticks(),factor),minor=True)
+
+def refine_xticks(ax,factor):
+    """
+    Take an Axis object 'ax' and refine the x-ticks on it by 'factor'
+    
+    Parameters
+    ----------
+    ax : matplotlib.pyplot.Axex.Axis() object 
+    factor: int
+    Returns
+    -------
+    out : None 
+    """
+
+    ax.set_xticks(refine_list(ax.get_xticks(),factor),minor=True)
+    
+
+def create_plot(xlabel="",
+                     ylabel="",
+                     title=""):
+    """
+    Return (fig,axis) correspondent to a line plot,
+    with 'xlabel','ylabel' and 'title'
+    
+    The size of the figure is controlled by FIGSIZE_INCHES"""
+    
+    fig = plt.figure()
+    axis = fig.add_subplot(111)
+    
+    axis.set_ylabel(ylabel)
+    axis.set_xlabel(xlabel)
+    axis.set_title(title)
+    
+    return fig, axis
+
+def create_two_axes_plot(xlabel="", 
+                              ylabel_left="", 
+                              ylabel_right="",
+                              title=""):
+    """
+    Return (fig, axis_left, axis_right) correspondent
+    to a line plot with two y-axes.
+    
+    The size of the figure is controlled by FIGSIZE_INCHES
+    """
+    
+    fig, axis_left = create_plot(xlabel, ylabel_left, title)
+    
+    axis_right = axis_left.twinx()
+    axis_right.set_ylabel(ylabel_right)
+    
+    return (fig, axis_left, axis_right)
+    
+def save_figure(fig,name):
+    """
+    Save the 'fig' Figure object as 'name' (with extension PLOT_EXTENSION),
+    inside FIG_FILE_PATH (a Path-like object)."""
+    
+    fig_path = FIG_FILE_PATH
+    file_basename = name + PLOT_EXTENSION
+    
+    file_path = fig_path / file_basename
+    fig.savefig(str(file_path),
+                dpi=DPI,
+                bbox_inches='tight')
+
+# In[3]:
+
+
 
 def filter_table_from_column(table,column,value):
     """
@@ -67,9 +186,6 @@ FIXED_PARAMETERS = {
     "N_r[]": 11,
     "T_H[K]": 298,
     "dT[K]": 20}
-
-
-
 
 # ## 3 Comparison of profiles
 # 
@@ -119,10 +235,10 @@ def plot_Qc_and_COP_Inst_vs_CCH(table_inst,table_cch,F_inst,F_CCH, figure_suffix
             table_inst_f_F_Hmin = table_inst_f_F   
                        
                      
-        fig_Qc, axis = nemplot.create_plot(ylabel=Q_LABEL,
+        fig_Qc, axis = create_plot(ylabel=Q_LABEL,
                                                xlabel=B_LABEL)
         
-        fig_COP, axis_COP = nemplot.create_plot(ylabel=COP_LABEL,
+        fig_COP, axis_COP = create_plot(ylabel=COP_LABEL,
                                                xlabel=B_LABEL)
                 
         y_max = 0
@@ -153,7 +269,7 @@ def plot_Qc_and_COP_Inst_vs_CCH(table_inst,table_cch,F_inst,F_CCH, figure_suffix
                       marker=markers[i],
                       linestyle='--', 
                       color='k')
-            axis.legend(loc='upper left',fontsize=0.8*nemplot_parameters["FONTSIZE"],
+            axis.legend(loc='upper left',
                    bbox_to_anchor=(1.0,1.0))
             
             axis_COP.plot(x_vector, COP_vector_inst, label='IT '+r'$\Phi = ' + '%.1f' %(regsim_utilizations[phi]) 
@@ -165,7 +281,7 @@ def plot_Qc_and_COP_Inst_vs_CCH(table_inst,table_cch,F_inst,F_CCH, figure_suffix
                         marker=markers[i],
                       linestyle='--',
                       color='k')
-            axis_COP.legend(loc='upper left',fontsize=0.8*nemplot_parameters["FONTSIZE"],
+            axis_COP.legend(loc='upper left',
                    bbox_to_anchor=(1.0,1.0))
                     
             if (max(Qc_vector_inst) > y_max):
@@ -177,22 +293,20 @@ def plot_Qc_and_COP_Inst_vs_CCH(table_inst,table_cch,F_inst,F_CCH, figure_suffix
         axis.set_ylim(0,y_max)     
         axis.set_xlim(x_min,x_max)
         axis.grid(True)
-        nemplot.refine_xticks(axis,4)
-        nemplot.refine_yticks(axis,4)
+        refine_xticks(axis,4)
+        refine_yticks(axis,4)
         
         axis_COP.set_ylim(0,y_COP_max)     
         axis_COP.set_xlim(x_min,x_max)
         axis_COP.grid(True)
-        nemplot.refine_xticks(axis_COP,4)
-        nemplot.refine_yticks(axis_COP,4)
+        refine_xticks(axis_COP,4)
+        refine_yticks(axis_COP,4)
         
         fig_list.append((fig_Qc,fig_COP))
         fig_Qc_name = "Qc_B_comp_f_%d%s" %(f,figure_suffix)
-        #nemplot.save_figure(fig_Qc,fig_Qc_name)
+        save_figure(fig_Qc,fig_Qc_name)
         fig_COP_name = "COP_B_comp_f_%d%s" %(f,figure_suffix)
-        #nemplot.save_figure(fig_COP,fig_COP_name)
-   
-    return fig_list
+        save_figure(fig_COP,fig_COP_name)
 
 
 # ### Same minimum
@@ -201,8 +315,8 @@ def plot_Qc_and_COP_Inst_vs_CCH(table_inst,table_cch,F_inst,F_CCH, figure_suffix
 
 # In[24]:
 
-table_inst = ld.INSTANTANEOUS_DATASET
-table_cch = ld.RECTIFIED_COSINE_DATASET
+table_inst = ld.itdf
+table_cch = ld.rcdf
 
 F_B_inst = 100
 F_B_CCH = 60
@@ -254,7 +368,7 @@ def plot_Wpump_Inst_vs_CCH(table_inst,table_cch,F_inst,F_CCH, figure_suffix=""):
             table_inst_f_F_Hmin = table_inst_f_F   
                        
                      
-        fig, axis = nemplot.create_plot(ylabel=W_PUMP_LABEL,
+        fig, axis = create_plot(ylabel=W_PUMP_LABEL,
                                                xlabel=B_LABEL)
         
                 
@@ -283,7 +397,7 @@ def plot_Wpump_Inst_vs_CCH(table_inst,table_cch,F_inst,F_CCH, figure_suffix=""):
                       marker=markers[i],
                       linestyle='--', 
                       color='k')
-            axis.legend(loc='upper left',fontsize=0.8*nemplot_parameters["FONTSIZE"],
+            axis.legend(loc='upper left',
                    bbox_to_anchor=(1.0,1.0))
             
 
@@ -295,13 +409,13 @@ def plot_Wpump_Inst_vs_CCH(table_inst,table_cch,F_inst,F_CCH, figure_suffix=""):
         axis.set_ylim(0,y_max)     
         axis.set_xlim(x_min,x_max)
         axis.grid(True)
-        nemplot.refine_xticks(axis,4)
-        nemplot.refine_yticks(axis,4)
+        refine_xticks(axis,4)
+        refine_yticks(axis,4)
         
         
         fig_list.append((fig,))
         fig_name = "Wpump_B_comp_f_%d%s" %(f,figure_suffix)
-        #nemplot.save_figure(fig,fig_name)
+        #save_figure(fig,fig_name)
    
     return fig_list
 
@@ -344,10 +458,10 @@ def plot_Qc_phi_Inst(table):
             for H_min in H_min_vector:
                 table_f_F_Hmin = filter_table_from_column(table_f_F,ld.MINIMUM_PROFILE_COLUMN,H_min)     
                      
-                fig_Qc, axis_Qc = nemplot.create_plot(xlabel=PHI_LABEL,
+                fig_Qc, axis_Qc = create_plot(xlabel=PHI_LABEL,
                                                        ylabel=Q_LABEL)
                 
-                fig_COP, axis_COP = nemplot.create_plot(xlabel=PHI_LABEL,
+                fig_COP, axis_COP = create_plot(xlabel=PHI_LABEL,
                                                        ylabel=COP_LABEL)
    
                 for (i,Hmax) in enumerate(H_max_vector):
@@ -360,12 +474,12 @@ def plot_Qc_phi_Inst(table):
                     COP_vector = table_f_F_Hmin_Hmax[ld.COP_COLUMN].values
 
                     axis_Qc.plot(x_vector, Qc_vector, 
-                              label=r'$\average{B}\ped{max} = \SI{' + '%.1f' %(Hmax,) + r'}{\tesla}$',
+                              label=r'$\overline{B}_\mathrm{max} = ' + '%.1f' %(Hmax,) + r'\mathrm{T}$',
                               marker=markers[i],linestyle='--',color='k'  )
 
                     
                     axis_COP.plot(x_vector, COP_vector, 
-                              label=r'$\average{B}\ped{max} = \SI{' + '%.1f' %(Hmax,) + r'}{\tesla}$',
+                              label=r'$\overline{B}_\mathrm{max} = ' + '%.1f' %(Hmax,) + r'\mathrm{T}$',
                               marker=markers[i],linestyle='--',color='k'  )
                     
                     
@@ -376,30 +490,23 @@ def plot_Qc_phi_Inst(table):
                                 linestyle='-')
                     
                     ax.legend(loc='upper left',
-                              fontsize=nemplot_parameters["FONTSIZE"],
                              bbox_to_anchor=(1,1))    
                     ax.set_xlim(0.2,1)
                     ax.grid(True)
-                    nemplot.refine_yticks(ax,5)
+                    refine_yticks(ax,5)
               
                 fig_list.append((fig_Qc,fig_COP))
                 
                 
-                nemplot.save_figure(fig=fig_Qc,
+                save_figure(fig=fig_Qc,
                                     name='Qc_Phi_inst_f_%d_Hmin_%03d_FB_%d' %(f,100*H_min,F_blow))
                 plt.close(fig_Qc)
-                nemplot.save_figure(fig=fig_COP,
+                save_figure(fig=fig_COP,
                                     name='COP_Phi_inst_f_%d_Hmin_%03d_FB_%d' %(f,100*H_min,F_blow))
             
                 plt.close(fig_COP)
-                
-        
-    return fig_list
-
 
 plot_Qc_phi_Inst(table_inst)
-
-
 
 # # ### Instantaneous profile -  Q_c vs H_reg 
 # # 
@@ -410,97 +517,86 @@ plot_Qc_phi_Inst(table_inst)
 # # In[30]:
 
 
-# def plot_Qc_H_Inst(table):
-#     """
-#     Plots figures of Qc x H_reg from data from the DataFrame 'table'
+def plot_Qc_H_Inst(table):
+    """
+    Plots figures of Qc x H_reg from data from the DataFrame 'table'
     
-#     Creates one figure for each combination of (f, Phi), with curves for constant H_max
-#     """
+    Creates one figure for each combination of (f, Phi), with curves for constant H_max
+    """
 
-#     regsim_utilizations = {0.1988: 0.2,
-#                           0.3977: 0.4,
-#                           0.5965: 0.6,
-#                           0.7953: 0.8,
-#                           0.9942: 1.0}
+    regsim_utilizations = {0.1988: 0.2,
+                          0.3977: 0.4,
+                          0.5965: 0.6,
+                          0.7953: 0.8,
+                          0.9942: 1.0}
     
-#     f_vector = table[ld.FREQUENCY_COLUMN].unique()
-#     phi_vector = table[ld.UTILIZATION_HOT_BLOW_COLUMN].unique()
-#     H_vector = table['H[mm]'].unique()
-#     H_max_vector = table[ld.MAXIMUM_PROFILE_COLUMN].unique()
+    f_vector = table[ld.FREQUENCY_COLUMN].unique()
+    phi_vector = table[ld.UTILIZATION_HOT_BLOW_COLUMN].unique()
+    H_vector = table['H[mm]'].unique()
+    H_max_vector = table[ld.MAXIMUM_PROFILE_COLUMN].unique()
     
-#     x_min = min(H_vector)
-#     x_max = max(H_vector)
+    x_min = min(H_vector)
+    x_max = max(H_vector)
     
-#     fig_list = []
-#     markers=['s','o','x','v','^','h','<']
-#     for f in f_vector:    
-#         table_f = filter_table_from_column(table,ld.FREQUENCY_COLUMN,f)
+    fig_list = []
+    markers=['s','o','x','v','^','h','<']
+    for f in f_vector:    
+        table_f = filter_table_from_column(table,ld.FREQUENCY_COLUMN,f)
         
-#         for phi in phi_vector:
+        for phi in phi_vector:
             
-#             table_f_phi = filter_table_from_column(table_f,ld.UTILIZATION_HOT_BLOW_COLUMN,phi)
+            table_f_phi = filter_table_from_column(table_f,ld.UTILIZATION_HOT_BLOW_COLUMN,phi)
             
                      
-#             fig_Qc, axis_Qc = nemplot.create_plot(xlabel=H_REG_LABEL,
-#                                                        ylabel=Q_LABEL)
+            fig_Qc, axis_Qc = create_plot(xlabel=H_REG_LABEL,
+                                                       ylabel=Q_LABEL)
              
-#             fig_COP, axis_COP = nemplot.create_plot(xlabel=H_REG_LABEL,
-#                                                        ylabel=COP_LABEL)
+            fig_COP, axis_COP = create_plot(xlabel=H_REG_LABEL,
+                                                       ylabel=COP_LABEL)
             
-#             for (i, H_max) in enumerate(H_max_vector):
+            for (i, H_max) in enumerate(H_max_vector):
                 
-#                 table_f_phi_Hmax = filter_table_from_column(table_f_phi,ld.MAXIMUM_PROFILE_COLUMN,H_max)
+                table_f_phi_Hmax = filter_table_from_column(table_f_phi,ld.MAXIMUM_PROFILE_COLUMN,H_max)
 
-#                 x_vector = table_f_phi_Hmax['H[mm]'].values
-#                 Qc_vector = table_f_phi_Hmax[ld.COOLING_CAPACITY_COLUMN].values
-#                 COP_vector = table_f_phi_Hmax[ld.COP_COLUMN].values
-#                 #pdb.set_trace()
+                x_vector = table_f_phi_Hmax['H[mm]'].values
+                Qc_vector = table_f_phi_Hmax[ld.COOLING_CAPACITY_COLUMN].values
+                COP_vector = table_f_phi_Hmax[ld.COP_COLUMN].values
                 
-#                 axis_Qc.plot(x_vector, Qc_vector, 
-#                              label=r'$\average{B}\ped{max} = \SI{' + '%.1f' %(H_max,) + r'}{\tesla}$',
-#                              marker=markers[i],linestyle='--',color='k'  )
+                axis_Qc.plot(x_vector, Qc_vector, 
+                             label=r'$\overline{B}_\mathrm{max} = ' + '%.1f' %(H_max,) + r'\ \mathrm{T}$',
+                             marker=markers[i],linestyle='--',color='k'  )
                 
-#                 axis_COP.plot(x_vector, COP_vector, 
-#                               label=r'$\average{B}\ped{max} = \SI{' + '%.1f' %(H_max,) + r'}{\tesla}$',
-#                               marker=markers[i],linestyle='--',color='k'  )
+                axis_COP.plot(x_vector, COP_vector, 
+                              label=r'$\overline{B}_\mathrm{max} = ' + '%.1f' %(H_max,) + r'\ \mathrm{T}$',
+                              marker=markers[i],linestyle='--',color='k'  )
                     
                 
-#             for ax in [axis_Qc, axis_COP]:
+            for ax in [axis_Qc, axis_COP]:
                    
-#                 ax.plot(x_vector,np.zeros_like(x_vector),
-#                         color='grey',
-#                          linestyle='-')
+                ax.plot(x_vector,np.zeros_like(x_vector),
+                        color='grey',
+                         linestyle='-')
                     
-#                 ax.legend(loc='upper left',
-#                           fontsize=nemplot_parameters["FONTSIZE"],
-#                          bbox_to_anchor=(1,1))    
+                ax.legend(loc='upper left',
+                         bbox_to_anchor=(1,1))    
                 
-#                 ax.grid(True)
-#                 nemplot.refine_yticks(ax,5)
-#                 ax.set_xlim(min(x_vector),max(x_vector))
-#                 ax.set_xticks(x_vector)
+                ax.grid(True)
+                refine_yticks(ax,5)
+                ax.set_xlim(min(x_vector),max(x_vector))
+                ax.set_xticks(x_vector)
               
-#             fig_list.append((fig_Qc,fig_COP))
+            fig_list.append((fig_Qc,fig_COP))
                 
-#             nemplot.save_figure(fig=fig_Qc,
-#                                name='Qc_H_inst_f_%d_Phi_%d' %(f,100*regsim_utilizations[phi]))
-#             plt.close(fig_Qc)
-#             nemplot.save_figure(fig=fig_COP,
-#                                 name='COP_H_inst_f_%d_Phi_%d' %(f,100*regsim_utilizations[phi]))
-#             plt.close(fig_COP)                           
-        
-#     return fig_list
+            save_figure(fig=fig_Qc,
+                               name='Qc_H_inst_f_%d_Phi_%d' %(f,100*regsim_utilizations[phi]))
+            plt.close(fig_Qc)
+            save_figure(fig=fig_COP,
+                                name='COP_H_inst_f_%d_Phi_%d' %(f,100*regsim_utilizations[phi]))
+            plt.close(fig_COP)                           
+# In[31]:
 
-
-# # In[31]:
-
-
-# get_ipython().run_line_magic('matplotlib', 'inline')
-# table_filename = 'Inst - varios H.txt'
-
-# table_Inst_variosH = pd.read_csv(table_filename,sep='\t')
-
-# plot_Qc_H_Inst(table_Inst_variosH);
+table_Inst_variosH = ld.it_varH_df
+plot_Qc_H_Inst(table_Inst_variosH)
 
 
 # # ## 4 Plotting the ramp profile
@@ -602,10 +698,10 @@ plot_Qc_phi_Inst(table_inst)
 #             table_f_phi = filter_table_from_column(table_f,ld.UTILIZATION_HOT_BLOW_COLUMN,phi) 
                 
                      
-#             fig_Qc, axis = nemplot.create_plot(xlabel=RATIO_F_LABEL,
+#             fig_Qc, axis = create_plot(xlabel=RATIO_F_LABEL,
 #                                                 ylabel=Q_LABEL)
             
-#             fig_COP, axis_COP = nemplot.create_plot(xlabel=RATIO_F_LABEL,
+#             fig_COP, axis_COP = create_plot(xlabel=RATIO_F_LABEL,
 #                                                     ylabel=COP_LABEL+' [-]')
                                               
 #             y_max = 0
@@ -613,7 +709,7 @@ plot_Qc_phi_Inst(table_inst)
 #             i = 0
 #             for F_blow in F_blow_vector:
 
-#                 label_text = r'$F\ped{B} = \SI{' + '%d' %(F_blow,) + r'}{\percent}$'
+#                 label_text = r'$F_\mathrm{B} = ' + '%d' %(F_blow,) + r'{\%}$'
 
 #                 table_f_phi_F = filter_table_from_column(table_f_phi,ld.BLOW_FRACTION_COLUMN,F_blow)
 
@@ -636,15 +732,15 @@ plot_Qc_phi_Inst(table_inst)
 #                 for ax in [axis,axis_COP]:
 #                     ax.grid(True)
 #                     #ax.set_xticks(ratio_vector)
-#                     nemplot.refine_yticks(ax,6)
-#                     nemplot.refine_xticks(ax,5)
+#                     refine_yticks(ax,6)
+#                     refine_xticks(ax,5)
           
                 
 #             fig_list.append(fig_Qc)
 #             fig_list_COP.append(fig_COP)
-#             nemplot.save_figure(fig=fig_Qc,
+#             save_figure(fig=fig_Qc,
 #                                 name='Qc_FM_ramp_f_%d_Phi_%d%s' %(f,100*regsim_utilizations[phi],figure_suffix))
-#             nemplot.save_figure(fig=fig_COP,
+#             save_figure(fig=fig_COP,
 #                                 name='COP_FM_ramp_f_%d_Phi_%d%s' %(f,100*regsim_utilizations[phi],figure_suffix))
         
         
@@ -765,10 +861,10 @@ plot_Qc_phi_Inst(table_inst)
 #             for F_blow in F_blow_vector:
 
                         
-#                 fig_Qc, ax_Qc = nemplot.create_plot(xlabel=F_M_LABEL,
+#                 fig_Qc, ax_Qc = create_plot(xlabel=F_M_LABEL,
 #                                                     ylabel=H_MAX_LABEL)
                 
-#                 fig_COP, ax_COP = nemplot.create_plot(xlabel=F_M_LABEL,
+#                 fig_COP, ax_COP = create_plot(xlabel=F_M_LABEL,
 #                                                     ylabel=H_MAX_LABEL)
                 
 #                 table_f_phi_F = filter_table_from_column(table_f_phi,ld.BLOW_FRACTION_COLUMN,F_blow)
@@ -787,13 +883,13 @@ plot_Qc_phi_Inst(table_inst)
 #                 F_M_matrix = 2*F_M_matrix
 #                 p_Qc = ax_Qc.contour(F_M_matrix,B_max_matrix,Qc_matrix,colors='k')
 #                 ax_Qc.clabel(p_Qc, fontsize=0.8*nemplot_parameters["FONTSIZE"], inline=1,fmt='%1.0f')
-#                 nemplot.refine_xticks(ax_Qc,5)
-#                 nemplot.refine_yticks(ax_Qc,5)
+#                 refine_xticks(ax_Qc,5)
+#                 refine_yticks(ax_Qc,5)
                     
 #                 p_COP = ax_COP.contour(F_M_matrix,B_max_matrix,COP_matrix,colors='k')
 #                 ax_COP.clabel(p_COP, fontsize=0.8*nemplot_parameters["FONTSIZE"], inline=1,fmt='%.1f')
-#                 nemplot.refine_xticks(ax_COP,5)
-#                 nemplot.refine_yticks(ax_COP,5)
+#                 refine_xticks(ax_COP,5)
+#                 refine_yticks(ax_COP,5)
                 
 #                 ax_Qc.grid(True)
 #                 ax_COP.grid(True)
@@ -801,13 +897,13 @@ plot_Qc_phi_Inst(table_inst)
 #                 table_list.append(table_f_phi_F)
 #                 fig_list.append(fig_Qc)
 #                 fig_list.append(fig_COP)
-#                 nemplot.save_figure(fig_Qc,
+#                 save_figure(fig_Qc,
 #                                     name='Qc_ramp_map_f_%d_Phi_%d_FB_%d%s' %(f,
 #                                                                           100*regsim_utilizations[phi],
 #                                                                           F_blow,
 #                                                                           figure_suffix))
 #                 plt.close(fig_Qc)
-#                 nemplot.save_figure(fig_COP,
+#                 save_figure(fig_COP,
 #                                     name='COP_ramp_map_f_%d_Phi_%d_FB_%d%s' %(f,
 #                                                                           100*regsim_utilizations[phi],
 #                                                                           F_blow,
@@ -843,19 +939,19 @@ plot_Qc_phi_Inst(table_inst)
 #     fig_list = []
 #     table_list = []
 
-#     fig_Qc, ax_Qc = nemplot.create_plot(title='',
+#     fig_Qc, ax_Qc = create_plot(title='',
 #                                         xlabel=H_REG_LABEL,
 #                                         ylabel=H_MAX_LABEL)
 
-#     fig_COP, ax_COP = nemplot.create_plot(title='',
+#     fig_COP, ax_COP = create_plot(title='',
 #                                         xlabel=H_REG_LABEL,
 #                                         ylabel=H_MAX_LABEL)
     
-#     fig_eta, ax_eta = nemplot.create_plot(title='',
+#     fig_eta, ax_eta = create_plot(title='',
 #                                         xlabel=H_REG_LABEL,
 #                                         ylabel=H_MAX_LABEL)
     
-#     fig_combined, ax_combined = nemplot.create_plot(title='',
+#     fig_combined, ax_combined = create_plot(title='',
 #                                         xlabel=H_REG_LABEL,
 #                                         ylabel=H_MAX_LABEL)
 
@@ -882,18 +978,18 @@ plot_Qc_phi_Inst(table_inst)
 #     X,Y = np.meshgrid(H_vector,HMax_vector)
 #     p_Qc = ax_Qc.contour(X,Y,Qc_matrix,colors='k')
 #     ax_Qc.clabel(p_Qc, fontsize=0.8*nemplot_parameters["FONTSIZE"], inline=1,fmt='%1.0f')
-#     nemplot.refine_xticks(ax_Qc,5)
-#     nemplot.refine_yticks(ax_Qc,5)
+#     refine_xticks(ax_Qc,5)
+#     refine_yticks(ax_Qc,5)
             
 #     p_COP = ax_COP.contour(X,Y,COP_matrix,colors='k')
 #     ax_COP.clabel(p_COP, fontsize=0.8*nemplot_parameters["FONTSIZE"], inline=1,fmt='%.1f')
-#     nemplot.refine_xticks(ax_COP,5)
-#     nemplot.refine_yticks(ax_COP,5)
+#     refine_xticks(ax_COP,5)
+#     refine_yticks(ax_COP,5)
 
 #     p_eta = ax_eta.contour(X,Y,eta_matrix,colors='k')
 #     ax_eta.clabel(p_eta, fontsize=0.8*nemplot_parameters["FONTSIZE"], inline=1,fmt='%.1f')
-#     nemplot.refine_xticks(ax_eta,5)
-#     nemplot.refine_yticks(ax_eta,5)
+#     refine_xticks(ax_eta,5)
+#     refine_yticks(ax_eta,5)
     
 #     p_combined_Qc = ax_combined.contour(X,Y,Qc_matrix,5,colors='k',linestyles='-')
 #     ax_combined.clabel(p_combined_Qc, fontsize=0.8*nemplot_parameters["FONTSIZE"], inline=1,fmt='%.1f')
@@ -905,25 +1001,25 @@ plot_Qc_phi_Inst(table_inst)
 #     ax_eta.grid(True)
 #     ax_combined.grid(True)
     
-#     nemplot.refine_xticks(ax_combined,5)
-#     nemplot.refine_yticks(ax_combined,5)
+#     refine_xticks(ax_combined,5)
+#     refine_yticks(ax_combined,5)
 
 #     fig_list.append((fig_Qc,fig_COP,fig_eta,fig_combined))
     
-#     nemplot.save_figure(fig_Qc,
+#     save_figure(fig_Qc,
 #                         name='Qc_H_reg%s' %(
 #                             figure_suffix,))
 #     plt.close(fig_Qc)
     
-#     nemplot.save_figure(fig_COP,
+#     save_figure(fig_COP,
 #                         name='COP_H_reg%s' %(figure_suffix,))
 #     plt.close(fig_COP)
     
-#     nemplot.save_figure(fig_eta,
+#     save_figure(fig_eta,
 #                         name='eta_H_reg%s' %(figure_suffix,))
 #     plt.close(fig_eta)
     
-#     nemplot.save_figure(fig_combined,
+#     save_figure(fig_combined,
 #                         name='Qc_COP_combined_H_reg%s' %(figure_suffix,))
 #     plt.close(fig_combined)
 
@@ -940,8 +1036,4 @@ plot_Qc_phi_Inst(table_inst)
 # fig_list_slope2D_35K = plot_slope_multipleH(table_slope_variosH,figure_suffix='W30')
 
 
-# # In[ ]:
-
-
-
-
+plt.close('all')

@@ -5,6 +5,7 @@ import pandas as pd
 from pandas import DataFrame, Series
 
 INSTANTANEOUS_DATASET = "Instantaneous.txt"
+INSTANTANEOUS_DATASET_VARYING_HEIGHT = "Instantaneous-varH.txt"
 RAMP_DATASET = "Ramp.txt"
 RECTIFIED_COSINE_DATASET = "RectifiedCosine.txt"
 
@@ -18,8 +19,10 @@ RECTIFIED_COSINE_DATASET = "RectifiedCosine.txt"
 # We adopt the convention of naming these data sets as '<profile_identifier>df', where the profile identifier can be 'it' (instantaneous), 'rc' (rectified cosine) or 'rm' (ramp)
 
 itdf = pd.read_csv(INSTANTANEOUS_DATASET,sep="\s+")
+it_varH_df = pd.read_csv(INSTANTANEOUS_DATASET_VARYING_HEIGHT,sep="\s+")
 rcdf = pd.read_csv(RECTIFIED_COSINE_DATASET,sep="\s+")
 rmdf = pd.read_csv(RAMP_DATASET,sep="\s+")
+
 
 # The columns of interest can be ly identified as:
 

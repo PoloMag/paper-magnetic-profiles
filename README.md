@@ -39,6 +39,17 @@ In addition, a digital hydraulic system was used with the following parameters:
 
 The simulations for these profiles also considered adiabatic regenerators.
 
+### Common parameters for `Instantaneous-varH.txt"
+
+This dataset contains results for simulation of the instantaneous magnetic profile with varying regenerator height.
+
+The following parameters are kept fixed:
+
+- Blow fraction of 100 %
+- Minimum magnetic field of 0.05 T
+
+The remaining conditions are as the `Instantaneous.txt` dataset.
+
 ### Common parameters for `Ramp.txt`
 
 The simulations for the ramp magnetic profile dataset also considered:
@@ -62,7 +73,7 @@ Common parameters:
 
 ### Columns
 
-The columns name for the `Instantaneous.txt` dataset are as follows (the units are indicated between square brackets):
+The columns name for the `Instantaneous.txt` and `Instantaneous-varH.txt` datasets are as follows (the units are indicated between square brackets):
 
 * `f[Hz]`: AMR cycle frequency
 * `H_max[T]`: maximum applied field (actually is $\mu_0 H$, where $\mu_0$ is the magnetic permeability of free space)
