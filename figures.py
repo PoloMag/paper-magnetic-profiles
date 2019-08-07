@@ -44,6 +44,8 @@ F_B_LABEL = r'$F_\mathrm{B}\,[\%]$'
 RATIO_F_LABEL = r'$\frac{F_\mathrm{M}}{F_\mathrm{B}}$'
 F_M_LABEL = r'$F_\mathrm{M}\,[\%]$'
 H_MAX_LABEL = r'${B}_\mathrm{max}\,[\mathrm{T}]$'
+Q_RATIO_LABEL = r'$\frac{\dot{Q}_{\mathrm{C,RC}}}{\dot{Q}_{\mathrm{C,IT}}}\,[\%]$'
+COP_RATIO_LABEL = r'$\frac{\mathrm{COP}_{\mathrm{RC}}}{\mathrm{COP}_{\mathrm{IT}}}\,[\%]$'
 
 plt.rc('text', usetex=True)
 plt.rc(
@@ -240,9 +242,17 @@ def plot_Qc_and_COP_Inst_vs_CCH(table_inst,table_cch,F_inst,F_CCH, figure_suffix
         
         fig_COP, axis_COP = create_plot(ylabel=COP_LABEL,
                                                xlabel=B_LABEL)
+
+        fig_Qc_ratio, axis_Qc_ratio = create_plot(ylabel=Q_RATIO_LABEL,
+                                                    xlabel=B_LABEL)
+
+        fig_COP_ratio, axis_COP_ratio = create_plot(ylabel=COP_RATIO_LABEL,
+                                                    xlabel=B_LABEL)
                 
         y_max = 0
         y_COP_max = 0
+        y_COP_ratio_max = 0
+        y_Qc_ratio_max = 0
                              
                   
         for (i,phi) in enumerate(phi_vector):
@@ -289,6 +299,31 @@ def plot_Qc_and_COP_Inst_vs_CCH(table_inst,table_cch,F_inst,F_CCH, figure_suffix
                     
             if (max(COP_vector_inst) > y_COP_max):
                 y_COP_max = max(COP_vector_inst)
+
+
+            Qc_ratio_vector = 100 * Qc_vector_cch / Qc_vector_inst
+            axis_Qc_ratio.plot(x_vector, Qc_ratio_vector, label=r'$\Phi = ' + '%.1f' %(regsim_utilizations[phi]) + r'$', 
+                      marker=markers[i],
+                      linestyle='-',
+                      color='k')
+            axis_Qc_ratio.legend(loc='upper left',
+                   bbox_to_anchor=(1.0,1.0))
+
+            COP_ratio_vector = 100 * COP_vector_cch / COP_vector_inst
+            axis_COP_ratio.plot(x_vector, COP_ratio_vector, label=r'$\Phi = ' + '%.1f' %(regsim_utilizations[phi]) + r'$', 
+                      marker=markers[i],
+                      linestyle='-',
+                      color='k')
+            axis_COP_ratio.legend(loc='upper left',
+                   bbox_to_anchor=(1.0,1.0))
+
+
+            if (max(Qc_ratio_vector) > y_Qc_ratio_max):
+                y_Qc_ratio_max = max(Qc_ratio_vector)
+                    
+            if (max(COP_ratio_vector) > y_COP_ratio_max):
+                y_COP_ratio_max = max(COP_ratio_vector)
+
         
         axis.set_ylim(0,y_max)     
         axis.set_xlim(x_min,x_max)
@@ -301,14 +336,31 @@ def plot_Qc_and_COP_Inst_vs_CCH(table_inst,table_cch,F_inst,F_CCH, figure_suffix
         axis_COP.grid(True)
         refine_xticks(axis_COP,4)
         refine_yticks(axis_COP,4)
+
+        axis_COP_ratio.set_ylim(0,y_COP_ratio_max)     
+        axis_COP_ratio.set_xlim(x_min,x_max)
+        axis_COP_ratio.grid(True)
+        refine_xticks(axis_COP_ratio,4)
+        refine_yticks(axis_COP_ratio,4)
+
+        axis_Qc_ratio.set_ylim(0,y_Qc_ratio_max)     
+        axis_Qc_ratio.set_xlim(x_min,x_max)
+        axis_Qc_ratio.grid(True)
+        refine_xticks(axis_Qc_ratio,4)
+        refine_yticks(axis_Qc_ratio,4)
         
-        fig_list.append((fig_Qc,fig_COP))
         fig_Qc_name = "Qc_B_comp_f_%d%s" %(f,figure_suffix)
         save_figure(fig_Qc,fig_Qc_name)
         plt.close(fig_Qc)
         fig_COP_name = "COP_B_comp_f_%d%s" %(f,figure_suffix)
         save_figure(fig_COP,fig_COP_name)
         plt.close(fig_COP)
+        fig_Qc_ratio_name = "Qc_B_ratio_f_%d%s" %(f,figure_suffix)
+        save_figure(fig_Qc_ratio,fig_Qc_ratio_name)
+        plt.close(fig_Qc_ratio)
+        fig_COP_ratio_name = "COP_B_ratio_f_%d%s" %(f,figure_suffix)
+        save_figure(fig_COP_ratio,fig_COP_ratio_name)
+        plt.close(fig_COP_ratio)
 
 
 # ### Same minimum
