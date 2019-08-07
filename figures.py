@@ -34,10 +34,10 @@ N_POINTS_LINEPLOT = 2000
 
 DENSITY_GD = 7900 # kg/m3, from Trevizoli et al (2016), IJR volume 72
 
-B_LABEL = r'$\overline{B}_\mathrm{high}\,[\mathrm{T}]$'
+B_LABEL = r'${B}_\mathrm{high}\,[\mathrm{T}]$'
 Q_LABEL = r'$\dot{Q}_{\mathrm{C}}\,[\mathrm{W}]$'
 COP_LABEL = r'$\mathrm{COP}$'
-W_PUMP_LABEL = r'$\w_\mathrm{pump}\,[\mathrm{W}]$'
+W_PUMP_LABEL = r'$\dot{W}_\mathrm{pump}\,[\mathrm{W}]$'
 PHI_LABEL = r'$\Phi$'
 H_REG_LABEL = r'$H_\mathrm{r}\,[\mathrm{mm}]$'
 F_B_LABEL = r'$F_\mathrm{B}\,[\%]$'
@@ -305,8 +305,10 @@ def plot_Qc_and_COP_Inst_vs_CCH(table_inst,table_cch,F_inst,F_CCH, figure_suffix
         fig_list.append((fig_Qc,fig_COP))
         fig_Qc_name = "Qc_B_comp_f_%d%s" %(f,figure_suffix)
         save_figure(fig_Qc,fig_Qc_name)
+        plt.close(fig_Qc)
         fig_COP_name = "COP_B_comp_f_%d%s" %(f,figure_suffix)
         save_figure(fig_COP,fig_COP_name)
+        plt.close(fig_COP)
 
 
 # ### Same minimum
@@ -415,9 +417,8 @@ def plot_Wpump_Inst_vs_CCH(table_inst,table_cch,F_inst,F_CCH, figure_suffix=""):
         
         fig_list.append((fig,))
         fig_name = "Wpump_B_comp_f_%d%s" %(f,figure_suffix)
-        #save_figure(fig,fig_name)
-   
-    return fig_list
+        save_figure(fig,fig_name)
+        plt.close(fig)
 
 plot_Wpump_Inst_vs_CCH(table_inst, table_cch,F_B_inst,F_B_CCH,fig_suffix)
 
@@ -474,12 +475,12 @@ def plot_Qc_phi_Inst(table):
                     COP_vector = table_f_F_Hmin_Hmax[ld.COP_COLUMN].values
 
                     axis_Qc.plot(x_vector, Qc_vector, 
-                              label=r'$\overline{B}_\mathrm{max} = ' + '%.1f' %(Hmax,) + r'\mathrm{T}$',
+                              label=r'${B}_\mathrm{max} = ' + '%.1f' %(Hmax,) + r'\ \mathrm{T}$',
                               marker=markers[i],linestyle='--',color='k'  )
 
                     
                     axis_COP.plot(x_vector, COP_vector, 
-                              label=r'$\overline{B}_\mathrm{max} = ' + '%.1f' %(Hmax,) + r'\mathrm{T}$',
+                              label=r'${B}_\mathrm{max} = ' + '%.1f' %(Hmax,) + r'\ \mathrm{T}$',
                               marker=markers[i],linestyle='--',color='k'  )
                     
                     
@@ -563,11 +564,11 @@ def plot_Qc_H_Inst(table):
                 COP_vector = table_f_phi_Hmax[ld.COP_COLUMN].values
                 
                 axis_Qc.plot(x_vector, Qc_vector, 
-                             label=r'$\overline{B}_\mathrm{max} = ' + '%.1f' %(H_max,) + r'\ \mathrm{T}$',
+                             label=r'${B}_\mathrm{max} = ' + '%.1f' %(H_max,) + r'\ \mathrm{T}$',
                              marker=markers[i],linestyle='--',color='k'  )
                 
                 axis_COP.plot(x_vector, COP_vector, 
-                              label=r'$\overline{B}_\mathrm{max} = ' + '%.1f' %(H_max,) + r'\ \mathrm{T}$',
+                              label=r'${B}_\mathrm{max} = ' + '%.1f' %(H_max,) + r'\ \mathrm{T}$',
                               marker=markers[i],linestyle='--',color='k'  )
                     
                 
@@ -740,8 +741,10 @@ def plot_Qc_Ramp(table, figure_suffix=""):
             fig_list_COP.append(fig_COP)
             save_figure(fig=fig_Qc,
                                 name='Qc_FM_ramp_f_%d_Phi_%d%s' %(f,100*regsim_utilizations[phi],figure_suffix))
+            plt.close(fig_Qc)
             save_figure(fig=fig_COP,
                                 name='COP_FM_ramp_f_%d_Phi_%d%s' %(f,100*regsim_utilizations[phi],figure_suffix))
+            plt.close(fig_COP)
 
 
 # In[34]:
@@ -863,10 +866,7 @@ def plot_slope_2D(table_slope_2D,figure_suffix=""):
                                                                           100*regsim_utilizations[phi],
                                                                           F_blow,
                                                                           figure_suffix))
-                plt.close(fig_COP)
-    
-    return fig_list, table_list            
-
+                plt.close(fig_COP)          
 
 # In[38]:
 
