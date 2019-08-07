@@ -7,6 +7,7 @@ from pandas import DataFrame, Series
 INSTANTANEOUS_DATASET = "Instantaneous.txt"
 INSTANTANEOUS_DATASET_VARYING_HEIGHT = "Instantaneous-varH.txt"
 RAMP_DATASET = "Ramp.txt"
+RAMP_DATASET_VARYING_HEIGHT = "Ramp-varH.txt"
 RECTIFIED_COSINE_DATASET = "RectifiedCosine.txt"
 
 
@@ -22,11 +23,13 @@ itdf = pd.read_csv(INSTANTANEOUS_DATASET,sep="\s+")
 it_varH_df = pd.read_csv(INSTANTANEOUS_DATASET_VARYING_HEIGHT,sep="\s+")
 rcdf = pd.read_csv(RECTIFIED_COSINE_DATASET,sep="\s+")
 rmdf = pd.read_csv(RAMP_DATASET,sep="\s+")
+rm_varH_df = pd.read_csv(RAMP_DATASET_VARYING_HEIGHT,sep="\s+")
 
 
-# The columns of interest can be ly identified as:
+# The columns of interest can be nicely identified as:
 
 FREQUENCY_COLUMN = 'f[Hz]'
+REGENERATOR_HEIGHT_COLUMN = 'H[mm]'
 MAXIMUM_PROFILE_COLUMN = 'H_max[T]'
 MINIMUM_PROFILE_COLUMN = 'H_min[T]'
 BLOW_FRACTION_COLUMN  = 'F_B[%]'

@@ -71,11 +71,23 @@ Common parameters:
 - Particle diameter of 350 um
 - Regenerators with three layers, with Curie temperatures of {273, 283, 290} K and respective length fractions of {20, 20, 60} % of the regenerator length
 
+In addition to the canonical `Ramp.txt`, there are also files entitled `Ramp-BmaxXXXXmT.txt`, with results with the maximum field fixed at the value indicated by `XXXX` (e.g. 1200 mT = 1.2 T).
+
+### Common parameters for `Ramp-varH.txt`
+
+This dataset contains simulations of the ramp magnetic profile with varying regenerator height. The following parameters are fixed:
+
+- Regenerator width of 30 mm
+- Magnetization fraction of 70 % (considering both high and low field plateaus)
+- Blow fraction identical to the magnetization fraction
+
+
 ### Columns
 
 The columns name for the `Instantaneous.txt` and `Instantaneous-varH.txt` datasets are as follows (the units are indicated between square brackets):
 
 * `f[Hz]`: AMR cycle frequency
+* `H[mm]`: regenerator height
 * `H_max[T]`: maximum applied field (actually is $\mu_0 H$, where $\mu_0$ is the magnetic permeability of free space)
 * `H_min[T]`: minimum applied field
 * `F_B[%]`: blow fraction
@@ -91,10 +103,10 @@ The columns name for the `Instantaneous.txt` and `Instantaneous-varH.txt` datase
 
 For the `RectifiedCosine.txt` dataset, there is an additional column, `H_max_equiv[T]`, which represents the equivalent instantaneous magnetic profile with the same average field *during the entire half-cycle period*, i.e. this value is not dependent on blow fraction. In addition for this dataset, the minimum applied field is set fixed to 0.1 T.
 
-The file `Ramp.txt`, in addition of the columns shown above, also has the following fields:
+The files `Ramp-Bmax.txt`, in addition of the columns shown above, also has the following fields:
 
 * `F_R[%]`: fraction of the cycle where the magnetic field is changing (the "ramp fraction")
-* `F_M_High[%]`: fraction of the cycle where the magnetic field is at its maximum level (the suffix 2 is to indicate )
+* `F_M_High[%]`: fraction of the cycle where the magnetic field is at its maximum level
 * `ReDp_CB[-]`: particle diameter-based Reynolds number during cold blow
 * `ReDp_HB[-]`: particle diameter-based Reynolds number during hot blow
 * `U_CB[-]`: cold blow utilization factor
