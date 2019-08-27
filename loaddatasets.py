@@ -4,11 +4,11 @@
 import pandas as pd
 from pandas import DataFrame, Series
 
-INSTANTANEOUS_DATASET = "Instantaneous.txt"
-INSTANTANEOUS_DATASET_VARYING_HEIGHT = "Instantaneous-varH.txt"
-RAMP_DATASET = "Ramp.txt"
-RAMP_DATASET_VARYING_HEIGHT = "Ramp-varH.txt"
-RECTIFIED_COSINE_DATASET = "RectifiedCosine.txt"
+INSTANTANEOUS_DATASET = "Instantaneous.csv"
+INSTANTANEOUS_DATASET_VARYING_HEIGHT = "Instantaneous-varH.csv"
+RAMP_DATASET = "Ramp.csv"
+RAMP_DATASET_VARYING_HEIGHT = "Ramp-varH.csv"
+RECTIFIED_COSINE_DATASET = "RectifiedCosine.csv"
 
 
 # These dataset are formated as tab-separed values (TSV), with column names in the format:
@@ -19,11 +19,11 @@ RECTIFIED_COSINE_DATASET = "RectifiedCosine.txt"
 # 
 # We adopt the convention of naming these data sets as '<profile_identifier>df', where the profile identifier can be 'it' (instantaneous), 'rc' (rectified cosine) or 'rm' (ramp)
 
-itdf = pd.read_csv(INSTANTANEOUS_DATASET,sep="\s+")
-it_varH_df = pd.read_csv(INSTANTANEOUS_DATASET_VARYING_HEIGHT,sep="\s+")
-rcdf = pd.read_csv(RECTIFIED_COSINE_DATASET,sep="\s+")
-rmdf = pd.read_csv(RAMP_DATASET,sep="\s+")
-rm_varH_df = pd.read_csv(RAMP_DATASET_VARYING_HEIGHT,sep="\s+")
+itdf = pd.read_csv(INSTANTANEOUS_DATASET)
+it_varH_df = pd.read_csv(INSTANTANEOUS_DATASET_VARYING_HEIGHT)
+rcdf = pd.read_csv(RECTIFIED_COSINE_DATASET)
+rmdf = pd.read_csv(RAMP_DATASET)
+rm_varH_df = pd.read_csv(RAMP_DATASET_VARYING_HEIGHT)
 
 
 # The columns of interest can be nicely identified as:

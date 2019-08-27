@@ -17,7 +17,7 @@ The AMR model is described in detail in:
 
 and was implemented in the RegSim software.
 
-### Common parameters for `Instantaneous.txt` and `RectifiedCosine.txt`
+### Common parameters for `Instantaneous.csv` and `RectifiedCosine.csv`
 
 For the instantaneous and rectified cosine profiles, the common AMR parameters used are:
 
@@ -39,7 +39,7 @@ In addition, a digital hydraulic system was used with the following parameters:
 
 The simulations for these profiles also considered adiabatic regenerators.
 
-### Common parameters for `Instantaneous-varH.txt"
+### Common parameters for `Instantaneous-varH.csv"
 
 This dataset contains results for simulation of the instantaneous magnetic profile with varying regenerator height.
 
@@ -48,9 +48,9 @@ The following parameters are kept fixed:
 - Blow fraction of 100 %
 - Minimum magnetic field of 0.05 T
 
-The remaining conditions are as the `Instantaneous.txt` dataset.
+The remaining conditions are as the `Instantaneous.csv` dataset.
 
-### Common parameters for `Ramp.txt`
+### Common parameters for `Ramp.csv`
 
 The simulations for the ramp magnetic profile dataset also considered:
 
@@ -71,9 +71,9 @@ Common parameters:
 - Particle diameter of 350 um
 - Regenerators with three layers, with Curie temperatures of {273, 283, 290} K and respective length fractions of {20, 20, 60} % of the regenerator length
 
-In addition to the canonical `Ramp.txt`, there are also files entitled `Ramp-BmaxXXXXmT.txt`, with results with the maximum field fixed at the value indicated by `XXXX` (e.g. 1200 mT = 1.2 T).
+In addition to the canonical `Ramp.csv`, there are also files entitled `Ramp-BmaxXXXXmT.csv`, with results with the maximum field fixed at the value indicated by `XXXX` (e.g. 1200 mT = 1.2 T).
 
-### Common parameters for `Ramp-varH.txt`
+### Common parameters for `Ramp-varH.csv`
 
 This dataset contains simulations of the ramp magnetic profile with varying regenerator height. The following parameters are fixed:
 
@@ -84,7 +84,7 @@ This dataset contains simulations of the ramp magnetic profile with varying rege
 
 ### Columns
 
-The columns name for the `Instantaneous.txt` and `Instantaneous-varH.txt` datasets are as follows (the units are indicated between square brackets):
+The columns name for the `Instantaneous.csv` and `Instantaneous-varH.csv` datasets are as follows (the units are indicated between square brackets):
 
 * `f[Hz]`: AMR cycle frequency
 * `H[mm]`: regenerator height
@@ -101,9 +101,9 @@ The columns name for the `Instantaneous.txt` and `Instantaneous-varH.txt` datase
 * `Wmotor[W]`: motor/magnetic power (assumed identical to the Carnot ideal power)
 * `COP[-]`: coefficient of performance
 
-For the `RectifiedCosine.txt` dataset, there is an additional column, `H_max_equiv[T]`, which represents the equivalent instantaneous magnetic profile with the same average field *during the entire half-cycle period*, i.e. this value is not dependent on blow fraction. In addition for this dataset, the minimum applied field is set fixed to 0.1 T.
+For the `RectifiedCosine.csv` dataset, there is an additional column, `H_max_equiv[T]`, which represents the equivalent instantaneous magnetic profile with the same average field *during the entire half-cycle period*, i.e. this value is not dependent on blow fraction. In addition for this dataset, the minimum applied field is set fixed to 0.1 T.
 
-The files `Ramp-Bmax.txt`, in addition of the columns shown above, also has the following fields:
+The files `Ramp-Bmax.csv`, in addition of the columns shown above, also has the following fields:
 
 * `F_R[%]`: fraction of the cycle where the magnetic field is changing (the "ramp fraction")
 * `F_M_High[%]`: fraction of the cycle where the magnetic field is at its maximum level
@@ -121,6 +121,8 @@ The identifiers `Test` and `Re_w[-]` can be ignored.
 The figures for the paper are generated via Python scripts. To reproduce them, it is recommended that you create a conda environment with the specified conda file:
 
     conda env create -f environment.yml
+
+The environment file specifies the versions of the softwares used to create the plots.
 
 The scripts are purposed as follows:
 
