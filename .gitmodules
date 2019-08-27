@@ -1,0 +1,3 @@
+[submodule "thermo-ref"]
+	path = thermo-ref
+	url = https://github.com/PoloMag/thermo-ref
