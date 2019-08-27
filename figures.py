@@ -5,7 +5,6 @@ import math
 import re
 import os.path
 from pathlib import Path
-import math
 
 import numpy as np
 import numpy.ma as ma
@@ -15,10 +14,11 @@ from scipy.interpolate import griddata
 from scipy.constants import mu_0
 from scipy.integrate import simps
 import matplotlib.pyplot as plt
+
 import loaddatasets as ld
 
 FIG_FILE_PATH = Path('.')
-PLOT_EXTENSION = ".pdf"
+PLOT_EXTENSION = ".eps"
 
 FIGSIZE_IN = (8,6)
 DPI = 800
@@ -52,7 +52,7 @@ plt.rc(
     'font', 
     size=MEDIUM_SIZE,
     family='serif',
-    serif='Palatino')          # controls default text sizes
+    serif='Helvetica')          # controls default text sizes
 plt.rc('axes', titlesize=MEDIUM_SIZE)     # fontsize of the axes title
 plt.rc('axes', labelsize=MEDIUM_SIZE)    # fontsize of the x and y labels
 plt.rc('xtick', labelsize=SMALL_SIZE)    # fontsize of the tick labels

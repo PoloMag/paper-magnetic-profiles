@@ -1,7 +1,6 @@
 import numpy as np
 
 import matplotlib
-matplotlib.use("pdf")
 from matplotlib import patches
 import matplotlib.pyplot as plt
 
@@ -21,7 +20,7 @@ plt.rc(
     'font', 
     size=MEDIUM_SIZE,
     family='serif',
-    serif='Palatino')          # controls default text sizes
+    serif='Helvetica')          # controls default text sizes
 plt.rc('axes', titlesize=MEDIUM_SIZE)     # fontsize of the axes title
 plt.rc('axes', labelsize=MEDIUM_SIZE)    # fontsize of the x and y labels
 plt.rc('xtick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
@@ -159,7 +158,7 @@ def plot_all_profiles():
     profile_axes.text(0.99*tau/4,1.035*B_max,r'$\tau_\mathrm{M}$',
                       horizontalalignment='right')
 
-    profile_fig.savefig("profiles_all.pdf",dpi=800,bbox_inches="tight")
+    profile_fig.savefig("profiles_all.eps",dpi=800,bbox_inches="tight")
 
 def plot_it_and_rc_profiles():
     B_max= 1.0
@@ -201,7 +200,7 @@ def plot_it_and_rc_profiles():
 
     profile_axes.set_ylim(0,1.1*B_max)
 
-    profile_fig.savefig("profiles_it_and_rc",dpi=DPI,bbox_inches='tight')
+    profile_fig.savefig("profiles_it_and_rc.eps",dpi=DPI,bbox_inches='tight')
 
 def plot_it_and_rc_profiles_same_minimum():
 
@@ -244,7 +243,7 @@ def plot_it_and_rc_profiles_same_minimum():
     B_max = max(B_max_cos,B_max_ins)
     profile_axes.set_ylim(0,1.2*B_max)
 
-    profile_fig.savefig("profiles_it_and_rc_same_minimum.pdf",dpi=DPI,bbox_inches="tight")
+    profile_fig.savefig("profiles_it_and_rc_same_minimum.eps",dpi=DPI,bbox_inches="tight")
 
 def plot_it_and_rc_profiles_same_average():
     B_max_ins= 1.0
@@ -289,7 +288,7 @@ def plot_it_and_rc_profiles_same_average():
     B_max = max(B_max_cos,B_max_ins)
     profile_axes.set_ylim(0,1.2*B_max)
 
-    profile_fig.savefig("profiles_it_and_rc_same_average.pdf",dpi=DPI,bbox_inches="tight")
+    profile_fig.savefig("profiles_it_and_rc_same_average.eps",dpi=DPI,bbox_inches="tight")
 
 def plot_it_profile():
     B_max= 1.0
@@ -331,7 +330,7 @@ def plot_it_profile():
 
     profile_axes.set_ylim(0,1.1*B_max)
 
-    profile_fig.savefig("profile_it.pdf",dpi=DPI,bbox_inches="tight")
+    profile_fig.savefig("profile_it.eps",dpi=DPI,bbox_inches="tight")
 
 def plot_rc_profile():
     B_max= 1.0
@@ -370,7 +369,7 @@ def plot_rc_profile():
 
     profile_axes.set_ylim(0,1.1*B_max)
 
-    profile_fig.savefig("profile_rc.pdf",dpi=DPI,bbox_inches="tight")
+    profile_fig.savefig("profile_rc.eps",dpi=DPI,bbox_inches="tight")
 
 def plot_rm_profile():
     B_max= 1.0
@@ -445,7 +444,7 @@ def plot_rm_profile():
 
     profile_axes.annotate("", xy=(3*tau/8,B_min), xytext=(tau/2+tau_R,B_min) ,arrowprops=dict(arrowstyle='-',linestyle='--'))
 
-    profile_fig.savefig("profile_rm.pdf",dpi=DPI,bbox_inches="tight")
+    profile_fig.savefig("profile_rm.eps",dpi=DPI,bbox_inches="tight")
 
 def plot_rc_and_flow_instantaneous_profiles():
     B_max= 1.0
@@ -496,7 +495,7 @@ def plot_rc_and_flow_instantaneous_profiles():
     profile_axes_right.yaxis.grid(True)
     profile_axes_right.yaxis.set_label_coords(1.05,1.05)
 
-    profile_fig.savefig("profiles_rc_and_flow_instantaneous.pdf",dpi=DPI,bbox_inches="tight")
+    profile_fig.savefig("profiles_rc_and_flow_instantaneous.eps",dpi=DPI,bbox_inches="tight")
 
 def plot_rm_and_flow_instantaneous_profile():
 
@@ -570,7 +569,7 @@ def plot_rm_and_flow_instantaneous_profile():
                       horizontalalignment='right')
 
 
-    profile_fig.savefig("profiles_rm_and_flow_instantaneous.pdf",dpi=DPI,bbox_inches="tight")
+    profile_fig.savefig("profiles_rm_and_flow_instantaneous.eps",dpi=DPI,bbox_inches="tight")
 
 plot_all_profiles()
 plot_it_and_rc_profiles()
