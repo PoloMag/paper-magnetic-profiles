@@ -20,15 +20,13 @@ import loaddatasets as ld
 FIG_FILE_PATH = Path('.')
 PLOT_EXTENSION = ".eps"
 
-FIGSIZE_IN = (8,6)
-DPI = 800
+FIGSIZE_IN = (7,5)
+DPI = 600
 
 # stolen from https://stackoverflow.com/questions/3899980/how-to-change-the-font-size-on-a-matplotlib-plot
-
-SMALL_SIZE = 16
+SMALL_SIZE = 14
 MEDIUM_SIZE = 20
-BIGGER_SIZE = 24
-
+BIGGER_SIZE = 22
 
 N_POINTS_LINEPLOT = 2000
 
@@ -52,7 +50,7 @@ plt.rc(
     'font', 
     size=MEDIUM_SIZE,
     family='serif',
-    serif='Helvetica')          # controls default text sizes
+    serif='Arial')          # controls default text sizes
 plt.rc('axes', titlesize=MEDIUM_SIZE)     # fontsize of the axes title
 plt.rc('axes', labelsize=MEDIUM_SIZE)    # fontsize of the x and y labels
 plt.rc('xtick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
@@ -85,7 +83,6 @@ def refine_list(original_list, factor):
         
     return np.linspace(min_value,max_value,math.ceil(n_refined))
 
-
 def refine_yticks(ax,factor):
     """
     Take an Axis object 'ax' and refine the y-ticks on it by 'factor'
@@ -115,7 +112,6 @@ def refine_xticks(ax,factor):
     """
 
     ax.set_xticks(refine_list(ax.get_xticks(),factor),minor=True)
-    
 
 def create_plot(xlabel="",
                      ylabel="",
@@ -166,10 +162,6 @@ def save_figure(fig,name):
                 dpi=DPI,
                 bbox_inches='tight')
 
-# In[3]:
-
-
-
 def filter_table_from_column(table,column,value):
     """
     Return a view into the 'table' DataFrame, selecting only the rows where
@@ -177,25 +169,6 @@ def filter_table_from_column(table,column,value):
     """
     
     return table[table[column] == value]
-
-# Fixed parameters
-
-FIXED_PARAMETERS = {
-    "D_p[m]": 0.5e-3,
-    "L[m]": 100e-3,
-    "W[m]": 25e-3,
-    "H[m]": 20e-3,
-    "N_r[]": 11,
-    "T_H[K]": 298,
-    "dT[K]": 20}
-
-# ## 3 Comparison of profiles
-# 
-# For the instantaneous profile, the blow fraction is 1.0, while for the cosine profile the blow fraction is 0.6. 
-# This is to compare the best situations testes for both profiles.
-# 
-# The $x$-axis shows the maximum value for the instantaneous profile and the average during the cold blow for the cosine profile 
-# (i.e. the average during the entire blow period, not the average when there is actual fluid flow).
 
 def plot_Qc_and_COP_Inst_vs_CCH(table_inst,table_cch,F_inst,F_CCH, figure_suffix=""):
     """
@@ -213,14 +186,15 @@ def plot_Qc_and_COP_Inst_vs_CCH(table_inst,table_cch,F_inst,F_CCH, figure_suffix
                           0.9942: 1.0}
     
     f_vector = table_inst[ld.FREQUENCY_COLUMN].unique()
-    phi_vector = table_inst[ld.UTILIZATION_HOT_BLOW_COLUMN].unique()    
+    phi_vector = table_inst[ld.UTILIZATION_HOT_BLOW_COLUMN].unique()[0::2]    
     H_max_vector = table_inst[ld.MAXIMUM_PROFILE_COLUMN].unique()
                     
     x_min = min(H_max_vector)
     x_max = max(H_max_vector)
 
     fig_list = []
-    markers=['s','o','x','v','^','h','<']
+    markers=['s','o','x','v','h','^','<']
+    colors=["black", "firebrick","darkcyan","indigo","sienna"]
     for f in f_vector:    
         table_inst_f = filter_table_from_column(table_inst,ld.FREQUENCY_COLUMN,f)
         table_cch_f = filter_table_from_column(table_cch,ld.FREQUENCY_COLUMN,f)
@@ -242,19 +216,10 @@ def plot_Qc_and_COP_Inst_vs_CCH(table_inst,table_cch,F_inst,F_CCH, figure_suffix
         
         fig_COP, axis_COP = create_plot(ylabel=COP_LABEL,
                                                xlabel=B_LABEL)
-
-        fig_Qc_ratio, axis_Qc_ratio = create_plot(ylabel=Q_RATIO_LABEL,
-                                                    xlabel=B_LABEL)
-
-        fig_COP_ratio, axis_COP_ratio = create_plot(ylabel=COP_RATIO_LABEL,
-                                                    xlabel=B_LABEL)
-                
+         
         y_max = 0
         y_COP_max = 0
-        y_COP_ratio_max = 0
-        y_Qc_ratio_max = 0
-                             
-                  
+                                       
         for (i,phi) in enumerate(phi_vector):
 
             label_text = r'$\Phi = ' + '%.1f' %(regsim_utilizations[phi]) + r'$'
@@ -274,55 +239,31 @@ def plot_Qc_and_COP_Inst_vs_CCH(table_inst,table_cch,F_inst,F_CCH, figure_suffix
                       + r'$', 
                       marker=markers[i],
                       linestyle='-',
-                      color='k')
+                      color=colors[i])
             axis.plot(x_vector, Qc_vector_cch, label='RC '+r'$\Phi = ' + '%.1f' %(regsim_utilizations[phi]) + r'$', 
                       marker=markers[i],
                       linestyle='--', 
-                      color='k')
+                      color=colors[i])
             axis.legend(loc='upper left',
-                   bbox_to_anchor=(1.0,1.0))
+                   bbox_to_anchor=(0.0,1.0))
             
             axis_COP.plot(x_vector, COP_vector_inst, label='IT '+r'$\Phi = ' + '%.1f' %(regsim_utilizations[phi]) 
                       + r'$',                       
                     marker=markers[i],
                       linestyle='-',
-                      color='k')
+                      color=colors[i])
             axis_COP.plot(x_vector, COP_vector_cch, label='RC '+r'$\Phi = ' + '%.1f' %(regsim_utilizations[phi]) + r'$', 
                         marker=markers[i],
                       linestyle='--',
-                      color='k')
+                      color=colors[i])
             axis_COP.legend(loc='upper left',
-                   bbox_to_anchor=(1.0,1.0))
+                   bbox_to_anchor=(0.0,1.0))
                     
             if (max(Qc_vector_inst) > y_max):
                 y_max = max(Qc_vector_inst)
                     
             if (max(COP_vector_inst) > y_COP_max):
                 y_COP_max = max(COP_vector_inst)
-
-
-            Qc_ratio_vector = 100 * Qc_vector_cch / Qc_vector_inst
-            axis_Qc_ratio.plot(x_vector, Qc_ratio_vector, label=r'$\Phi = ' + '%.1f' %(regsim_utilizations[phi]) + r'$', 
-                      marker=markers[i],
-                      linestyle='-',
-                      color='k')
-            axis_Qc_ratio.legend(loc='upper left',
-                   bbox_to_anchor=(1.0,1.0))
-
-            COP_ratio_vector = 100 * COP_vector_cch / COP_vector_inst
-            axis_COP_ratio.plot(x_vector, COP_ratio_vector, label=r'$\Phi = ' + '%.1f' %(regsim_utilizations[phi]) + r'$', 
-                      marker=markers[i],
-                      linestyle='-',
-                      color='k')
-            axis_COP_ratio.legend(loc='upper left',
-                   bbox_to_anchor=(1.0,1.0))
-
-
-            if (max(Qc_ratio_vector) > y_Qc_ratio_max):
-                y_Qc_ratio_max = max(Qc_ratio_vector)
-                    
-            if (max(COP_ratio_vector) > y_COP_ratio_max):
-                y_COP_ratio_max = max(COP_ratio_vector)
 
         
         axis.set_ylim(0,y_max)     
@@ -336,18 +277,6 @@ def plot_Qc_and_COP_Inst_vs_CCH(table_inst,table_cch,F_inst,F_CCH, figure_suffix
         axis_COP.grid(True)
         refine_xticks(axis_COP,4)
         refine_yticks(axis_COP,4)
-
-        axis_COP_ratio.set_ylim(0,y_COP_ratio_max)     
-        axis_COP_ratio.set_xlim(x_min,x_max)
-        axis_COP_ratio.grid(True)
-        refine_xticks(axis_COP_ratio,4)
-        refine_yticks(axis_COP_ratio,4)
-
-        axis_Qc_ratio.set_ylim(0,y_Qc_ratio_max)     
-        axis_Qc_ratio.set_xlim(x_min,x_max)
-        axis_Qc_ratio.grid(True)
-        refine_xticks(axis_Qc_ratio,4)
-        refine_yticks(axis_Qc_ratio,4)
         
         fig_Qc_name = "Qc_B_comp_f_%d%s" %(f,figure_suffix)
         save_figure(fig_Qc,fig_Qc_name)
@@ -355,32 +284,8 @@ def plot_Qc_and_COP_Inst_vs_CCH(table_inst,table_cch,F_inst,F_CCH, figure_suffix
         fig_COP_name = "COP_B_comp_f_%d%s" %(f,figure_suffix)
         save_figure(fig_COP,fig_COP_name)
         plt.close(fig_COP)
-        fig_Qc_ratio_name = "Qc_B_ratio_f_%d%s" %(f,figure_suffix)
-        save_figure(fig_Qc_ratio,fig_Qc_ratio_name)
-        plt.close(fig_Qc_ratio)
-        fig_COP_ratio_name = "COP_B_ratio_f_%d%s" %(f,figure_suffix)
-        save_figure(fig_COP_ratio,fig_COP_ratio_name)
-        plt.close(fig_COP_ratio)
 
-
-# ### Same minimum
-# 
-# In this analysis, the minimum value of the cosine and the instantaneous profile are the same (the situation represented by the profile figure above)
-
-# In[24]:
-
-table_inst = ld.itdf
-table_cch = ld.rcdf
-
-F_B_inst = 100
-F_B_CCH = 60
-fig_suffix = "_same_minimum"
-plot_Qc_and_COP_Inst_vs_CCH(
-    table_inst, 
-    table_cch,
-    F_B_inst,
-    F_B_CCH,
-    fig_suffix)
+        #plt.show()
 
 def plot_Wpump_Inst_vs_CCH(table_inst,table_cch,F_inst,F_CCH, figure_suffix=""):
     """
@@ -398,7 +303,7 @@ def plot_Wpump_Inst_vs_CCH(table_inst,table_cch,F_inst,F_CCH, figure_suffix=""):
                           0.9942: 1.0}
     
     f_vector = table_inst[ld.FREQUENCY_COLUMN].unique()
-    phi_vector = table_inst[ld.UTILIZATION_HOT_BLOW_COLUMN].unique()    
+    phi_vector = table_inst[ld.UTILIZATION_HOT_BLOW_COLUMN].unique()[0::2]
     H_max_vector = table_inst[ld.MAXIMUM_PROFILE_COLUMN].unique()
                     
     x_min = min(H_max_vector)
@@ -406,6 +311,7 @@ def plot_Wpump_Inst_vs_CCH(table_inst,table_cch,F_inst,F_CCH, figure_suffix=""):
 
     fig_list = []
     markers=['s','o','x','v','^','h','<']
+    colors=["black", "firebrick","darkcyan","indigo","sienna"]
     for f in f_vector:    
         table_inst_f = filter_table_from_column(table_inst,ld.FREQUENCY_COLUMN,f)
         table_cch_f = filter_table_from_column(table_cch,ld.FREQUENCY_COLUMN,f)
@@ -446,11 +352,11 @@ def plot_Wpump_Inst_vs_CCH(table_inst,table_cch,F_inst,F_CCH, figure_suffix=""):
                       + r'$', 
                       marker=markers[i],
                       linestyle='-',
-                      color='k')
+                      color=colors[i])
             axis.plot(x_vector, Wpump_vector_cch, label='RC '+r'$\Phi = ' + '%.1f' %(regsim_utilizations[phi]) + r'$', 
                       marker=markers[i],
                       linestyle='--', 
-                      color='k')
+                      color=colors[i])
             axis.legend(loc='upper left',
                    bbox_to_anchor=(1.0,1.0))
             
@@ -471,14 +377,7 @@ def plot_Wpump_Inst_vs_CCH(table_inst,table_cch,F_inst,F_CCH, figure_suffix=""):
         fig_name = "Wpump_B_comp_f_%d%s" %(f,figure_suffix)
         save_figure(fig,fig_name)
         plt.close(fig)
-
-plot_Wpump_Inst_vs_CCH(table_inst, table_cch,F_B_inst,F_B_CCH,fig_suffix)
-
-
-# ### Instantaneous profile -  Q_c vs $\Phi$ (one curve for each maximum field)
-
-# In[28]:
-
+        #plt.show()
 
 def plot_Qc_phi_Inst(table):
     """
@@ -494,7 +393,6 @@ def plot_Qc_phi_Inst(table):
                           0.9942: 1.0}
     
     f_vector = table[ld.FREQUENCY_COLUMN].unique()
-    phi_vector = table[ld.UTILIZATION_HOT_BLOW_COLUMN].unique()
     F_blow_vector = table[ld.BLOW_FRACTION_COLUMN].unique()
     H_max_vector = table[ld.MAXIMUM_PROFILE_COLUMN].unique()
     H_min_vector = table[ld.MINIMUM_PROFILE_COLUMN].unique()
@@ -502,6 +400,7 @@ def plot_Qc_phi_Inst(table):
     fig_list = []
     
     markers=['s','o','x','v','^','h','<']
+    colors=["black", "firebrick","darkcyan","indigo","sienna"]
     for f in f_vector:    
         table_f = filter_table_from_column(table,ld.FREQUENCY_COLUMN,f)
         
@@ -528,12 +427,12 @@ def plot_Qc_phi_Inst(table):
 
                     axis_Qc.plot(x_vector, Qc_vector, 
                               label=r'${B}_\mathrm{max} = ' + '%.1f' %(Hmax,) + r'\ \mathrm{T}$',
-                              marker=markers[i],linestyle='--',color='k'  )
+                              marker=markers[i],linestyle='--',color=colors[i] )
 
                     
                     axis_COP.plot(x_vector, COP_vector, 
                               label=r'${B}_\mathrm{max} = ' + '%.1f' %(Hmax,) + r'\ \mathrm{T}$',
-                              marker=markers[i],linestyle='--',color='k'  )
+                              marker=markers[i],linestyle='--',color=colors[i])
                     
                     
                 for ax in [axis_Qc, axis_COP]:
@@ -558,18 +457,8 @@ def plot_Qc_phi_Inst(table):
                                     name='COP_Phi_inst_f_%d_Hmin_%03d_FB_%d' %(f,100*H_min,F_blow))
             
                 plt.close(fig_COP)
-
-plot_Qc_phi_Inst(table_inst)
-
-# # ### Instantaneous profile -  Q_c vs H_reg 
-# # 
-# # - Width, length and number of regenerators are kept fixed
-# # - Blow fraction is kept fixed at 100%
-# # - Minimum field 0.05 T
-
-# # In[30]:
-
-
+                #plt.show()
+                
 def plot_Qc_H_Inst(table):
     """
     Plots figures of Qc x H_reg from data from the DataFrame 'table'
@@ -584,7 +473,7 @@ def plot_Qc_H_Inst(table):
                           0.9942: 1.0}
     
     f_vector = table[ld.FREQUENCY_COLUMN].unique()
-    phi_vector = table[ld.UTILIZATION_HOT_BLOW_COLUMN].unique()
+    phi_vector = table[ld.UTILIZATION_HOT_BLOW_COLUMN].unique()[0::2]
     H_vector = table[ld.REGENERATOR_HEIGHT_COLUMN].unique()
     H_max_vector = table[ld.MAXIMUM_PROFILE_COLUMN].unique()
     
@@ -593,6 +482,7 @@ def plot_Qc_H_Inst(table):
     
     fig_list = []
     markers=['s','o','x','v','^','h','<']
+    colors=["black", "firebrick","darkcyan","indigo","sienna","gray","darkred"]
     for f in f_vector:    
         table_f = filter_table_from_column(table,ld.FREQUENCY_COLUMN,f)
         
@@ -617,11 +507,11 @@ def plot_Qc_H_Inst(table):
                 
                 axis_Qc.plot(x_vector, Qc_vector, 
                              label=r'${B}_\mathrm{max} = ' + '%.1f' %(H_max,) + r'\ \mathrm{T}$',
-                             marker=markers[i],linestyle='--',color='k'  )
+                             marker=markers[i],linestyle='--',color=colors[i])
                 
                 axis_COP.plot(x_vector, COP_vector, 
                               label=r'${B}_\mathrm{max} = ' + '%.1f' %(H_max,) + r'\ \mathrm{T}$',
-                              marker=markers[i],linestyle='--',color='k'  )
+                              marker=markers[i],linestyle='--',color=colors[i])
                     
                 
             for ax in [axis_Qc, axis_COP]:
@@ -631,7 +521,7 @@ def plot_Qc_H_Inst(table):
                          linestyle='-')
                     
                 ax.legend(loc='upper left',
-                         bbox_to_anchor=(1,1))    
+                         bbox_to_anchor=(0,1))    
                 
                 ax.grid(True)
                 refine_yticks(ax,5)
@@ -646,16 +536,7 @@ def plot_Qc_H_Inst(table):
             save_figure(fig=fig_COP,
                                 name='COP_H_inst_f_%d_Phi_%d' %(f,100*regsim_utilizations[phi]))
             plt.close(fig_COP)                           
-# In[31]:
-
-table_Inst_variosH = ld.it_varH_df
-plot_Qc_H_Inst(table_Inst_variosH)
-
-
-# ## 4 Plotting the ramp profile
-
-# In[32]:
-
+            #plt.show()
 
 def calculate_ramp_profile(phi, B_low, B_high, field_fraction):
     """
@@ -692,29 +573,6 @@ def calculate_ramp_profile(phi, B_low, B_high, field_fraction):
                                    B_low + (phi - (tau - tau_R))*tan_theta_r,
                                    B_low))))
 
-
-# ## AMR curve
-
-# - Fixed regenerator
-# - Fixed span
-# - Vary frequency, utilization, ramp and blow fraction
-# - Magn. Period = Demagn. Period
-# - High field Period = Low field Period
-# - Magn Period + High field Period = 50%
-# 
-# The period the AMR cycle if $\tau$, divided into a cold stage period $\tau_C$ and a hot stage period $\tau_H$, such that $\tau_c = \tau_H$.
-# 
-# The blow fraction $F_B$ is the fraction of the entire cycle where there is fluid blow in a given AMR bed. The cold blow period is $\tau_{CB}$ and the how blow period is $\tau_{HB}$. Because of the symmetry between the cold and hot stages:
-# 
-# \begin{equation}
-# \tau_{CB} = F_B \tau_C = \frac{1}{2} F_B \tau = \tau_{HB}
-# \end{equation}
-# 
-# The high field fraction $F_M$ is the fraction of the entire cycle where the magnetic profile stays  fully magnetized (or, due to symmetry, fully demagnetized). 
-
-# In[33]:
-
-
 def plot_Qc_Ramp(table, figure_suffix=""):
     """
     Plots figures of Qc x F_M and COP x F_M from data from the DataFrame 'table',
@@ -738,7 +596,7 @@ def plot_Qc_Ramp(table, figure_suffix=""):
     Mag_Period = table[ld.RAMP_FRACTION_COLUMN].unique()
     
     markers=['s','o','x','v']
-    
+    colors=["black", "firebrick","darkcyan","indigo","sienna"]
 
     fig_list = []
     fig_list_COP = []
@@ -775,10 +633,10 @@ def plot_Qc_Ramp(table, figure_suffix=""):
                 Qc_vector = table_f_phi_F[ld.COOLING_CAPACITY_COLUMN].values
                 COP_vector = table_f_phi_F[ld.COP_COLUMN].values
 
-                axis.plot(ratio_vector, Qc_vector, label=label_text,marker=markers[i],linestyle='--',color='k')
+                axis.plot(ratio_vector, Qc_vector, label=label_text,marker=markers[i],linestyle='--',color=colors[i])
                 axis.legend(loc='best')
                 
-                axis_COP.plot(ratio_vector, COP_vector, label=label_text,marker=markers[i],linestyle='--',color='k')
+                axis_COP.plot(ratio_vector, COP_vector, label=label_text,marker=markers[i],linestyle='--',color=colors[i])
                 axis_COP.legend(loc='best')
                 i = i + 1
                 
@@ -797,40 +655,7 @@ def plot_Qc_Ramp(table, figure_suffix=""):
             save_figure(fig=fig_COP,
                                 name='COP_FM_ramp_f_%d_Phi_%d%s' %(f,100*regsim_utilizations[phi],figure_suffix))
             plt.close(fig_COP)
-
-
-# In[34]:
-
-
-# Fixed parameters
-
-FIXED_PARAMETERS_NEW = {
-    "D_p[m]": 0.35e-3,
-    "L[m]": 85e-3,
-    "W[m]": 25e-3,
-    "H[m]": 22e-3,
-    "N_r[]": 8,
-    "T_H[K]": 305.5,
-    "dT[K]": 35,
-    "Casing material": "Stainless steel",
-    "t_casing[mm]": 0.5e-3,
-    "t_air[mm]": 1e-3,
-    "N_layers[]": 3,
-    "T_C_layers[K]": np.array([273,283,290]),
-    "Length_fraction_layers[%]": np.array([20,20,60]),
-    "B_min[T]": 0.05}
-
-
-# In[35]:
-table = ld.rmdf
-
-table_13 = filter_table_from_column(table,ld.MAXIMUM_PROFILE_COLUMN,1.3)
-
-plot_Qc_Ramp(table_13,"_35K_1300mT")
-
-# ## 5 2D maps
-
-
+            #plt.show()
 
 def plot_slope_2D(table_slope_2D,figure_suffix=""):
     """
@@ -892,12 +717,12 @@ def plot_slope_2D(table_slope_2D,figure_suffix=""):
                 F_M_matrix,B_max_matrix = np.meshgrid(FieldPeriod_vector,HMax_vector)
                 F_M_matrix = 2*F_M_matrix
                 p_Qc = ax_Qc.contour(F_M_matrix,B_max_matrix,Qc_matrix,colors='k')
-                ax_Qc.clabel(p_Qc, inline=1,fmt='%1.0f')
+                ax_Qc.clabel(p_Qc, inline=1,fmt='%1.0f',fontsize=SMALL_SIZE)
                 refine_xticks(ax_Qc,5)
                 refine_yticks(ax_Qc,5)
                     
                 p_COP = ax_COP.contour(F_M_matrix,B_max_matrix,COP_matrix,colors='k')
-                ax_COP.clabel(p_COP, inline=1,fmt='%.1f')
+                ax_COP.clabel(p_COP, inline=1,fmt='%.1f',fontsize=SMALL_SIZE)
                 refine_xticks(ax_COP,5)
                 refine_yticks(ax_COP,5)
                 
@@ -919,17 +744,7 @@ def plot_slope_2D(table_slope_2D,figure_suffix=""):
                                                                           F_blow,
                                                                           figure_suffix))
                 plt.close(fig_COP)          
-
-# In[38]:
-
-plot_slope_2D(ld.rmdf,figure_suffix='_35K_Valv_ASCO')
-
-
-# ### 6.2 Variando altura do regenerador
-
-# Todos os outros parâmetros fixos. Fração de magnetização 70%.
-
-# In[39]:
+                #plt.show()
 
 
 def plot_slope_multipleH(table_slope_2D,figure_suffix=""):    
@@ -982,24 +797,24 @@ def plot_slope_multipleH(table_slope_2D,figure_suffix=""):
 
     X,Y = np.meshgrid(H_vector,HMax_vector)
     p_Qc = ax_Qc.contour(X,Y,Qc_matrix,colors='k')
-    ax_Qc.clabel(p_Qc, inline=1,fmt='%1.0f')
+    ax_Qc.clabel(p_Qc, inline=1,fmt='%1.0f',fontsize=SMALL_SIZE)
     refine_xticks(ax_Qc,5)
     refine_yticks(ax_Qc,5)
             
     p_COP = ax_COP.contour(X,Y,COP_matrix,colors='k')
-    ax_COP.clabel(p_COP,  inline=1,fmt='%.1f')
+    ax_COP.clabel(p_COP,  inline=1,fmt='%.1f',fontsize=SMALL_SIZE)
     refine_xticks(ax_COP,5)
     refine_yticks(ax_COP,5)
 
     p_eta = ax_eta.contour(X,Y,eta_matrix,colors='k')
-    ax_eta.clabel(p_eta,  inline=1,fmt='%.1f')
+    ax_eta.clabel(p_eta,  inline=1,fmt='%.1f',fontsize=SMALL_SIZE)
     refine_xticks(ax_eta,5)
     refine_yticks(ax_eta,5)
     
     p_combined_Qc = ax_combined.contour(X,Y,Qc_matrix,5,colors='k',linestyles='-')
-    ax_combined.clabel(p_combined_Qc, inline=1,fmt='%.1f')
+    ax_combined.clabel(p_combined_Qc, inline=1,fmt='%.1f',fontsize=SMALL_SIZE)
     p_combined_COP = ax_combined.contour(X,Y,COP_matrix,5,colors='k',linestyles='--')
-    ax_combined.clabel(p_combined_COP,  inline=1,fmt='%.1f')
+    ax_combined.clabel(p_combined_COP,  inline=1,fmt='%.1f',fontsize=SMALL_SIZE)
 
     ax_Qc.grid(True)
     ax_COP.grid(True)
@@ -1027,7 +842,114 @@ def plot_slope_multipleH(table_slope_2D,figure_suffix=""):
     save_figure(fig_combined,
                         name='Qc_COP_combined_H_reg%s' %(figure_suffix,))
     plt.close(fig_combined)
+    #plt.show()
 
+# ----
+# End of functions definitions
+# The commands below run the plots
+
+# Fixed parameters
+
+FIXED_PARAMETERS = {
+    "D_p[m]": 0.5e-3,
+    "L[m]": 100e-3,
+    "W[m]": 25e-3,
+    "H[m]": 20e-3,
+    "N_r[]": 11,
+    "T_H[K]": 298,
+    "dT[K]": 20}
+
+# ## 3 Comparison of profiles
+# 
+# For the instantaneous profile, the blow fraction is 1.0, while for the cosine profile the blow fraction is 0.6. 
+# This is to compare the best situations testes for both profiles.
+# 
+# The $x$-axis shows the maximum value for the instantaneous profile and the average during the cold blow for the cosine profile 
+# (i.e. the average during the entire blow period, not the average when there is actual fluid flow).
+
+# ### Same minimum
+# 
+# In this analysis, the minimum value of the cosine and the instantaneous profile are the same (the situation represented by the profile figure above)
+
+table_inst = ld.itdf
+table_cch = ld.rcdf
+
+F_B_inst = 100
+F_B_CCH = 60
+fig_suffix = "_same_minimum"
+plot_Qc_and_COP_Inst_vs_CCH(
+    table_inst, 
+    table_cch,
+    F_B_inst,
+    F_B_CCH,
+    fig_suffix)
+
+plot_Wpump_Inst_vs_CCH(table_inst, table_cch,F_B_inst,F_B_CCH,fig_suffix)
+
+
+# # ### Instantaneous profile -  Q_c vs $\Phi$ (one curve for each maximum field)
+
+plot_Qc_phi_Inst(table_inst)
+
+# # # ### Instantaneous profile -  Q_c vs H_reg 
+# # # 
+# # # - Width, length and number of regenerators are kept fixed
+# # # - Blow fraction is kept fixed at 100%
+# # # - Minimum field 0.05 T
+
+table_Inst_variosH = ld.it_varH_df
+plot_Qc_H_Inst(table_Inst_variosH)
+
+
+# # ## 4 Plotting the ramp profile
+
+# # ## AMR curve
+
+# # - Fixed regenerator
+# # - Fixed span
+# # - Vary frequency, utilization, ramp and blow fraction
+# # - Magn. Period = Demagn. Period
+# # - High field Period = Low field Period
+# # - Magn Period + High field Period = 50%
+# # 
+# # The period the AMR cycle if $\tau$, divided into a cold stage period $\tau_C$ and a hot stage period $\tau_H$, such that $\tau_c = \tau_H$.
+# # 
+# # The blow fraction $F_B$ is the fraction of the entire cycle where there is fluid blow in a given AMR bed. The cold blow period is $\tau_{CB}$ and the how blow period is $\tau_{HB}$. Because of the symmetry between the cold and hot stages:
+# # 
+# # \begin{equation}
+# # \tau_{CB} = F_B \tau_C = \frac{1}{2} F_B \tau = \tau_{HB}
+# # \end{equation}
+# # 
+# # The high field fraction $F_M$ is the fraction of the entire cycle where the magnetic profile stays  fully magnetized (or, due to symmetry, fully demagnetized). 
+
+# # Fixed parameters
+
+FIXED_PARAMETERS_NEW = {
+    "D_p[m]": 0.35e-3,
+    "L[m]": 85e-3,
+    "W[m]": 25e-3,
+    "H[m]": 22e-3,
+    "N_r[]": 8,
+    "T_H[K]": 305.5,
+    "dT[K]": 35,
+    "Casing material": "Stainless steel",
+    "t_casing[mm]": 0.5e-3,
+    "t_air[mm]": 1e-3,
+    "N_layers[]": 3,
+    "T_C_layers[K]": np.array([273,283,290]),
+    "Length_fraction_layers[%]": np.array([20,20,60]),
+    "B_min[T]": 0.05}
+table = ld.rmdf
+
+table_13 = filter_table_from_column(table,ld.MAXIMUM_PROFILE_COLUMN,1.3)
+
+plot_Qc_Ramp(table_13,"_35K_1300mT")
+
+# ## 5 2D maps
+plot_slope_2D(ld.rmdf,figure_suffix='_35K_Valv_ASCO')
+
+# ## Varying regenerator height
+# All parameters fixed. Magnetization fraction 70%.
 
 table_slope_variosH = ld.rm_varH_df
 plot_slope_multipleH(table_slope_variosH,figure_suffix='W30')
