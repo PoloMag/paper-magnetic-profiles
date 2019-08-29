@@ -362,8 +362,8 @@ def plot_Wpump_Inst_vs_CCH(table_inst,table_cch,F_inst,F_CCH, figure_suffix=""):
             
 
                     
-            if (max(Wpump_vector_inst) > y_max):
-                y_max = max(Wpump_vector_inst)
+            if (max(Wpump_vector_cch) > y_max):
+                y_max = max(Wpump_vector_cch)
                     
         
         axis.set_ylim(0,y_max)     
