@@ -36,6 +36,8 @@ B_LABEL = r'${B}_\mathrm{high}\,[\mathrm{T}]$'
 Q_LABEL = r'$\dot{Q}_{\mathrm{C}}\,[\mathrm{W}]$'
 COP_LABEL = r'$\mathrm{COP}$'
 W_PUMP_LABEL = r'$\dot{W}_\mathrm{pump}\,[\mathrm{W}]$'
+W_MAG_LABEL = r'$\dot{W}_\mathrm{mag}\,[\mathrm{W}]$'
+W_VALVE_LABEL = r'$\dot{W}_\mathrm{valve}\,[\mathrm{W}]$'
 PHI_LABEL = r'$\Phi$'
 H_REG_LABEL = r'$H_\mathrm{r}\,[\mathrm{mm}]$'
 F_B_LABEL = r'$F_\mathrm{B}\,[\%]$'
@@ -287,9 +289,9 @@ def plot_Qc_and_COP_Inst_vs_CCH(table_inst,table_cch,F_inst,F_CCH, figure_suffix
 
         #plt.show()
 
-def plot_Wpump_Inst_vs_CCH(table_inst,table_cch,F_inst,F_CCH, figure_suffix=""):
+def plot_W_Inst_vs_CCH(table_inst,table_cch,F_inst,F_CCH, figure_suffix=""):
     """
-    Plots figures of Wpump x B from data from the DataFrames 'table_inst' and 'table_cch',
+    Plots figures of W x B from data from the DataFrames 'table_inst' and 'table_cch',
     selecting points with blow fractions 'F_inst' and 'F_CCH',
     and adding 'figure_suffix' to the end of the filename for each figure
     
@@ -330,10 +332,18 @@ def plot_Wpump_Inst_vs_CCH(table_inst,table_cch,F_inst,F_CCH, figure_suffix=""):
                      
         fig, axis = create_plot(ylabel=W_PUMP_LABEL,
                                                xlabel=B_LABEL)
+
+        fig_mag, axis_mag = create_plot(ylabel=W_MAG_LABEL,
+                                               xlabel=B_LABEL)
+
+        fig_valve, axis_valve = create_plot(ylabel=W_MAG_LABEL,
+                                               xlabel=B_LABEL)
         
                 
         y_max = 0
         y_COP_max = 0
+        y_mag_max = 0
+        y_valve_max = 0
                              
                   
         for (i,phi) in enumerate(phi_vector):
@@ -346,6 +356,10 @@ def plot_Wpump_Inst_vs_CCH(table_inst,table_cch,F_inst,F_CCH, figure_suffix=""):
             x_vector = table_inst_f_F_Hmin_phi[ld.MAXIMUM_PROFILE_COLUMN].values
             Wpump_vector_inst = table_inst_f_F_Hmin_phi[ld.PUMPING_POWER_COLUMN].values
             Wpump_vector_cch = table_cch_f_F_phi[ld.PUMPING_POWER_COLUMN].values
+            Wmag_vector_inst = table_inst_f_F_Hmin_phi[ld.MAGNETIC_POWER_COLUMN].values
+            Wmag_vector_cch = table_cch_f_F_phi[ld.MAGNETIC_POWER_COLUMN].values
+            Wvalve_vector_inst = table_inst_f_F_Hmin_phi[ld.VALVE_POWER_COLUMN].values
+            Wvalve_vector_cch = table_cch_f_F_phi[ld.VALVE_POWER_COLUMN].values
 
                     
             axis.plot(x_vector, Wpump_vector_inst, label='IT '+r'$\Phi = ' + '%.1f' %(regsim_utilizations[phi]) 
@@ -359,11 +373,37 @@ def plot_Wpump_Inst_vs_CCH(table_inst,table_cch,F_inst,F_CCH, figure_suffix=""):
                       color=colors[i])
             axis.legend(loc='upper left',
                    bbox_to_anchor=(1.0,1.0))
-            
 
-                    
+            axis_mag.plot(x_vector, Wmag_vector_inst, label='IT '+r'$\Phi = ' + '%.1f' %(regsim_utilizations[phi]) 
+                      + r'$', 
+                      marker=markers[i],
+                      linestyle='-',
+                      color=colors[i])
+            axis_mag.plot(x_vector, Wmag_vector_cch, label='RC '+r'$\Phi = ' + '%.1f' %(regsim_utilizations[phi]) + r'$', 
+                      marker=markers[i],
+                      linestyle='--', 
+                      color=colors[i])
+            axis_mag.legend(loc='upper left',
+                   bbox_to_anchor=(1.0,1.0))
+
+            axis_valve.plot(x_vector, Wvalve_vector_inst, label='IT '+r'$\Phi = ' + '%.1f' %(regsim_utilizations[phi]) 
+                      + r'$', 
+                      marker=markers[i],
+                      linestyle='-',
+                      color=colors[i])
+            axis_valve.plot(x_vector, Wvalve_vector_cch, label='RC '+r'$\Phi = ' + '%.1f' %(regsim_utilizations[phi]) + r'$', 
+                      marker=markers[i],
+                      linestyle='--', 
+                      color=colors[i])
+            axis_valve.legend(loc='upper left',
+                   bbox_to_anchor=(1.0,1.0))
+         
             if (max(Wpump_vector_cch) > y_max):
                 y_max = max(Wpump_vector_cch)
+            if (max(Wmag_vector_cch) > y_mag_max):
+                y_mag_max = max(Wmag_vector_cch)
+            if (max(Wvalve_vector_cch) > y_valve_max):
+                y_valve_max = max(Wvalve_vector_cch)
                     
         
         axis.set_ylim(0,y_max)     
@@ -371,12 +411,31 @@ def plot_Wpump_Inst_vs_CCH(table_inst,table_cch,F_inst,F_CCH, figure_suffix=""):
         axis.grid(True)
         refine_xticks(axis,4)
         refine_yticks(axis,4)
+
+        axis_mag.set_ylim(0,y_mag_max)     
+        axis_mag.set_xlim(x_min,x_max)
+        axis_mag.grid(True)
+        refine_xticks(axis_mag,4)
+        refine_yticks(axis_mag,4)
+
+        axis_valve.set_ylim(0,y_valve_max)     
+        axis_valve.set_xlim(x_min,x_max)
+        axis_valve.grid(True)
+        refine_xticks(axis_valve,4)
+        refine_yticks(axis_valve,4)
         
-        
-        fig_list.append((fig,))
         fig_name = "Wpump_B_comp_f_%d%s" %(f,figure_suffix)
         save_figure(fig,fig_name)
         plt.close(fig)
+
+        fig_mag_name = "Wmag_B_comp_f_%d%s" %(f,figure_suffix)
+        save_figure(fig_mag,fig_mag_name)
+        plt.close(fig_mag)
+
+        fig_valve_name = "Wvalve_B_comp_f_%d%s" %(f,figure_suffix)
+        save_figure(fig_valve,fig_valve_name)
+        plt.close(fig_valve)
+
         #plt.show()
 
 def plot_Qc_phi_Inst(table):
@@ -884,7 +943,7 @@ plot_Qc_and_COP_Inst_vs_CCH(
     F_B_CCH,
     fig_suffix)
 
-plot_Wpump_Inst_vs_CCH(table_inst, table_cch,F_B_inst,F_B_CCH,fig_suffix)
+plot_W_Inst_vs_CCH(table_inst, table_cch,F_B_inst,F_B_CCH,fig_suffix)
 
 
 # # ### Instantaneous profile -  Q_c vs $\Phi$ (one curve for each maximum field)
