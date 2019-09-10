@@ -14,6 +14,7 @@
 
 \newcommand{\bmax}{\ensuremath{{B}\ped{max}}}
 \newcommand{\bmin}{\ensuremath{{B}\ped{min}}}
+\newcommand{\mrate}{\rate{m}}
 
 \usepackage{mathptmx}
 \journalname{Journal of the Brazilian Society of Mechanical Sciences and Engineering}
@@ -140,31 +141,186 @@ The present works combines the gaps from the above cited papers in investigating
 
 
 
-\section{NUMERICAL SIMULATIONS}
-\label{sec:numer-simul}
+\section{Materials and methods}
+\label{sec:materials-methods}
 
-Simulations were performed using a one-dimensional AMR mathematical model \cite{bib:asme-mce,bib:trevizoli16_perfor_model}. The simulated magnetic refrigerators are composed of multiple prismatic regenerators filled with gadolinium (Gd) spheres as the magnetocaloric solid matrix, with the parameters shown in Table~\ref{tab:params}. The fluid is a mixture of water and ethylene glycol, in the proportion of \SI{80}{\percent}-\SI{20}{\percent} in volume.
+In this work, we perform numerical simulations of a previously developed AMR model, varying the profile and geometric parameters. We also couple a model for calculating  the power comsumption of a proposed valve system, a topic understudied in the literature. With this, we can evaluate the influence of the profile on cooling capacity and coefficient of performance.
 
-\begin{table}[!ht]
+\subsection{AMR model}
+\label{sec:amr-model}
+
+\subsubsection{Governing equations}
+\label{sec:governing-equations}
+
+Simulations were performed using a one-dimensional AMR mathematical model \cite{bib:asme-mce,bib:trevizoli16_perfor_model}. Here we will show a summarized version focusing on the governing equations. This model solves momentum and energy balance equations for the solid and fluid phases, represented by indices 's' and 'f', respectively. The model geometry is depicted in \autoref{fig:amrmodel}, and assumes regenerators composed of monodisperse packed spheres with porosity $\varepsilon$.
+
+\nomenclature[is]{s}{solid phase}
+\nomenclature[if]{f}{fluid phase}
+
+\begin{figure}[!ht]
   \centering
-  \caption{Geometric and operation parameters for the simulated AMR devices}
-  \begin{tabular}{c|c}
-\hline
-    \textbf{Parameter}&\textbf{Value}\\
-\hline
-Regenerator height & \SI{20}{\mm}\\
-Regenerator width & \SI{25}{\mm}\\
-Regenerator length & \SI{100}{\mm}\\
-Number of regenerators & \num{11} \\
-Particle diameter & \SI{0.5}{\mm}\\
-Hot source temperature & \SI{298}{\kelvin}\\
-Cold source temperature & \SI{278}{\kelvin}\\
-\hline
-  \end{tabular}
-  \label{tab:params}
-\end{table}
+  \includegraphics[width=8cm]{reg3d}
+  \caption{AMR model geometry}
+  \label{fig:amrmodel}
+\end{figure}
 
-The AMR model solves mass and energy conservation equations for the solid and the fluid domains in an active magnetic regenerator. In this work, regenerators were assumed to be adiabatic to the environment. All beds experience the same flow and magnetic profiles, as detailed in the following sections.
+The momentum equation for the fluid domain is:
+
+\begin{equation}
+\label{eq:75}
+  \frac{\rho\ped{f}}{\varepsilon} \diffp{V_z}{t}= -\diffp{P}{z} - \frac{\mu\ped{f}}{K} V_z - \frac{c\ped{E} \rho\ped{f}}{K^{1/2}} \left| V_z\right| V_z 
+\end{equation}
+
+\nomenclature[ak]{$K$}{permeability of the porous medium [\si{\meter\square}]}
+\nomenclature[ac]{$c\ped{E}$}{Ergun constant of the porous medium}
+\nomenclature[ar]{$\rho$}{density [\si{\kg\per\cubic\meter}]}
+\nomenclature[be]{$\varepsilon$}{porosity}
+\nomenclature[av]{$V$}{velocity [\si{\meter\per\second}]}
+\nomenclature[ap]{$P$}{pressure [\si{\pascal}]}
+\nomenclature[bu]{$\mu$}{dynamic viscosity [\si{\pascal\second}]}
+
+
+\noindent and is solved for the time-dependent uniform fluid velocity through the bed. 
+
+The energy equation for the fluid phase can be written as:
+
+\begin{equation}
+\label{eq:78}
+\begin{split}
+  \rho\ped{f} c_{p,\mathrm{f}} \left(\varepsilon \diffp{T\ped{f}}{t} + V_z\diffp{T\ped{f}}{z}\right) = & -\hheat\ped{sf} \beta \left(T\ped{f} - T\ped{s}\right) \\
+& + \left|V_z\diffp{p}{z}\bigg|_f \right| \\
+& + \varepsilon\left(k\ped{f}\ap{eff}  +\rho\ped{f} c_{p,\mathrm{f}} D\ped{ld}\right)\diffp[2]{T\ped{f}}{z} \\
+& + \rate{q}\ped{csg}  
+\end{split}
+\end{equation}
+
+\nomenclature[at]{$T$}{temperature [\si{\kelvin}]}
+\nomenclature[at]{$t$}{time [\si{\second}]}
+\nomenclature[az]{$z$}{axial coordinate [\si{\meter}]}
+
+\nomenclature[aq]{$\rate{q}\ped{csg}$}{volumetric casing losses in the AMR model [\si{\watt\per\cubic\meter}]}
+\nomenclature[ic]{csg}{regenerator casing}
+\nomenclature[ah]{$\hheat$}{heat transfer coefficient [\si{\watt\per\meter\squared\per\kelvin}]}
+\nomenclature[aa]{$A\ped{sf}$}{contact surface area between solid and fluid phases in the regenerator [\si{\meter^2}]}
+\nomenclature[is]{sf}{relative to the heat transfer between solid and fluid phases in the regenerator}
+\nomenclature[azb]{$\beta$}{surface area density [\si{\squared\meter\per\cubic\meter}]}
+\nomenclature[ak]{$k\ap{eff}$}{effective thermal conductivity [\si{\watt\per\meter\per\kelvin}]}
+\nomenclature[ad]{$D\ped{ld}$}{dispersion term in the AMR model [\si{\meter\square\per\second}]}
+\nomenclature[af]{$f$}{cycle frequency [\si{\hertz}]}
+\nomenclature[azf]{$\Phi$}{utilization}
+\nomenclature[am]{$m$}{mass [\si{\kg}]}
+
+\nomenclature[azt]{$\tau$}{time period [\si{\second}]}
+\nomenclature[ac]{$c$}{specific heat [\si{\joule\per\kg\per\kelvin}]}
+
+
+\noindent while the energy equation for the solid phase is written as:
+
+\begin{equation}
+\label{eq:88}
+  \rho\ped{s} c\ped{s}(1 - \varepsilon)\diffp{T\ped{s}}{t} = \hheat\ped{sf}\beta(T\ped{f}-T\ped{s}) + (1-\varepsilon)k\ped{s}\ap{eff}\diffp[2]{T\ped{s}}{z}
+\end{equation}
+
+Initial and boundary conditions, solution methods, convergence analyses, and closure relations for the porous media terms are described in \cite{bib:trevizoli16_perfor_model}. This AMR model solves the above equations for one regenerator operating between given sources temperatures, during one full cycle (hot and cold blows and  magnetization and demagnetization periods), given specified operating conditions (to be discussed later).
+
+The casing heat transfer term $\rate{q}\ped{csg}$ in \autoref{eq:78} is calculated solving the heat conduction in the regenerators casing \cite{bib:trevizoli16_perfor_model}, and can be neglected to simplify some analyses. More details are provided in \autoref{sec:results-discussions}.
+
+\subsubsection{How the fluid flow profile is used}
+\label{sec:how-fluid-flow}
+
+The pressure gradient in \autoref{eq:75}is modeled as:
+
+\begin{equation}
+\label{eq:76}
+-\diffp{P}{z} = \rho\ped{f} A\ped{t} g(t)
+\end{equation}
+
+\noindent where \(g(t)\) is a dimensionless function that expresses the mathematical waveform of the pressure gradient, and  \(A\ped{t}\) is its amplitude,  adjusted in a convergence loop; the mass flow rate calculated from the Darcy velocity from \autoref{eq:75} is compared with the input value of mass flow rate until these values converge. The waveform $g(t)$ represents the fluid flow profile used.
+
+\nomenclature[ag]{$g(t)$}{dimensional waveform of the pressure gradient term in the fluid momentum equation}
+\nomenclature[aA]{$A\ped{t}$}{amplitude of the pressure gradient waveform in the fluid momentum equation [\si{\meter\per\second\square}]}
+
+
+\subsubsection{How the magnetic profile is used}
+\label{sec:how-magnetic-profile}
+
+
+The magnetic profile is modeled by a waveform of magnetic field strength $H$ applied perpendicular to the regenerators, as shown in \autoref{fig:amrmodel}. The magnetic field is assumed uniform throughout the beds. The applied field is corrected from demagnetization effects to yield the effective field inside the regenerators:
+
+\begin{equation}
+  \label{eq:6}
+  H\ap{eff} = H - N\ped{D} M
+\end{equation}
+
+\nomenclature[am]{$M$}{magnetization field [\si{\ampere\per\meter}]}
+\nomenclature[an]{$N\ped{D}$}{demagnetization tensor}
+
+\noindent where $M$ is the magnetization field of the material, and $N\ped{D}$ is a demagnetization factor.
+
+The magnetocaloric effect is implemented in the so-called discrete approach \cite{bib:nielsen11_review}; every time the magnetic field changes, based on the input magnetic profile, the solid temperature is calculated according to:
+
+\begin{equation}
+  \label{eq:89}
+  T\ped{s}(t + \Delta{}t) = T\ped{s}(t) + \dtad \left(T\ped{s}(t),H\ap{eff}(t),H\ap{eff}\left(t + \Delta{}t\right)\right)
+\end{equation}
+
+
+\nomenclature[ct]{$\dtad$}{adiabatic temperature variation [\si{\kelvin}]}
+
+\noindent where the adiabatic temperature variation $\dtad$ is calculated from \textcolor{black}{tabulated} experimental \textcolor{black}{data} for magnetocaloric materials as function of temperature and effective field. \cite{bib:trevizoli16_perfor_model}.
+
+\subsubsection{Evaluation of solid and fluid properties}
+\label{sec:eval-solid-fluid}
+
+The fluid properties are considered constant in the momentum equation to decouple the solution \textcolor{black}{procedures to determine} the velocity and temperature fields. The properties are computed at the average temperature between the hot and cold sources temperatures, and are evaluated from interpolated tables exported from the EES software \cite{bib:klein13-ees}. In all simulations shown in this work, the heat transfer fluid is a mixture of water/ethylene-glycol with concentration \num{80}/\SI{20}{\percent} vol. For the energy equations, the fluid properties are also calculated from tabulated data, but the temperature dependence is considered.
+
+n this chapter, all simulations use gadolinium or its allows as the magnetocaloric material. Gadolinium is a benchmark material with a Curie temperature of \SI{290}{\kelvin}. \textcolor{black}{For simplicity, the solid} density is assumed constant at $\rho\ped{s} = \SI{7900}{\kg\per\cubic\meter}$ and the solid \textcolor{black}{thermal} conductivity is set to $k\ped{s} = \SI{10.5}{\watt\per\meter\per\kelvin}$. The specific heat \textcolor{black}{capacity} of \ce{Gd} is calculated as a function of temperature and magnetic field based on experimental \textcolor{black}{data}, using a bi-linear interpolation scheme; more details on the experimental dataset \textcolor{black}{are available} in \cite{bib:trevizoli16_perfor_model}. 
+
+In this work, both single- and multilayer regenerators are considered. For the multilayer simulations, alloys of gadolinium and yttrium are used in the form \ce{Gd_{1-x}Y_x}, where $x$ is the yttrium fraction.  \textcolor{black}{This fraction} decreases the Curie temperature  \textcolor{black}{of the} alloy relative to that of pure gadolinium. Due to the lack of experimental  \textcolor{black}{data on the magnetocaloric properties of} \ce{Gd_{1-x}Y_x} alloys at the time \textcolor{black}{this analysis was made}, a simpler approach was used \textcolor{black}{in which} the properties of alloys with {a} low yttrium fraction are \textcolor{black}{identical to those} of pure gadolinium, except for the Curie temperature \textcolor{black}{(which is shifted to lower values)}. 
+
+
+\subsubsection{Performance metrics}
+\label{sec:performance-metrics}
+
+The AMR model considers only one bed and assumes $N\ped{r}$ identical beds experience the same cycle, multiplyind the performance metrics below by this factor
+
+\nomenclature{an}{$N\ped{r}$}{number of regenerators}
+
+The cooling capacity is calculated as \cite{bib:trevizoli16_perfor_model}:
+
+\begin{equation}
+\label{eq:99}
+\qc = N\ped{r}\frac{1}{\tau} \int_{\tau\ped{HB}} \mrate\ped{f}(t) c_{p,\mathrm{f}} \left( T\ped{C} -T\ped{f,CE} \right) \diffd{t}
+\end{equation}
+
+\noindent where $\tau$ is the cycle period, and $\tau\ped{HB}$ is the duration of the hot blow, during which the cold end temperature is compared to the cold source temperature.
+
+\nomenclature[vh]{HB}{hot blow}
+\nomenclature[vc]{CE}{cold end}
+\nomenclature[am]{$\mrate\ped{f}$}{mass flow rate [\si{\kg\per\second}]}
+\nomenclature[vc]{C}{cold source}
+\nomenclature[vc]{H}{hot source}
+
+The magnetic power to operate the AMR cycle is modeled as the ideal Carnot power, ignoring most thermal irreversibilities:
+
+\begin{equation}
+\label{eq:100}
+\wmag = \qc \frac{T\ped{H} - \tc}{\tc}
+\end{equation}
+
+\noindent while the fluid friction irreversibility is accounted for in the calculation of the pumping power:
+
+\begin{equation}
+\label{eq:103}
+\wpump = N\ped{r}\frac{1}{\tau}\int_0^{\tau}\frac{\rate{m}\ped{f}}{\rho\ped{f}} \Delta P \diffd{t}
+\end{equation}
+
+\noindent where $\Delta P$ is the total pressure drop through the regenerator.
+
+\nomenclature[awm]{$\wpump$}{pumping power [\si{\watt}]}
+\nomenclature[awm]{$\wmag$}{magnetic power [\si{\watt}]}
+\nomenclature[ap]{$\Delta P$}{pressure drop across one region [\si{\pascal}]}
+
 
 \subsection{Flow profile}
 \label{sec:flow-profile}
@@ -219,8 +375,30 @@ Different numerical simulations were carried with different operating parameters
 
 \noindent where $c_{p,\mathrm{f}}$ is the constant-pressure specific heat for the fluid, and $m\ped{s}$ and $c\ped{s}$ are the mass and specific heat of the solid phase in one bed. 
 
-\section{RESULTS AND DISCUSSIONS}
+\section{Results and Discussions}
 \label{sec:results-discussions}
+
+
+The simulated magnetic refrigerators are composed of multiple prismatic regenerators filled with gadolinium (Gd) spheres as the magnetocaloric solid matrix, with the parameters shown in Table~\ref{tab:params}. The fluid is a mixture of water and ethylene glycol, in the proportion of \SI{80}{\percent}-\SI{20}{\percent} in volume.
+
+\begin{table}[!ht]
+  \centering
+  \caption{Geometric and operation parameters for the simulated AMR devices}
+  \begin{tabular}{c|c}
+\hline
+    \textbf{Parameter}&\textbf{Value}\\
+\hline
+Regenerator height & \SI{20}{\mm}\\
+Regenerator width & \SI{25}{\mm}\\
+Regenerator length & \SI{100}{\mm}\\
+Number of regenerators & \num{11} \\
+Particle diameter & \SI{0.5}{\mm}\\
+Hot source temperature & \SI{298}{\kelvin}\\
+Cold source temperature & \SI{278}{\kelvin}\\
+\hline
+  \end{tabular}
+  \label{tab:params}
+\end{table}
 
 \subsection{Comparison of the instantaneous and rectified cosine profiles}
 \label{sec:comp-inst-cosine}
