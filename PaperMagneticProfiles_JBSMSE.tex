@@ -15,6 +15,8 @@
 \newcommand{\bmax}{\ensuremath{{B}\ped{max}}}
 \newcommand{\bmin}{\ensuremath{{B}\ped{min}}}
 \newcommand{\mrate}{\rate{m}}
+\newcommand{\wvalven}{\w\ped{valve,n}}
+\newcommand{\wrelayn}{\w\ped{relay,n}}
 
 \usepackage{mathptmx}
 \journalname{Journal of the Brazilian Society of Mechanical Sciences and Engineering}
@@ -321,59 +323,112 @@ The magnetic power to operate the AMR cycle is modeled as the ideal Carnot power
 \nomenclature[awm]{$\wmag$}{magnetic power [\si{\watt}]}
 \nomenclature[ap]{$\Delta P$}{pressure drop across one region [\si{\pascal}]}
 
+\subsection{Hydraulic system  and fluid flow profile model}
+\label{sec:hydr-syst-model}
 
-\subsection{Flow profile}
-\label{sec:flow-profile}
-
-
-The flow profile through a given bed, i.e. the mass flow rate as a function of time $\rate{m}\ped{f} (t)$, is assumed to be a square wave as that shown in Fig.~\ref{fig:mprofile}. The cold blow has a duration of $\tau\ped{CB}$ and the  hot blow a duration of $\tau\ped{HB}$, while the period of one AMR cycle is $\tau$. Limiting the blow times during each half-cycle to periods where the magnetic field is at its maximum and minimum can result in increased performance \cite{bib:nakashima17_avaliac}. In this work, the blows are supposed to be in balance, thus, $\tau\ped{CB} = \tau\ped{HB}$. An important parameter regarding the flow profiles can be defined, which is the blow fraction, $F\ped{B}$:
-
-\begin{equation}
-  \label{eq:1}
-  F\ped{B} = \frac{\tau\ped{CB} + \tau\ped{HB}}{\tau}
-\end{equation}
+The canonical fluid flow profile considered in this work \textcolor{black}{ is the square wave or \emph{instantaneous profile}}, because of the instantaneous change in flow rate, as shown in \autoref{fig:mprofile}. 
 
 \begin{figure}[!ht]
   \centering
-%  \includegraphics[width=7cm]{mprofile}
-  \caption{Instantaneous flow profile used in the numerical simulations. "Positive" mass flow rate indicates flow in the direction from the cold to the hot source, and negative values represent the opposite direction. }
+  \includegraphics[width=8cm]{mprofile}
+  \caption{Instantaneous fluid flow profile}
   \label{fig:mprofile}
 \end{figure}
 
-\subsection{Magnetic profile}
-\label{sec:magnetic-profile}
+The \textcolor{black}{instantaneous mass flow rate}, \(\rate{m}\ped{f}(t)\), is defined over a cycle with \textcolor{black}{a} period \(\tau\), and represents the fluid flow \textcolor{black}{through} a given regenerator bed. The so-called \emph{hot cycle}, \textcolor{black}{during which} the MCM is magnetized, occupies the \textcolor{black}{time interval} \(0 \le t < \nicefrac{\tau}{2}\), while the \emph{cold cycle}
+lies \textcolor{black}{between} \(\nicefrac{\tau}{2} \le t \le \tau\). The flow profile oscillates between two plateaus of equal magnitude
+\(\rate{m}\ped{f,max}\) \textcolor{black}{and} opposite directions, \textcolor{black}{which} are centered in each half-cycle. During the hot cycle, the cold
+blow period is \(\tau\ped{CB}\), and during the cold cycle the hot blow period is \(\tau\ped{HB}\). If the flow is balanced, then \(\tau\ped{CB} = \tau\ped{HB}\).
 
-The AMR mathematical model takes the magnetic profile as an input, and the profiles represented in Fig.~\ref{fig:cycles} were tested with different parameters. The mathematical definitions for the magnetic profiles over a cycle of period $\tau$ are as follows; the instantaneous profile (represented by the index ``I'') and the rectified cosine profile (represented by ``RC'') are defined solely in terms of the extrema values $\bmax$ and $\bmin$:
+
+During each half cycle, there are periods \textcolor{black}{without}  fluid flow, defined as:
 
 \begin{equation}
-\average{B}\ped{I}(t)=
+\label{eq:48}
+\tau\ped{0,HC} = \frac{\nicefrac{\tau}{2} - \tau\ped{CB}}{2}
+\end{equation}
+
+\begin{equation}
+\label{eq:49}
+\tau\ped{0,CC} = \frac{\nicefrac{\tau}{2} - \tau\ped{HB}}{2}
+\end{equation}
+
+where HC and CC stand for hot \textcolor{black}{cycle} and cold cycle, respectively.
+
+\nomenclature[vh]{HC}{hot cycle}
+\nomenclature[vc]{CC}{cold cycle}
+
+The profile can be mathematically defined as:
+
+\begin{equation}
+\rate{m}\ped{f}(t)=
 \begin{cases}
-\average{B}\ped{max}, & 0 \le t < \nicefrac{\tau}{2} \\
-\average{B}\ped{min}, & \nicefrac{\tau}{2} \le t < \tau\\
+0, & 0 \le t < \tau\ped{0,HC} \\
+\rate{m}\ped{f,max}, & \tau\ped{0,HC} \le t \le \nicefrac{\tau}{2} - \tau\ped{0,HC} \\
+0, & \nicefrac{\tau}{2} - \tau\ped{0,HC} < t < \nicefrac{\tau}{2} + \tau\ped{0,CC} \\
+-\rate{m}\ped{f,max}, & \nicefrac{\tau}{2} + \tau\ped{0,CC} \le t \le \tau - \tau\ped{0,CC} \\
+0, &  \tau - \tau\ped{0,CC} <  t < \tau \\
 \end{cases}
-\label{eq:4}
+\label{eq:50}
 \end{equation}
+
+When the blows have different time durations, the AMR cycle is considered unbalanced, and this \textcolor{black}{is known to have} a negative effect on performance \cite{bib:eriksen16_effec,bib:nakashima18-influen-exp}. In this work, the blows are always balanced, hence the blow fraction, the ratio of blow durations to cycle period \cite{bib:nakashima18-influen-exp}, can be evaluated as:
 
 \begin{equation}
-\average{B}\ped{RC}(t) = \bmin + \left(\bmax - \bmin\right)  \left\lvert \cos\left( \frac{\pi}{\tau} \left( t - \frac{\tau}{4}\right)\right) \right\rvert
-\label{eq:5}
+\label{eq:59}
+F\ped{B} = \frac{2\tau\ped{B}}{\tau}
 \end{equation}
 
+\noindent where $\tau\ped{B}$ is the duration of one blow.
 
-In this work, the average values of the magnetic field during each half-AMR cycle are considered for comparison between profiles. The average magnetic profile during the hot cycle ($0 \le t < \nicefrac{\tau}{2}$) is denoted $B\ped{h}$ and the average during the cold cycle  ($ \nicefrac{\tau}{2} \le t < \tau$) is denoted $B\ped{l}$.
+\nomenclature[azt]{$\tau\ped{B}$}{blow duration [\si{\second}]}
 
-\subsection{AMR operating parameters}
-\label{sec:amr-oper-param}
+The hydraulic system to modulate this fluid flow through different regenerators at different time instants is composed of a pump and a set of electronic valves which can be precisely controlled to yield the desired blow durations. The electrical power consumed by the valve array is computed separately from other work contributions. An application of electronic valves in AMR devices has been presented by \cite{bib:nakashima18-perfor-asses-solen-valves-flow}.
 
+Due to evolving developments in our group, two types of valves are considered, as will be elaborated in \autoref{sec:results-discussions}.
 
-Different numerical simulations were carried with different operating parameters such as: AMR cycle frequency ($f$), blow fraction ($F\ped{B}$) and utilization ($\Phi$) which is defined as:
+The first approach, called \emph{Type B valves}, uses the  model \textcolor{black}{of} \cite{bib:cardoso16_trans}, assuming that the individual consumption of each valve is independent of frequency and blow fraction. The valve power  $\wvalve$ can be computed as:
 
 \begin{equation}
-\Phi = \frac{\rate{m}\ped{f,max}F\ped{B}\frac{\tau}{2}c_{p,\mathrm{f}}}{m\ped{s} c\ped{s}}
-\label{eq:2}
+  \label{eq:58}
+  \wvalve = N\ped{v}F\ped{B}\left(\wvalven + \frac{1}{2}\wrelayn\right)
 \end{equation}
 
-\noindent where $c_{p,\mathrm{f}}$ is the constant-pressure specific heat for the fluid, and $m\ped{s}$ and $c\ped{s}$ are the mass and specific heat of the solid phase in one bed. 
+\noindent where $N\ped{v}$ is the number of valves, $\wvalven$ is the measured average nominal power for one normally-closed electronic valve and $\wrelayn$ is the nominal power for one controlling relay. The factor $\nicefrac{1}{2}$ is due to two valves being controlled by one relay.
+
+\nomenclature[an]{$N\ped{v}$}{number of valves}
+\nomenclature[aw]{$\wvalve$}{valve power [\si{\watt}]}
+\nomenclature[aw]{$\wvalven$}{nominal power comsumption of one valve [\si{\watt}]}
+\nomenclature[aw]{$\wrelayn$}{nominal power comsumption of one relay [\si{\watt}]}
+
+In the second approach, \emph{Type A} valves are used, with lower nominal power but that depends on frequency and blow fraction. For these valves, the valve power was experimentally correlated as:
+
+\begin{equation}
+  \label{eq:198}
+  \wvalve\,[\si{\watt}]= N\ped{v}\left(0.927 f\,[\si{\hertz}] + 1.023 F\ped{B} + 0.226 f\,[\si{\hertz}] F\ped{B} - 0.037\right)
+\end{equation}
+
+Equation~\eqref{eq:198} was correlated for blow fractions of \num{50} and \SI{100}{\percent} and for frequencies in the range \textcolor{black}{of} \num{0.2}--\SI{1.6}{\hertz}, with an uncertainty \textcolor{black}{on} the order of \SI{0.4}{\watt} for a single valve. The use of different valve types will be discussed among the presented results.
+
+Indepedent of the valve type used, it is also assumed that this valve system can produce the fluid flow profile \textcolor{black}{shown in} \autoref{fig:mprofile}, where the displaced fluid mass during one blow in one regenerator bed is $\rate{m}\ped{f,max} F\ped{B} \nicefrac{\tau}{2}$. 
+
+The \emph{utilization factor} can then be calculated as:
+
+\begin{equation}
+  \label{eq:110}
+  \Phi = \frac{\rate{m}\ped{f,max} F\ped{B} c\ped{s}}{2 f m\ped{s} c\ped{s}}
+\end{equation}
+
+\nomenclature[bf]{$\Phi$}{utilization factor}
+
+\textcolor{black}{For an even number of poles in the magnetic circuit}, it may be advantageous to employ an odd number of regenerator beds to  \textcolor{black}{break the symmetry between the magnetic circuit and the beds, thus avoiding positions of equilibrium between magnetic forces which result in torque oscillations} \cite{bib:eriksen}. \textcolor{black}{Additionally}, in general, two valves per regenerator  may be necessary (one at each end), to independently control  the hot and cold blows for each bed and correct flow \textcolor{black}{imbalance}; thus, in all results in this work, the number of valves is \textcolor{black}{calculated as}:
+
+\begin{equation}
+  \label{eq:111}
+  N\ped{v} = 2 N\ped{r}
+\end{equation}
+
+
 
 \section{Results and Discussions}
 \label{sec:results-discussions}
