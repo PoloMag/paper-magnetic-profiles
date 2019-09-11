@@ -520,85 +520,126 @@ Additionally, the average values of the magnetic field during each half-AMR cycl
 \section{Results and Discussions}
 \label{sec:results-discussions}
 
+The analysis of magnetic profiles was performed in two different stages in the research of our group, as discussed below.
 
-The simulated magnetic refrigerators are composed of multiple prismatic regenerators filled with gadolinium (Gd) spheres as the magnetocaloric solid matrix, with the parameters shown in Table~\ref{tab:params}. The fluid is a mixture of water and ethylene glycol, in the proportion of \SI{80}{\percent}-\SI{20}{\percent} in volume.
+\subsection{Comparison of instantaneous and rectified cosine profiles using a simplified model}
+\label{sec:comp-cosine-inst}
+
+In the first stage, the instantaneous and rectified cosine profiles are compared in the AMR model, considering monolayer regenerators without casing losses, and using Type B valves. The parameters used in all simulations are presented in \autoref{tab:params-cobem}.
 
 \begin{table}[!ht]
   \centering
-  \caption{Geometric and operation parameters for the simulated AMR devices}
+  \caption{AMR parameters kept fixed in the simulations with different magnetic profiles}
   \begin{tabular}{c|c}
 \hline
-    \textbf{Parameter}&\textbf{Value}\\
+\textbf{Parameter} & \textbf{Value}\\
 \hline
-Regenerator height & \SI{20}{\mm}\\
-Regenerator width & \SI{25}{\mm}\\
-Regenerator length & \SI{100}{\mm}\\
-Number of regenerators & \num{11} \\
-Particle diameter & \SI{0.5}{\mm}\\
-Hot source temperature & \SI{298}{\kelvin}\\
-Cold source temperature & \SI{278}{\kelvin}\\
+   $D\ped{p}$ & \SI{0.5}{\mm}\\
+$H\ped{r}$ & \SI{20}{\mm}\\
+$W\ped{r}$ & \SI{25}{\mm}\\
+$L\ped{r}$ & \SI{100}{\mm}\\
+$N\ped{r}$ & 11 \\
+$N\ped{v}$ & 22 \\
+$T\ped{H}$ & \SI{298}{\kelvin}\\
+$\tc$ & \SI{278}{\kelvin}\\
+$\w\ped{NV}$ & \SI{4}{\watt}\\
+$\w\ped{R}$ & \SI{0.36}{\watt}\\
 \hline
   \end{tabular}
-  \label{tab:params}
+
+  \label{tab:params-cobem}
 \end{table}
 
-\subsection{Comparison of the instantaneous and rectified cosine profiles}
-\label{sec:comp-inst-cosine}
 
-When comparing the magnetic profiles, the average magnetic field during the hot cycle is the same; this implies in a higher peak for the rectified cosine. For the cold cycle, there are two possible comparison methods:
+When comparing the \textcolor{black}{performances resulting from the application of the different} magnetic profiles, the average magnetic field during the hot cycle \textcolor{black}{will be considered} the same; this implies a higher peak for the rectified cosine. For the cold cycle, two comparison methods are considered, as shown in \autoref{fig:comparison-methods-profiles}:
 
 \begin{enumerate}
 \item The minimum values for both profiles is the same;
 \item The average value for both profiles during the cold cycle is the same.
 \end{enumerate}
 
-As a reference, in all simulations  the minimum value for the rectified cosine was fixed at $\average{B}\ped{min,RC} = \SI{0.1}{\tesla}$. For the first comparison, the minimum value for the instantaneous value was kept at the same level ($\average{B}\ped{min,I} =  \average{B}\ped{min,RC}$), hence, the average low value for the RC profile was higher ($B\ped{l,RC} > B\ped{l,I}$). Although this does not seem a fair comparison, in practice it is feasible to generate a profile with a constant low-valued plateau for the magnetic field \cite{bib:insinga16_optim,bib:benedict16_desig}. For the other comparison method, the low level of the instantaneous profile was increased ($\average{B}\ped{min,I} >  \average{B}\ped{min,RC}$) to keep the average the same ($B\ped{l,RC} = B\ped{l,I}$). In addition, simulations were ran for various values of blow fraction and the optimal cases were selected; the rectified cosine profile can benefit from a smaller blow fraction because this can concentrate the flow during the periods of very high or low fields. In this section, all results show the resulting optimal case of the blow fraction for each profile (for the values tested): fluid flowing during the entire period for the instantaneous profile, and only during \SI{60}{\percent} of the period for the cosine profile.
+
+\textcolor{black}{For} reference, in all simulations,  the minimum value for the rectified cosine was fixed at ${B}\ped{min,RC} = \SI{0.1}{\tesla}$. \textcolor{black}{In} the first comparison, the minimum value for the instantaneous \textcolor{black}{waveform} was kept at the same level (${B}\ped{min,IT} =  {B}\ped{min,RC}$); hence, the average low value for the RC profile was higher ($\average{B}\ped{low,RC} > \average{B}\ped{low,IT}$). This represents common design scenarios: a constant low-valued plateau for the magnetic field for instantaneous-like magnetic profiles \cite{bib:insinga16_optim,bib:benedict16_desig}, or a low peak for the rectified cosine profile \cite{bib:trevizoli15_desig_halbac}.  For the other comparison method, the low level of the instantaneous profile was increased (${B}\ped{min,IT} >  {B}\ped{min,RC}$) \textcolor{black}{in order} to keep the \textcolor{black}{same} average ($\average{B}\ped{low,RC} = \average{B}\ped{low,IT}$). 
 
 
-Figure~\ref{fig:cos_ins} shows the cooling capacity attained by the device at a frequency of \SI{1}{\hertz} and different utilizations, for both comparison methods.  The horizontal axis shows the average value during the high field region. Notice how the results are conflicting; for Fig.~\ref{fig:comp_min}, the instantaneous profile almost always yields a higher performance, while for Fig.~\ref{fig:comp_avg} the rectified cosine profile generates higher cooling capacities. Since the average during the hot cycle (high field stage) is the same, the main difference is due to the low magnetic field levels. For the ``same minimum'' comparison, the instantaneous profile is capable of keeping the magnetic field at low levels for the whole half-cycle, which is beneficial for performance;  for $\Phi=1.0$ and $B\ped{h} = \SI{1.40}{\tesla}$, the cooling capacity for the instantaneous profile is $\SI{196.3}{\percent}$ higher than for the cosine profile.  As demonstrated by \cite{bib:asme-mce}, a higher average magnetic field during the low-field stage increases the solid temperature and consequently results in  warmer fluid entering the cold heat exchanger, representing a thermal loss. In the ``same-average'' comparison, the cosine profile is capable of achieving much lower levels (since its minimum value is fixed), therefore providing more cooling power. However, as explained before, it is possible to design near-instantaneous profiles with very low levels of the magnetic field.
 
 
 \begin{figure}[!ht]
   \centering
-%  \subfloat[Same minimum]{\includegraphics[width=8cm]{Qc_B_comp_f_1_same_minimum}\label{fig:comp_min}}
+  \subfloat[Same minimum]{\includegraphics[width=8cm]{profiles_it_and_rc_same_minimum}\label{fig:profiles_inst_cos_same_minimum}}
+\quad
+  \subfloat[Same average]{\includegraphics[width=8cm]{profiles_it_and_rc_same_average}\label{fig:profiles_inst_cos_same_average}}
+  \caption{Comparison methods for the instantaneous and rectified cosine profiles }
+  \label{fig:comparison-methods-profiles}
+\end{figure}
+
+In addition, simulations were \textcolor{black}{carried out} for various values of blow fraction; the rectified cosine profile can benefit from a smaller blow fraction because this can concentrate the flow during the periods of very high or low fields. In this section, all results use the critical value of blow fraction that maximized the cooling capacity: fluid flowing during the entire period for the instantaneous profile, and only during \SI{60}{\percent}  of the period (the smallest blow fraction tested) for the cosine profile; this latter case is shown in \autoref{fig:cos-inst-60}.
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=7cm]{profiles_rc_and_flow_instantaneous}
+  \caption{Rectified cosine magnetic profile and the instantaneous flow profile with blow fraction of \SI{60}{\percent}}
+  \label{fig:cos-inst-60}
+\end{figure}
+
+Figure~\ref{fig:cos_ins} shows the cooling capacity attained by the device at a frequency of \SI{1}{\hertz} and different utilizations, for both comparison methods. The horizontal axis shows the average value during the high field region. 
+\textcolor{black}{For} Fig.~\ref{fig:comp_min}, the instantaneous profile almost always yields a higher performance, while for Fig.~\ref{fig:comp_avg} the rectified cosine profile generates higher cooling capacities. Since the average \textcolor{black}{field} during the hot cycle (high field stage) is the same, the main difference is due to the low magnetic field levels. For the ``same minimum'' comparison, the instantaneous profile is capable of keeping the magnetic field at low levels for the whole half-cycle, which is beneficial for performance;  for $\Phi=1.0$ and $\average{B}\ped{high} = \SI{1.40}{\tesla}$, the cooling capacity for the instantaneous profile is $\SI{196.3}{\percent}$ higher than for the cosine profile.  As demonstrated by \cite{bib:asme-mce}, a higher average magnetic field during the low-field stage increases the solid temperature and consequently results in  warmer fluid entering the cold heat exchanger, representing a thermal loss. In the ``same-average'' comparison, the cosine profile is capable of achieving much lower levels (since its minimum value is fixed), therefore providing more cooling power. However, as explained before, this \textcolor{black}{analysis serves mainly the purpose of illustrating the influence of low magnetic field variation, by looking at two hypothetical scenarios. More} complex \textcolor{black}{magnetic circuit}  geometries \textcolor{black}{are} required to generate the instantaneous magnetic profile \textcolor{black}{with a} low \textcolor{black}{magnetic field} close to 0.
+
+
+\begin{figure}[!ht]
+  \centering
+  \subfloat[Same minimum]{\includegraphics[width=8cm]{Qc_B_comp_f_1_same_minimum}\label{fig:comp_min}}
 \,
 %  \subfloat[Same average]{\includegraphics[width=8cm]{Qc_B_comp_f_1_same_low_average}\label{fig:comp_avg}}
 \,
-  \caption{Cooling capacity as a function of the  average high magnetic field, for different utilizations. “I”: instantaneous (blow fraction of \SI{100}{\percent}); “RC”: rectified cosine  (blow fraction of \SI{60}{\percent}), for both comparison methods.}
+  \caption{Cooling capacity as a function of the  average high magnetic field, for different utilizations. \textcolor{black}{``IT''}: instantaneous (blow fraction of \SI{100}{\percent}); ``RC'': rectified cosine  (blow fraction of \SI{60}{\percent}), for both comparison methods.}
  \label{fig:cos_ins}
 \end{figure}
 
-The only exception in the ``same minimum'' comparison is seen for the lowest utilization of $\Phi = 0.2$, where the performance is slightly better for the RC profile. Since the blow fraction for the cosine is lower, the mass flow rate must be higher to yield the same utilization (cf. Eq.~\eqref{eq:2}), and this increases heat transfer rate, as previously explained ---  outweighing the effects of the magnetic field.
+The only exception in the ``same minimum'' comparison is seen for the lowest utilization of $\Phi = 0.2$, where the performance is slightly better for the RC profile. Since the blow fraction for the cosine is lower, the mass flow rate \textcolor{black}{is} higher \textcolor{black}{in the latter for} the same utilization (cf. Eq.~\eqref{eq:200}). \textcolor{black}{This} increases \textcolor{black}{the} heat transfer rate, as previously explained ---  outweighing the effects of the magnetic field.
 
-In general, the performance of the AMRs operating with the instantaneous magnetic profile yields better results. As can be seen on Fig.~\ref{fig:cos_ins}, an instantaneous profile with the lowest possible value of $\bmin$ and the highest possible value of $\bmax$, with a flow profile occupying the whole cycle with average values of utilization, results in the highest values of cooling capacity among all simulations, therefore, representing the ideal magnetic profile for an AMR.
 
-\subsection{Analysis of the instantaneous profile}
+The same analysis, but in terms of the coeficient of performance, is shown in \autoref{fig:cos_ins_cop}. For the ``same average'' analysis, the $\cop$ results show the same trends as the cooling capacity. However, for the \textcolor{black}{somewhat} more realistic analysis where the minimum of both profiles are the same, the rectified cosine profile yields better results for small values of utilization. This is due to \textcolor{black}{a} lower pumping power, as the mass flow rate for the cosine profile is slightly higher, but also flows for a shorter period of time. \textcolor{black}{Since} in this region the cooling capacity for the RC profile can be close to or higher than the \textcolor{black}{IT} profile (cf. Fig.~\autoref{fig:comp_min}), the coefficient of performance becomes higher for the rectified cosine profile.
+
+\begin{figure}[!ht]
+  \centering
+  \subfloat[Same minimum]{\includegraphics[width=7cm]{COP_B_comp_f_1_same_minimum}\label{fig:comp_min_cop}}
+\,
+%  \subfloat[Same average]{\includegraphics[width=7cm]{COP_B_comp_f_1_same_low_average}\label{fig:comp_avg_cop}}
+\,
+  \caption{Coefficient of performance as a function of the  average high magnetic field, for different utilizations. \textcolor{black}{``IT''}: instantaneous (blow fraction of \SI{100}{\percent}); ``RC'': rectified cosine  (blow fraction of \SI{60}{\percent}), for both comparison methods.}
+ \label{fig:cos_ins_cop}
+\end{figure}
+
+In general, considering the goal of achieving target requirements for the cooling capacity, AMRs operating with the instantaneous magnetic profile \textcolor{black}{generate} better \textcolor{black}{performance} results. As can be seen \textcolor{black}{in} Fig.~\ref{fig:cos_ins}, an instantaneous profile with the lowest possible value of $B\ped{min}$ and the highest possible value of $B\ped{max}$, with a flow profile occupying the whole cycle with average values of utilization, results in the highest values of cooling capacity among all simulations. 
+
+The rectified cosine profile, found in compact systems using Halbach arrays, can \textcolor{black}{surely} benefit from reducing the blow fraction, both in terms of cooling capacity and temperature span. However, for the typical parameters \textcolor{black}{evaluated} in this Thesis, even if the blow fraction is optimized for the ``RC'' profile, the ``IT'' profile still yields better results.
+
+\subsubsection{Analysis of the instantaneous profile}
 \label{sec:deta-analys-inst}
 
-As shown in the previous section, the instantaneous profile yields the highest values for cooling capacity. Therefore, in this section, a more detailed analysis of such profile has been carried out. Figure~\ref{fig:qc_phi_inst} shows the cooling capacity as function of utilization, for several levels of the maximum magnetic field for the instantaneous profile, for two different operating frequencies. Because of the conflicts between a low heat transfer rate for flow rates too low and a loss in regenerator effectiveness in flow rates too high, there are critical values of utilization that maximize cooling capacity, and this critical value grows with the level of magnetic field. With higher magnetic field, the increase in the MCE surpasses the loss of effectiveness, and one can go to higher flow rates without losing performance. It can also be seen in Fig.~\ref{fig:qc_phi_inst} that at higher frequencies, the values of cooling power are higher, and also the critical values of utilization are lower; however, this usually is achieved at the cost of higher power consumption in AMR devices at higher frequencies \cite{bib:lei15_study,NIKNIA2016601}.
+As shown in the previous section, the instantaneous profile \textcolor{black}{generally} yields the highest values \textcolor{black}{of} cooling capacity. Therefore, in this section, a more detailed analysis of \textcolor{black}{this} profile has been carried out, \textcolor{black}{where the} maximum field in \autoref{fig:cobem-profiles} \textcolor{black}{is} varied, while the minimum value is kept at \SI{0.05}{\tesla}. Figure~\ref{fig:qc_phi_inst} shows the cooling capacity as a function of \textcolor{black}{the} utilization, for several levels of the maximum magnetic field \textcolor{black}{and} two different operating frequencies. Because of the conflict between a low heat transfer rate for flow rates \textcolor{black}{that are} too low and losses in regenerator effectiveness in flow rates \textcolor{black}{that are} too high, there are critical values of utilization that maximize \textcolor{black}{the} cooling capacity, and this critical values increases with the magnetic field. \textcolor{black}{For} higher magnetic fields, the increase in the MCE surpasses the loss of effectiveness, and one can go to higher flow rates without losing performance. It can also be seen in Fig.~\ref{fig:qc_phi_inst} that at  higher frequencies the values of cooling power are higher, and also the critical values of utilization are lower; however, this \textcolor{black}{is} usually achieved at the \textcolor{black}{expense} of \textcolor{black}{a} higher power consumption in AMR devices at higher frequencies \cite{bib:lei15_study,NIKNIA2016601}.
 
 \begin{figure}[!ht]
   \centering
 \subfloat[$f = \SI{1}{\hertz}$]{\includegraphics[width=8cm]{Qc_Phi_inst_f_1_Hmin_005_FB_100}\label{fig:Qc_phi_inst_1}}
 \,
   \subfloat[$f = \SI{2}{\hertz}$]{\includegraphics[width=8cm]{Qc_Phi_inst_f_2_Hmin_005_FB_100}\label{fig:Qc_phi_inst_2}}
-  \caption{Cooling capacity as a function of utilization, for various values of the high magnetic field  of the instantaneous profile}
+  \caption{Cooling capacity as a function of utilization, for various values of the high magnetic field  \textcolor{black}{for} the instantaneous profile}
   \label{fig:qc_phi_inst}
 \end{figure}
 
 \begin{figure}[!ht]
   \centering
-  \includegraphics[width=8cm]{Qc_H_inst_f_1_Phi_40}
-  \caption{Cooling capacity as a function of  regenerator height (all other parameters from Table~\ref{tab:params} constant) for various values of the high magnetic field of the instantaneous profile}
+  \subfloat[Cooling capacity]{\includegraphics[width=9cm]{Qc_H_inst_f_1_Phi_40}\label{fig:Qc_H_inst_f_1_Phi_40}}
+\quad
+  \subfloat[Coefficient of performance]{\includegraphics[width=9cm]{COP_H_inst_f_1_Phi_40}\label{fig:COP_H_inst_f_1_Phi_40}}
+  \caption{Performance metrics as a function of \textcolor{black}{the} regenerator height (all other parameters \textcolor{black}{were set as in} Table~\ref{tab:params-cobem}, \textcolor{black}{for}  utilization factor of 0.4) for various values of the high magnetic field of the instantaneous profile}
 \label{fig:Qc_H_inst}
 \end{figure}
 
-The parameters in Table~\ref{tab:params} were chosen from preliminary simulations, but they are not guaranteed to be the optimal choices. To understand the impact of regenerator geometry on the performance with the instantaneous profile, the regenerator height was varied in Fig.~\ref{fig:Qc_H_inst}, and all other parameters from Table.~\ref{tab:params} were kept fixed. As expected, higher magnetic fields allow for smaller regenerators (and hence more compact systems). For instance, to achieve a capacity of \SI{100}{\watt}, increasing the field from \num{1.0} to \SI{1.2}{\tesla} result in using regenerators \SI{36}{\percent} smaller.
+The parameters in \autoref{tab:params-cobem} were chosen from preliminary simulations, \textcolor{black}{so} they are not  optimal. To understand the impact of \textcolor{black}{the} regenerator geometry on the performance with the instantaneous profile, the regenerator height was varied in Fig.~\ref{fig:Qc_H_inst}, and all other parameters from \autoref{tab:params-cobem} were kept fixed and with $\phi=0.4$. As expected, higher magnetic fields allow for smaller regenerators (hence more compact systems) to achieve a \textcolor{black}{desired} cooling capacity. For instance, to achieve a capacity of \SI{100}{\watt}, increasing the field from \num{1.0} to \SI{1.2}{\tesla} \textcolor{black}{results} in regenerators \textcolor{black}{that are} \SI{36}{\percent} smaller. Comparing results \textcolor{black}{for} cooling capacity and coefficient of performance, the trends are largely the same, as the former is more sensitive to variations in the magnetic field and regenerator height than the components of power.
 
-\section{CONCLUSIONS}
-\label{sec:conclusions}
-
-A one-dimensional AMR numerical model was used to compare the performance of a magnetic refrigerator under different operating and geometric parameters and with the instantaneous and rectified cosine magnetic profiles. Most of the AMRs operating with an instantaneous magnetic profile have resulted in better performances than those with a cosine profile, except in cases of low utilization. Although the cosine profile reaches higher levels of the magnetic field, the instantaneous profile can keep the magnetization (and demagnetization) for a longer period, which is shown to be beneficial to performance. Further analysis of the instantaneous profile has shown that the use of the highest possible value of the maximum magnetic field allows for using smaller regenerators and lower utilization, without losing performance.
 
 \begin{acknowledgements}
 This work was supported by CNPq, Embraco and EMBRAPII Unit Polo/UFSC.  
