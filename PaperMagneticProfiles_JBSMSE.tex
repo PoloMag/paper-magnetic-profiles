@@ -438,6 +438,83 @@ The coefficient of performance \textcolor{black}{takes} the cooling capacity as 
   \cop = \frac{\qc}{\wpump + \wmag + \wvalve}
 \end{equation}
 
+\subsection{Definition of magnetic profiles}
+\label{sec:defin-magn-prof}
+
+The magnetic profiles considered in this work were shown in \autoref{fig:profiles}; here their mathematical definitions are presented. The profiles are presented in terms of the flux density $B = \mu_0 H$, where $\mu_0$ is the permeability of free space; the magnetic field $H$ is used in the evaluation of the magnetocaloric effect (cf. \autoref{sec:how-magnetic-profile}).
+
+The instantaneous profile (represented by the subscript ``IT'') and the rectified cosine profile (represented by ``RC'') are defined solely in terms of the \textcolor{black}{(extreme)} values $B\ped{min}$ and $B\ped{min}$:
+
+\nomenclature[vi]{IT}{instantaneous magnetic profile}
+\nomenclature[vr]{RC}{rectified cosine magnetic profile}
+
+\begin{equation}
+{B}\ped{IT}\,(t)=
+\begin{cases}
+{B}\ped{max}, & 0 \le t < \nicefrac{\tau}{2} \\
+{B}\ped{min}, & \nicefrac{\tau}{2} \le t < \tau\\
+\end{cases}
+\label{eq:199}
+\end{equation}
+
+\begin{equation}
+{B}\ped{RC}\,(t) = B\ped{min} + \left(B\ped{max} - B\ped{min}\right)  \left\lvert \cos\left( \frac{\pi}{\tau} \left( t - \frac{\tau}{4}\right)\right) \right\rvert
+\label{eq:200}
+\end{equation}
+
+As previously discussed, a suitable approximation of the instantaneous profile is the \textcolor{black}{\emph{magnetic ramp profile}, shown} in \autoref{fig:ramp}. The so-called \emph{hot cycle}, \textcolor{black}{during which} the MCM is magnetized, occupies the range \(0 \le t < \nicefrac{\tau}{2}\), while the \emph{cold cycle} lies in the range \(\nicefrac{\tau}{2} \le t < \tau\). The magnetic profile oscillates  between a low value \({B}\ped{min}\) and a high value \({B}\ped{max}\), and \textcolor{black}{remains} at each plateau for a period of \(\tau\ped{M}\). The plateaus are balanced and centered at each half-cycle.
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=7cm]{profile_rm}
+  \caption{\textcolor{black}{Magnetic ramp}  profile}
+  \label{fig:ramp}
+\end{figure}
+
+The \emph{ramp period} \(\tau\ped{R}\) \textcolor{black}{is} defined as:
+
+\begin{equation}
+\label{eq:201}
+\tau\ped{R} = \frac{1}{4}\left(\tau - 2 \tau\ped{M}\right)
+\end{equation}
+
+\noindent such that there are four ramp periods in one full cycle. The ramp rate, \(\theta\ped{R}\), is:
+
+\begin{equation}
+\label{eq:202}
+\tan \theta\ped{R} = \frac{\left({B}\ped{max} - {B}\ped{min}\right)}{2\tau\ped{R}}
+\end{equation}
+
+\nomenclature[azt]{$\tau\ped{R}$}{ramp period in the \textcolor{black}{magnetic} ramp profile [\si{\second}]}
+\nomenclature[azt]{$\tau\ped{M}$}{magnetization period in the \textcolor{black}{magnetic} ramp  profile [\si{\second}]}
+\nomenclature[azo]{$\theta\ped{R}$}{ramp rate in the \textcolor{black}{magnetic} ramp profile}
+
+The magnetization fraction, \(F\ped{M}\), is the fraction of the cycle \textcolor{black}{during which} the magnetocaloric material is \textcolor{black}{subjected to a} constant magnetic field:
+
+\begin{equation}
+\label{eq:204}
+F\ped{M} = \frac{2\tau\ped{M}}{\tau}
+\end{equation}
+
+\nomenclature[af]{$F\ped{M}$}{magnetization fraction}
+
+The ramp profile (``RM'') can be mathematically defined as:
+
+\begin{equation}
+{B}\ped{RM}(t)=
+\begin{cases}
+\nicefrac{\left({B}\ped{max} + {B}\ped{min}\right)}{2} + t \tan \theta\ped{R} , & 0 \le t < \tau\ped{R} \\
+{B}\ped{max}, & \tau\ped{R} \le t < \nicefrac{\tau}{2} - \tau\ped{R}\\
+{B}\ped{max} - \left(t - \left(\nicefrac{\tau}{2} - \tau\ped{R}\right)\right) \tan \theta\ped{R} , & \nicefrac{\tau}{2} - \tau\ped{R} \le t < \nicefrac{\tau}{2} + \tau\ped{R} \\
+{B}\ped{min}, & \nicefrac{\tau}{2} + \tau\ped{R} \le t < \tau - \tau\ped{R}\\
+{B}\ped{min} + \left(t - \left(\tau - \tau\ped{R}\right)\right) \tan \theta\ped{R} , & \tau - \tau\ped{R} \le t \le \tau \\
+\end{cases}
+\label{eq:203}
+\end{equation}
+
+\nomenclature[vr]{RM}{rectified cosine magnetic profile}
+
+Additionally, the average values of the magnetic field during each half-AMR cycle are considered for comparison between profiles. The average magnetic profile during the hot cycle ($0 \le t < \nicefrac{\tau}{2}$) is denoted $\average{B}\ped{high}$ and the average during the cold cycle  ($ \nicefrac{\tau}{2} \le t < \tau$) is denoted $\average{B}\ped{low}$. For the instantaneous waveform, these average values are identical to the extrema values.
 
 
 \section{Results and Discussions}
