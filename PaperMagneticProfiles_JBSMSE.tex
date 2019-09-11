@@ -7,9 +7,11 @@
 
 \documentclass[draft]{svjour3}
 
+
 \usepackage{engsymbols}
 \usepackage{magref}
 \usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
 \usepackage{nicefrac}
 
 \newcommand{\bmax}{\ensuremath{{B}\ped{max}}}
@@ -639,6 +641,133 @@ As shown in the previous section, the instantaneous profile \textcolor{black}{ge
 \end{figure}
 
 The parameters in \autoref{tab:params-cobem} were chosen from preliminary simulations, \textcolor{black}{so} they are not  optimal. To understand the impact of \textcolor{black}{the} regenerator geometry on the performance with the instantaneous profile, the regenerator height was varied in Fig.~\ref{fig:Qc_H_inst}, and all other parameters from \autoref{tab:params-cobem} were kept fixed and with $\phi=0.4$. As expected, higher magnetic fields allow for smaller regenerators (hence more compact systems) to achieve a \textcolor{black}{desired} cooling capacity. For instance, to achieve a capacity of \SI{100}{\watt}, increasing the field from \num{1.0} to \SI{1.2}{\tesla} \textcolor{black}{results} in regenerators \textcolor{black}{that are} \SI{36}{\percent} smaller. Comparing results \textcolor{black}{for} cooling capacity and coefficient of performance, the trends are largely the same, as the former is more sensitive to variations in the magnetic field and regenerator height than the components of power.
+
+
+\subsection{In-depth analysis of the  magnetic \textcolor{black}{ramp} profile}
+\label{sec:performance-an-amr-1}
+
+Based on the better performance of the instantaneous profile, the ramp profile is assumed as a suitable target profile for the design of magnetic refrigerators, and will be analyzed in this section.
+
+Moving towards a more realistic model, casing losses are included, using the model from \cite{bib:trevizoli16_perfor_model}. The bed is enclosed in a solid casing of thickness $h\ped{csg}$, and two air layers of thickness $h\ped{air}$ separate \textcolor{black}{the AMR and its casing} from the inner and outer \textcolor{black}{magnet} cylinders. 
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=7cm]{amr-casing}
+  \caption{Model for the casing losses in regenerators}
+  \label{fig:amr-casing}
+\end{figure}
+
+\nomenclature[ia]{air}{air layer between magnets and regenerators}
+\nomenclature[ic]{csg}{regenerator casing}
+
+Preliminary analyses \textcolor{black}{carried out by} \cite{bib:peixer17-perfor-amrs} using the losses model described in \autoref{sec:model-casing-loss} showed that a stainless steel casing \textcolor{black}{with a} thickness \textcolor{black}{of} $h\ped{csg} = \SI{0.5}{\mm}$ is thick enough to ensure mechanical integrity and easy manufacturing, while being thin enough to accommodate the material \textcolor{black}{with a low} thermal conductivity. 
+
+In addition, \textcolor{black}{in the present study}, an air gap clearance thickness was set at $h\ped{air} = \SI{1}{\mm}$. This value \textcolor{black}{gave rise to a} peak in cooling capacity due to the compromise between minimizing losses and maximizing the magnetocaloric mass.
+
+The simulations in this section also use multilayer regenerators. A summary of all parameters adopted in this section, including the Curie temperatures and volumetric fractions (relative to the length of the bed) of each layer is presented in \autoref{tab:params-ramp}.
+
+\begin{table}[!ht]
+  \centering
+  \begin{tabular}{c|c}
+\hline
+    \textbf{Parameter} & \textbf{Value} \\
+\hline
+$R\ped{o}$ & \SI{40}{\mm} \\
+$W\ped{r}$ & \SI{30}{\mm} \\
+$L\ped{r}$ & \SI{85}{\mm} \\
+$N\ped{r}$ & \num{8} \\
+$N\ped{v}$ & \num{16} \\
+$f$ & \SI{1}{\hertz} \\
+$\th$ & \SI{305.5}{\kelvin} = \SI{32.5}{\celsius} \\
+$\tc$ & \SI{270.5}{\kelvin} = \SI{-2.5}{\celsius} \\
+$D\ped{p}$ & \SI{350}{\micro\meter} \\
+$h\ped{csg}$ & \SI{0.5}{\mm} \\
+$h\ped{air}$ & \SI{1}{\mm} \\
+Casing material & Stainless steel \\
+Number of layers & \num{3} \\
+Curie temperatures of each layer & \num{273}, \num{283}, \SI{290}{\kelvin} \\ 
+Length fractions of each layer & \num{20}, \num{20}, \SI{60}{\percent}\\
+\hline
+  \end{tabular}
+  \caption{Fixed parameters for the AMR simulations used in this chapter}
+  \label{tab:params-ramp}
+\end{table}
+
+
+\subsubsection{Synchronization between \textcolor{black}{the} fluid flow and magnetic profiles}
+\label{sec:synchr-betw-fluid}
+
+A central point of this Thesis is \textcolor{black}{related to} the importance of two characteristic waveforms, the fluid flow and magnetic profiles, \textcolor{black}{and how they affect} the performance of a magnetic refrigerator. Several works have independently investigated the synchronization between these profiles \cite{bib:bjoerk11_amr,bib:nakashima17-exper}. Here, \textcolor{black}{the} focus is  on the parameterization of these waveforms and \textcolor{black}{the} characerization of an AMR system with these parameters, in particular the blow fraction (cf. \autoref{sec:inst-fluid-flow}) and the magnetization fraction (cf. \autoref{sec:ramp-magn-prof}). Figure~\ref{fig:ramp-inst} shows the two profiles that will be used in this section.
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=7cm]{profiles_rm_and_flow_instantaneous}
+  \caption{Comparison between the magnetic \textcolor{black}{ramp} profile (solid line) and the instantaneous fluid flow profile (dashed line)}
+  \label{fig:ramp-inst}
+\end{figure}
+ 
+
+Regarding the magnetic profile, the \textcolor{black}{magnitude of the} high value will be varied to investigate the performance of the AMR system, while the minimum will be kept at $\bmin = \SI{0.05}{\tesla}$. Ideally, this value \textcolor{black}{should be nil}, but it is \textcolor{black}{difficult} to achieve complete flux insulation in the low field region, so \textcolor{black}{a finite value of the} minimum field is \textcolor{black}{adopted}.
+
+\subsubsection{Performance curves for varying blow and magnetization fractions}
+\label{sec:perf-curv-vary}
+
+Figure~\ref{fig:Qc_COP_curves_phi40} shows the cooling capacity and coefficient of performance of the AMR system for a fixed utilization factor of \num{0.4} and for a magnetic profile with \textcolor{black}{a} maximum at \SI{1.3}{\tesla}, for \textcolor{black}{variable} blow and magnetization fractions. \textcolor{black}{To facilitate the analysis, the} results are plotted in terms of the ratio $\nicefrac{F\ped{M}}{F\ped{B}}$, with curves for different \textcolor{black}{values of} $F\ped{B}$. It is clear \textcolor{black}{that both the cooling capacity and the coefficient of performance exhibit a peak at} $F\ped{M} = F\ped{B}$. Moreover,  \textcolor{black}{to the right of the peak, i.e., for higher values of $F\ped{M}$, the}  reduction \textcolor{black}{of} both \textcolor{black}{performance} metrics \textcolor{black}{is} slower, meaning it is better to have a magnetization plateau wider than the fluid flow plateau, thus confirming the conclusions \textcolor{black}{of} \autoref{cha:exper-invest-fluid}. 
+
+The reduction in performance for $F\ped{M} > F\ped{B}$ \textcolor{black}{can be explained by an increase in} heat leakage through the casing, as the solid begins to lose energy to the environment \textcolor{black}{when} the fluid is not flowing. For $F\ped{M} < F\ped{B}$, the effect \textcolor{black}{discussed in} \autoref{sec:results-discussions} is present: the fluid begins to flow when the solid is not totally warmed up, losing effectiveness.
+
+\begin{figure}[!ht]
+  \centering
+  \subfloat[Cooling capacity]{\includegraphics[width=5cm]{Qc_FM_ramp_f_1_Phi_40_35K_1300mT}\label{fig:Qc_FM_ramp_f_1_Phi_40_35K_1.3T}}
+\quad
+ \subfloat[Coefficient of performance]{\includegraphics[width=5cm]{COP_FM_ramp_f_1_Phi_40_35K_1300mT}\label{fig:COP_FM_ramp_f_1_Phi_40_35K_1.3T}}
+  \caption{Performance of the AMR system for various blow and magnetization fractions, utilization of 0.4 and and high magnetic field of \SI{1.3}{\tesla}}
+  \label{fig:Qc_COP_curves_phi40}
+\end{figure}
+
+The influence of \textcolor{black}{the} utilization is demonstrated in \autoref{fig:Qc_curves_ramp_phi}, where the cooling capacity \textcolor{black}{is} plotted for different utilization factors. For increasing $\Phi$ in this range, not only do the overall values of cooling capacity increase, but also the importance of choosing the blow fraction becomes clearer. In \textcolor{black}{these ranges} of utilization and blow fraction,  the cooling capacity increases because the higher transfer rate associated with higher flow rates \textcolor{black}{dominates} over the loss of regenerator effectiveness.
+
+\begin{figure}[!ht]
+  \centering
+  \subfloat[$\Phi = \num{0.2}$]{\includegraphics[width=5cm]{Qc_FM_ramp_f_1_Phi_20_35K_1300mT}\label{fig:Qc_FM_ramp_f_1_Phi_20_35K_1.3T}}
+\quad
+ \subfloat[$\Phi = \num{
+0.5}$]{\includegraphics[width=5cm]{Qc_FM_ramp_f_1_Phi_50_35K_1300mT}\label{fig:COP_FM_ramp_f_1_Phi_50_35K_1.3T}}
+  \caption{Influence of utilization on the cooling capacity of the AMR system for  various blow and magnetization fractions, with high magnetic field of \SI{1.3}{\tesla}}
+  \label{fig:Qc_curves_ramp_phi}
+\end{figure}
+
+The \textcolor{black}{above} results can be \textcolor{black}{evaluated from} another point of view with \autoref{fig:COP_maps_ramp_FM}, where the coefficient of performance is plotted as contour levels. This type of map is useful because, since $\bmin$ and $\tau$ are fixed, each point in this graph completely characterizes a magnetic \textcolor{black}{ramp} profile, and each subplot with fixed $\Phi$ and $F\ped{B}$ characterizes the fluid flow profile. As expected, the performance increases for the higher values both $\bmax$ and $F\ped{M}$, where the  magnetic \textcolor{black}{ramp} profile tends to the instantaneous magnetic profile with a large amplitude. Confirming the previous trends, the results are less sensitive to the magnetization fraction when $F\ped{M} \ge F\ped{B}$. 
+
+\begin{figure}[!ht]
+  \centering
+  \subfloat[$\Phi = 0.2, F\ped{B} = \SI{60}{\percent}$]{\includegraphics[width=5cm]{COP_ramp_map_f_1_Phi_20_FB_60_35K_Valv_ASCO}\label{fig:COP_ramp_map_f_1_Phi_20_FB_70_35K_Valv_ASCO}}
+\quad
+ \subfloat[$\Phi= 0.2, F\ped{B} = \SI{90}{\percent}$]{\includegraphics[width=5cm]{COP_ramp_map_f_1_Phi_20_FB_90_35K_Valv_ASCO}\label{fig:COP_ramp_map_f_1_Phi_20_FB_90_35K_Valv_ASCO}} \\
+  \subfloat[$\Phi = 0.4, F\ped{B} = \SI{60}{\percent}$]{\includegraphics[width=5cm]{COP_ramp_map_f_1_Phi_40_FB_60_35K_Valv_ASCO}\label{fig:COP_ramp_map_f_1_Phi_60_FB_90_35K_Valv_ASCO}}
+\quad
+ \subfloat[$\Phi = 0.4, F\ped{B} = \SI{90}{\percent}$]{\includegraphics[width=5cm]{COP_ramp_map_f_1_Phi_40_FB_90_35K_Valv_ASCO}\label{fig:COP_ramp_map_f_1_Phi_40_FB_90_35K_Valv_ASCO}}
+  \caption{Influence of utilization and blow fraction on the coefficient of performance of the AMR system for varying high magnetic field and magnetization fraction}
+  \label{fig:COP_maps_ramp_FM}
+\end{figure}
+
+\subsubsection{Geometric analysis of the regenerators using the ramp magnetic profile}
+\label{sec:geom-analys-regen}
+
+\textcolor{black}{All} previous results assumed a fixed regenerator geometry, with the goal of identifying the optimal fluid and magnetic profile parameters. \textcolor{black}{It became clear that the} magnetization fraction should be as large as possible, but that makes it more difficult to design a magnetic circuit \textcolor{black}{based on} permanent magnets. The value of $F\ped{M} = \SI{70}{\percent}$ is then chosen as a compromise, with \textcolor{black}{a corresponding} $F\ped{B} = F\ped{M}$. The mean value of \textcolor{black}{the} utilization factor of $\Phi = 0.4$ is also chosen as reference in the next results.
+
+In this section, the \textcolor{black}{effect of the} regenerator height is \textcolor{black}{evaluated. The results will complement those for the} air gap height that will be shown in \autoref{cha:design-optim-magn} concerning the design of the magnetic circuit. The importance of the air gap height as a coupling \textcolor{black}{parameter} between the geometric design of the regenerators and the magnetic circuit was explored using a simplified model in \autoref{sec:performance-an-amr} and using the instantaneous magnetic profile in \autoref{sec:deta-analys-inst}. The results \textcolor{black}{to be} shown \textcolor{black}{here} use the magnetic \textcolor{black}{ramp} profile \textcolor{black}{studied in depth in} this present chapter.
+
+Figure~\ref{fig:qc-cop-eta-amr-height} shows the cooling capacity, coefficient of performance and second-law efficiency for varying magnetic field and regenerator height. \textcolor{black}{As} expected, larger regenerators can \textcolor{black}{produce} the desired performance with lower magnetic fields. It can also be seen that this configuration for an AMR system can achieve values of $\etasec$ compatible with conventional vapor compression systems \cite{HERMES20081341,NEGRAO20113051}, although these numerical results do not include mechanical losses.
+
+\begin{figure}[!ht]
+  \centering
+\subfloat[Cooling capacity (solid lines) and coefficient of performance (dashed lines)]{  \includegraphics[width=5cm]{Qc_COP_combined_H_regW30}\label{fig:Qc_COP_Hreg}}
+\,
+\subfloat[Second-law efficiency]{\includegraphics[width=5cm]{eta_H_regW30}\label{fig:eta_Hreg}}
+  \caption{Performance of the AMR with varying regenerator height and high magnetic field, with fixed $F\ped{M} = F\ped{B} = \SI{70}{\percent}$ and $\Phi = 0.4$}
+  \label{fig:qc-cop-eta-amr-height}
+\end{figure}
 
 
 \begin{acknowledgements}
