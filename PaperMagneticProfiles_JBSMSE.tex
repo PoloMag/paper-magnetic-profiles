@@ -436,7 +436,7 @@ The magnetic power to operate the AMR cycle is modeled as the ideal Carnot power
 \label{sec:hydr-syst-model}
 
 
-The hydraulic system to modulate this fluid flow through different regenerators at different time instants is composed of a pump and a set of electronic valves which can be precisely controlled to yield the desired blow durations. The electrical power consumed by the valve array is computed separately from other work contributions. An application of electronic valves in AMR devices has been presented by \cite{bib:nakashima18-perfor-asses-solen-valves-flow}.
+The hydraulic system to modulate the fluid flow through different regenerators at different time instants is composed of a pump and a set of electronic valves which can be precisely controlled to yield the desired blow durations. The electrical power consumed by the valve array is computed separately from other work contributions. An application of electronic valves in AMR devices has been presented by \cite{bib:nakashima18-perfor-asses-solen-valves-flow}.
 
 Due to evolving developments in our group, two types of valves are considered, as will be elaborated in \autoref{sec:results-discussions}.
 
@@ -454,7 +454,7 @@ The first approach, called \emph{Type B valves}, uses the  model \textcolor{blac
 \nomenclature[aw]{$\wvalven$}{nominal power comsumption of one valve [\si{\watt}]}
 \nomenclature[aw]{$\wrelayn$}{nominal power comsumption of one relay [\si{\watt}]}
 
-In the second approach, \emph{Type A} valves are used, with lower nominal power but that depends on frequency and blow fraction. For these valves, the valve power was experimentally correlated as:
+In the second approach, \emph{Type A} valves are used, with  nominal power lower in magnitude but which depends on frequency and blow fraction. For these valves, the valve power was experimentally correlated as:
 
 \begin{equation}
   \label{eq:198}
@@ -463,9 +463,7 @@ In the second approach, \emph{Type A} valves are used, with lower nominal power 
 
 Equation~\eqref{eq:198} was correlated for blow fractions of \num{50} and \SI{100}{\percent} and for frequencies in the range \textcolor{black}{of} \num{0.2}--\SI{1.6}{\hertz}, with an uncertainty \textcolor{black}{on} the order of \SI{0.4}{\watt} for a single valve. The use of different valve types will be discussed among the presented results.
 
-Indepedent of the valve type used, it is also assumed that this valve system can produce the fluid flow profile \textcolor{black}{shown in} \autoref{fig:mprofile}, where the displaced fluid mass during one blow in one regenerator bed is $\rate{m}\ped{f,max} F\ped{B} \nicefrac{\tau}{2}$. 
-
-The \emph{utilization factor} can then be calculated as:
+Indepedent of the valve type used, it is also assumed that this valve system can produce the fluid flow profile \textcolor{black}{shown in} \autoref{fig:mprofile}, where the displaced fluid mass during one blow in one regenerator bed is $\rate{m}\ped{f,max} F\ped{B} \nicefrac{\tau}{2}$. The \emph{utilization factor} can then be calculated as:
 
 \begin{equation}
   \label{eq:110}
@@ -473,8 +471,7 @@ The \emph{utilization factor} can then be calculated as:
 \end{equation}
 
 \nomenclature[bf]{$\Phi$}{utilization factor}
-
-\textcolor{black}{For an even number of poles in the magnetic circuit}, it may be advantageous to employ an odd number of regenerator beds to  \textcolor{black}{break the symmetry between the magnetic circuit and the beds, thus avoiding positions of equilibrium between magnetic forces which result in torque oscillations} \cite{bib:eriksen}. \textcolor{black}{Additionally}, in general, two valves per regenerator  may be necessary (one at each end), to independently control  the hot and cold blows for each bed and correct flow \textcolor{black}{imbalance}; thus, in all results in this work, the number of valves is \textcolor{black}{calculated as}:
+\noindent and in all results shown in this work, the number of valves is \textcolor{black}{calculated as}:
 
 \begin{equation}
   \label{eq:111}
