@@ -597,9 +597,9 @@ The geometric parameters in \autoref{tab:params-cobem} were chosen from prelimin
 \subsection{In-depth analysis of the  magnetic \textcolor{black}{ramp} profile}
 \label{sec:performance-an-amr-1}
 
-Based on the better performance of the instantaneous profile, the ramp profile is assumed as a suitable target profile for the design of magnetic refrigerators, and will be analyzed in this section.
+Based on the better performance of the instantaneous profile, the ramp profile is assumed as a suitable target profile for the design of magnetic refrigerators, and will be analyzed in this section, representing the second stage in the analysis of magnetic profiles.
 
-Moving towards a more realistic model, casing losses are included, using the model from \cite{bib:trevizoli16_perfor_model}. The bed is enclosed in a solid casing of thickness $h\ped{csg}$, and two air layers of thickness $h\ped{air}$ separate \textcolor{black}{the AMR and its casing} from the inner and outer \textcolor{black}{magnet} cylinders. 
+Moving towards a more realistic model, casing losses are included, using the model from \cite{bib:trevizoli16_perfor_model}. The bed is enclosed in a solid casing of thickness $h\ped{csg}$, and two air layers of thickness $h\ped{air}$ separate \textcolor{black}{the AMR and its casing} from the inner and outer \textcolor{black}{magnet} cylinders, as shown in \autoref{fig:amr-casing}. These magnetic cylinders can be designed to yield the desired magnetic profiles, as will be shown in future studies by our group. 
 
 \begin{figure}[!ht]
   \centering
@@ -609,9 +609,8 @@ Moving towards a more realistic model, casing losses are included, using the mod
 \end{figure}
 
 \nomenclature[ia]{air}{air layer between magnets and regenerators}
-\nomenclature[ic]{csg}{regenerator casing}
 
-Preliminary analyses \textcolor{black}{carried out by} \cite{bib:peixer17-perfor-amrs} using the losses model described in \autoref{sec:model-casing-loss} showed that a stainless steel casing \textcolor{black}{with a} thickness \textcolor{black}{of} $h\ped{csg} = \SI{0.5}{\mm}$ is thick enough to ensure mechanical integrity and easy manufacturing, while being thin enough to accommodate the material \textcolor{black}{with a low} thermal conductivity. 
+Preliminary analyses \textcolor{black}{carried out by} \cite{bib:peixer17-perfor-amrs} showed that a stainless steel casing \textcolor{black}{with a} thickness \textcolor{black}{of} $h\ped{csg} = \SI{0.5}{\mm}$ is thick enough to ensure mechanical integrity and easy manufacturing, while being thin enough to accommodate the material \textcolor{black}{with a low} thermal conductivity. 
 
 In addition, \textcolor{black}{in the present study}, an air gap clearance thickness was set at $h\ped{air} = \SI{1}{\mm}$. This value \textcolor{black}{gave rise to a} peak in cooling capacity due to the compromise between minimizing losses and maximizing the magnetocaloric mass.
 
@@ -629,7 +628,7 @@ $L\ped{r}$ & \SI{85}{\mm} \\
 $N\ped{r}$ & \num{8} \\
 $N\ped{v}$ & \num{16} \\
 $f$ & \SI{1}{\hertz} \\
-$\th$ & \SI{305.5}{\kelvin} = \SI{32.5}{\celsius} \\
+$T\ped{H}$ & \SI{305.5}{\kelvin} = \SI{32.5}{\celsius} \\
 $\tc$ & \SI{270.5}{\kelvin} = \SI{-2.5}{\celsius} \\
 $D\ped{p}$ & \SI{350}{\micro\meter} \\
 $h\ped{csg}$ & \SI{0.5}{\mm} \\
@@ -644,11 +643,7 @@ Length fractions of each layer & \num{20}, \num{20}, \SI{60}{\percent}\\
   \label{tab:params-ramp}
 \end{table}
 
-
-\subsubsection{Synchronization between \textcolor{black}{the} fluid flow and magnetic profiles}
-\label{sec:synchr-betw-fluid}
-
-A central point of this Thesis is \textcolor{black}{related to} the importance of two characteristic waveforms, the fluid flow and magnetic profiles, \textcolor{black}{and how they affect} the performance of a magnetic refrigerator. Several works have independently investigated the synchronization between these profiles \cite{bib:bjoerk11_amr,bib:nakashima17-exper}. Here, \textcolor{black}{the} focus is  on the parameterization of these waveforms and \textcolor{black}{the} characerization of an AMR system with these parameters, in particular the blow fraction (cf. \autoref{sec:inst-fluid-flow}) and the magnetization fraction (cf. \autoref{sec:ramp-magn-prof}). Figure~\ref{fig:ramp-inst} shows the two profiles that will be used in this section.
+ Figure~\ref{fig:ramp-inst} shows the two profiles that will be used in this section and how they are synchronized. Regarding the magnetic profile, the \textcolor{black}{magnitude of the} high value will be varied to investigate the performance of the AMR system, while the minimum will be kept at $\bmin = \SI{0.05}{\tesla}$. 
 
 \begin{figure}[!ht]
   \centering
@@ -657,15 +652,12 @@ A central point of this Thesis is \textcolor{black}{related to} the importance o
   \label{fig:ramp-inst}
 \end{figure}
  
-
-Regarding the magnetic profile, the \textcolor{black}{magnitude of the} high value will be varied to investigate the performance of the AMR system, while the minimum will be kept at $\bmin = \SI{0.05}{\tesla}$. Ideally, this value \textcolor{black}{should be nil}, but it is \textcolor{black}{difficult} to achieve complete flux insulation in the low field region, so \textcolor{black}{a finite value of the} minimum field is \textcolor{black}{adopted}.
-
 \subsubsection{Performance curves for varying blow and magnetization fractions}
 \label{sec:perf-curv-vary}
 
-Figure~\ref{fig:Qc_COP_curves_phi40} shows the cooling capacity and coefficient of performance of the AMR system for a fixed utilization factor of \num{0.4} and for a magnetic profile with \textcolor{black}{a} maximum at \SI{1.3}{\tesla}, for \textcolor{black}{variable} blow and magnetization fractions. \textcolor{black}{To facilitate the analysis, the} results are plotted in terms of the ratio $\nicefrac{F\ped{M}}{F\ped{B}}$, with curves for different \textcolor{black}{values of} $F\ped{B}$. It is clear \textcolor{black}{that both the cooling capacity and the coefficient of performance exhibit a peak at} $F\ped{M} = F\ped{B}$. Moreover,  \textcolor{black}{to the right of the peak, i.e., for higher values of $F\ped{M}$, the}  reduction \textcolor{black}{of} both \textcolor{black}{performance} metrics \textcolor{black}{is} slower, meaning it is better to have a magnetization plateau wider than the fluid flow plateau, thus confirming the conclusions \textcolor{black}{of} \autoref{cha:exper-invest-fluid}. 
+Figure~\ref{fig:Qc_COP_curves_phi40} shows the cooling capacity and coefficient of performance of the AMR system for a fixed utilization factor of \num{0.4} and for a magnetic profile with \textcolor{black}{a} maximum at \SI{1.3}{\tesla}, for \textcolor{black}{variable} blow and magnetization fractions. \textcolor{black}{To facilitate the analysis, the} results are plotted in terms of the ratio $\nicefrac{F\ped{M}}{F\ped{B}}$, with curves for different \textcolor{black}{values of} $F\ped{B}$. It is clear \textcolor{black}{that both the cooling capacity and the coefficient of performance exhibit a peak at} $F\ped{M} = F\ped{B}$. Moreover,  \textcolor{black}{to the right of the peak, i.e., for higher values of $F\ped{M}$, the}  reduction \textcolor{black}{of} both \textcolor{black}{performance} metrics \textcolor{black}{is} slower, meaning it is better to have a magnetization plateau wider than the fluid flow plateau 
 
-The reduction in performance for $F\ped{M} > F\ped{B}$ \textcolor{black}{can be explained by an increase in} heat leakage through the casing, as the solid begins to lose energy to the environment \textcolor{black}{when} the fluid is not flowing. For $F\ped{M} < F\ped{B}$, the effect \textcolor{black}{discussed in} \autoref{sec:results-discussions} is present: the fluid begins to flow when the solid is not totally warmed up, losing effectiveness.
+The reduction in performance for $F\ped{M} > F\ped{B}$ \textcolor{black}{can be explained by an increase in} heat leakage through the casing, as the solid begins to lose energy to the environment \textcolor{black}{when} the fluid is not flowing. For $F\ped{M} < F\ped{B}$,  the fluid begins to flow when the solid is not totally warmed up, losing effectiveness.
 
 \begin{figure}[!ht]
   \centering
@@ -676,7 +668,7 @@ The reduction in performance for $F\ped{M} > F\ped{B}$ \textcolor{black}{can be 
   \label{fig:Qc_COP_curves_phi40}
 \end{figure}
 
-The influence of \textcolor{black}{the} utilization is demonstrated in \autoref{fig:Qc_curves_ramp_phi}, where the cooling capacity \textcolor{black}{is} plotted for different utilization factors. For increasing $\Phi$ in this range, not only do the overall values of cooling capacity increase, but also the importance of choosing the blow fraction becomes clearer. In \textcolor{black}{these ranges} of utilization and blow fraction,  the cooling capacity increases because the higher transfer rate associated with higher flow rates \textcolor{black}{dominates} over the loss of regenerator effectiveness.
+The influence of utilization is demonstrated in \autoref{fig:Qc_curves_ramp_phi}, where the cooling capacity \textcolor{black}{is} plotted for different utilization factors. For increasing $\Phi$ in this range, not only do the overall values of cooling capacity increase, but also the importance of choosing the blow fraction becomes clearer. In \textcolor{black}{these ranges} of utilization and blow fraction,  the cooling capacity increases because the higher transfer rate associated with higher flow rates \textcolor{black}{dominates} over the loss of regenerator effectiveness.
 
 \begin{figure}[!ht]
   \centering
@@ -705,9 +697,7 @@ The \textcolor{black}{above} results can be \textcolor{black}{evaluated from} an
 \subsubsection{Geometric analysis of the regenerators using the ramp magnetic profile}
 \label{sec:geom-analys-regen}
 
-\textcolor{black}{All} previous results assumed a fixed regenerator geometry, with the goal of identifying the optimal fluid and magnetic profile parameters. \textcolor{black}{It became clear that the} magnetization fraction should be as large as possible, but that makes it more difficult to design a magnetic circuit \textcolor{black}{based on} permanent magnets. The value of $F\ped{M} = \SI{70}{\percent}$ is then chosen as a compromise, with \textcolor{black}{a corresponding} $F\ped{B} = F\ped{M}$. The mean value of \textcolor{black}{the} utilization factor of $\Phi = 0.4$ is also chosen as reference in the next results.
-
-In this section, the \textcolor{black}{effect of the} regenerator height is \textcolor{black}{evaluated. The results will complement those for the} air gap height that will be shown in \autoref{cha:design-optim-magn} concerning the design of the magnetic circuit. The importance of the air gap height as a coupling \textcolor{black}{parameter} between the geometric design of the regenerators and the magnetic circuit was explored using a simplified model in \autoref{sec:performance-an-amr} and using the instantaneous magnetic profile in \autoref{sec:deta-analys-inst}. The results \textcolor{black}{to be} shown \textcolor{black}{here} use the magnetic \textcolor{black}{ramp} profile \textcolor{black}{studied in depth in} this present chapter.
+\textcolor{black}{All} previous results assumed a fixed regenerator geometry, with the goal of identifying the optimal fluid and magnetic profile parameters. \textcolor{black}{It became clear that the} magnetization fraction should be as large as possible, but that raises some challenges in realizing abrupt changes in the magnetic field. The value of $F\ped{M} = \SI{70}{\percent}$ is then chosen as a compromise, with \textcolor{black}{a corresponding} $F\ped{B} = F\ped{M}$. The mean value of \textcolor{black}{the} utilization factor of $\Phi = 0.4$ is also chosen as reference in the next results.
 
 Figure~\ref{fig:qc-cop-eta-amr-height} shows the cooling capacity, coefficient of performance and second-law efficiency for varying magnetic field and regenerator height. \textcolor{black}{As} expected, larger regenerators can \textcolor{black}{produce} the desired performance with lower magnetic fields. It can also be seen that this configuration for an AMR system can achieve values of $\etasec$ compatible with conventional vapor compression systems \cite{HERMES20081341,NEGRAO20113051}, although these numerical results do not include mechanical losses.
 
