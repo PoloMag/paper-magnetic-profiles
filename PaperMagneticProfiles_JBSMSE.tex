@@ -22,6 +22,29 @@
 \usepackage{nomencl}
 \usepackage{hyperref}
 
+\makenomenclature
+
+\renewcommand{\nomgroup}[1]{%
+\ifthenelse{\equal{#1}{A}}%
+    {\item[\textbf{Variables}]}%
+{\ifthenelse{\equal{#1}{B}}%
+{\item[\textbf{Greek symbols}]}%
+    {\ifthenelse{\equal{#1}{I}}%
+        {\item[\textbf{Subscripts and Superscripts}]}%
+        {\ifthenelse{\equal{#1}{V}}%
+            {\item[\textbf{Abbreviations}]}%
+                {}%
+        }
+    }
+}}
+
+% \nomenclature[a ]{}{...} produces a regular symbol
+% \nomenclature[b ]{}{...} produces a greek symbol
+% \nomenclature[i ]{}{...} produces a subscript
+% \nomenclature[v ]{}{...} produces an abbreviation
+% The letter after a,i, v or c can control the ordering (e.g. for placing greek letter at the end
+\renewcommand{\nomname}{List of symbols}%
+
 \begin{document}
 
 \title{Numerical analysis of the influence of magnetic field waveforms on the performance of active magnetic regenerators}
@@ -54,6 +77,8 @@ Magnetic cooling is an alternative to vapor compression with no use of hazarduou
 
 \keywords{ magnetic refrigeration \and active magnetic regenerator \and numerical modeling \and magnetocaloric effect}
 \end{abstract}
+
+\printnomenclature
 
 \section{Introduction}
 \label{sec:introduction}
