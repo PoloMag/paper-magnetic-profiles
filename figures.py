@@ -35,6 +35,7 @@ DENSITY_GD = 7900 # kg/m3, from Trevizoli et al (2016), IJR volume 72
 B_LABEL = r'${B}_\mathrm{high}\,[\mathrm{T}]$'
 Q_LABEL = r'$\dot{Q}_{\mathrm{C}}\,[\mathrm{W}]$'
 COP_LABEL = r'$\mathrm{COP}$'
+W_LABEL = r'$\dot{W}\,[\mathrm{W}]$'
 W_PUMP_LABEL = r'$\dot{W}_\mathrm{pump}\,[\mathrm{W}]$'
 W_MAG_LABEL = r'$\dot{W}_\mathrm{mag}\,[\mathrm{W}]$'
 W_VALVE_LABEL = r'$\dot{W}_\mathrm{valve}\,[\mathrm{W}]$'
@@ -295,7 +296,7 @@ def plot_W_Inst_vs_CCH(table_inst,table_cch,F_inst,F_CCH, figure_suffix=""):
     selecting points with blow fractions 'F_inst' and 'F_CCH',
     and adding 'figure_suffix' to the end of the filename for each figure
     
-    Creates one figure for each value of f, with curves for constant Phi for each profile
+    Creates one figure for each value of f and Phi, with all contributions plotted
     """ 
 
     regsim_utilizations = {0.1988: 0.2,
@@ -328,27 +329,11 @@ def plot_W_Inst_vs_CCH(table_inst,table_cch,F_inst,F_CCH, figure_suffix=""):
             
         if  table_inst_f_F[ld.MINIMUM_PROFILE_COLUMN].max() > 0.1:
             table_inst_f_F_Hmin = table_inst_f_F   
-                       
-                     
-        fig, axis = create_plot(ylabel=W_PUMP_LABEL,
-                                               xlabel=B_LABEL)
-
-        fig_mag, axis_mag = create_plot(ylabel=W_MAG_LABEL,
-                                               xlabel=B_LABEL)
-
-        fig_valve, axis_valve = create_plot(ylabel=W_MAG_LABEL,
-                                               xlabel=B_LABEL)
-        
-                
-        y_max = 0
-        y_COP_max = 0
-        y_mag_max = 0
-        y_valve_max = 0
-                             
                   
         for (i,phi) in enumerate(phi_vector):
 
-            label_text = r'$\Phi = ' + '%.1f' %(regsim_utilizations[phi]) + r'$'
+            fig, axis = create_plot(ylabel=W_LABEL,
+                                    xlabel=B_LABEL)
 
             table_inst_f_F_Hmin_phi = filter_table_from_column(table_inst_f_F_Hmin,ld.UTILIZATION_HOT_BLOW_COLUMN,phi)
             table_cch_f_F_phi = filter_table_from_column(table_cch_f_F,ld.UTILIZATION_HOT_BLOW_COLUMN,phi)
@@ -362,79 +347,55 @@ def plot_W_Inst_vs_CCH(table_inst,table_cch,F_inst,F_CCH, figure_suffix=""):
             Wvalve_vector_cch = table_cch_f_F_phi[ld.VALVE_POWER_COLUMN].values
 
                     
-            axis.plot(x_vector, Wpump_vector_inst, label='IT '+r'$\Phi = ' + '%.1f' %(regsim_utilizations[phi]) 
-                      + r'$', 
-                      marker=markers[i],
+            axis.plot(x_vector, Wpump_vector_inst, label='IT Pumping',
+                      marker=markers[0],
                       linestyle='-',
-                      color=colors[i])
-            axis.plot(x_vector, Wpump_vector_cch, label='RC '+r'$\Phi = ' + '%.1f' %(regsim_utilizations[phi]) + r'$', 
-                      marker=markers[i],
+                      color=colors[0])
+            axis.plot(x_vector, Wpump_vector_cch, label='RC Pumping',
+                      marker=markers[0],
                       linestyle='--', 
-                      color=colors[i])
+                      color=colors[0])
+
+            axis.plot(x_vector, Wmag_vector_inst, label='IT Magnetic',
+                      marker=markers[1],
+                      linestyle='-',
+                      color=colors[1])
+            axis.plot(x_vector, Wmag_vector_cch, label='RC Magnetic',
+                    marker=markers[1],
+                    linestyle='--', 
+                    color=colors[1])
+            
+            axis.plot(x_vector, Wvalve_vector_inst, label='IT Valve',
+                      marker=markers[2],
+                      linestyle='-',
+                      color=colors[2])
+            axis.plot(x_vector, Wvalve_vector_cch, label='RC Valve',
+                      marker=markers[2],
+                      linestyle='--', 
+                      color=colors[2])
+            
             axis.legend(loc='upper left',
                    bbox_to_anchor=(1.0,1.0))
 
-            axis_mag.plot(x_vector, Wmag_vector_inst, label='IT '+r'$\Phi = ' + '%.1f' %(regsim_utilizations[phi]) 
-                      + r'$', 
-                      marker=markers[i],
-                      linestyle='-',
-                      color=colors[i])
-            axis_mag.plot(x_vector, Wmag_vector_cch, label='RC '+r'$\Phi = ' + '%.1f' %(regsim_utilizations[phi]) + r'$', 
-                      marker=markers[i],
-                      linestyle='--', 
-                      color=colors[i])
-            axis_mag.legend(loc='upper left',
-                   bbox_to_anchor=(1.0,1.0))
+            ymax = np.max(
+                [
+                    Wpump_vector_cch,
+                    Wpump_vector_inst,
+                    Wmag_vector_cch,
+                    Wmag_vector_inst,
+                    Wvalve_vector_cch,
+                    Wvalve_vector_inst
+                ]
+            )
+            axis.set_ylim(0,ymax)
+            axis.set_xlim(x_min,x_max)
+            axis.grid(True)
+            refine_xticks(axis,4)
+            refine_yticks(axis,4)
 
-            axis_valve.plot(x_vector, Wvalve_vector_inst, label='IT '+r'$\Phi = ' + '%.1f' %(regsim_utilizations[phi]) 
-                      + r'$', 
-                      marker=markers[i],
-                      linestyle='-',
-                      color=colors[i])
-            axis_valve.plot(x_vector, Wvalve_vector_cch, label='RC '+r'$\Phi = ' + '%.1f' %(regsim_utilizations[phi]) + r'$', 
-                      marker=markers[i],
-                      linestyle='--', 
-                      color=colors[i])
-            axis_valve.legend(loc='upper left',
-                   bbox_to_anchor=(1.0,1.0))
-         
-            if (max(Wpump_vector_cch) > y_max):
-                y_max = max(Wpump_vector_cch)
-            if (max(Wmag_vector_cch) > y_mag_max):
-                y_mag_max = max(Wmag_vector_cch)
-            if (max(Wvalve_vector_cch) > y_valve_max):
-                y_valve_max = max(Wvalve_vector_cch)
-                    
-        
-        axis.set_ylim(0,y_max)     
-        axis.set_xlim(x_min,x_max)
-        axis.grid(True)
-        refine_xticks(axis,4)
-        refine_yticks(axis,4)
-
-        axis_mag.set_ylim(0,y_mag_max)     
-        axis_mag.set_xlim(x_min,x_max)
-        axis_mag.grid(True)
-        refine_xticks(axis_mag,4)
-        refine_yticks(axis_mag,4)
-
-        axis_valve.set_ylim(0,y_valve_max)     
-        axis_valve.set_xlim(x_min,x_max)
-        axis_valve.grid(True)
-        refine_xticks(axis_valve,4)
-        refine_yticks(axis_valve,4)
-        
-        fig_name = "Wpump_B_comp_f_%d%s" %(f,figure_suffix)
-        save_figure(fig,fig_name)
-        plt.close(fig)
-
-        fig_mag_name = "Wmag_B_comp_f_%d%s" %(f,figure_suffix)
-        save_figure(fig_mag,fig_mag_name)
-        plt.close(fig_mag)
-
-        fig_valve_name = "Wvalve_B_comp_f_%d%s" %(f,figure_suffix)
-        save_figure(fig_valve,fig_valve_name)
-        plt.close(fig_valve)
+            fig_name = "Wpump_B_comp_f_%d_Phi_%d%s" %(f,1e2*regsim_utilizations[phi],figure_suffix)
+            save_figure(fig,fig_name)
+            plt.close(fig)
 
         #plt.show()
 
@@ -946,42 +907,42 @@ plot_Qc_and_COP_Inst_vs_CCH(
 plot_W_Inst_vs_CCH(table_inst, table_cch,F_B_inst,F_B_CCH,fig_suffix)
 
 
-# # ### Instantaneous profile -  Q_c vs $\Phi$ (one curve for each maximum field)
+# ### Instantaneous profile -  Q_c vs $\Phi$ (one curve for each maximum field)
 
 plot_Qc_phi_Inst(table_inst)
 
-# # # ### Instantaneous profile -  Q_c vs H_reg 
-# # # 
-# # # - Width, length and number of regenerators are kept fixed
-# # # - Blow fraction is kept fixed at 100%
-# # # - Minimum field 0.05 T
+# # ### Instantaneous profile -  Q_c vs H_reg 
+# # 
+# # - Width, length and number of regenerators are kept fixed
+# # - Blow fraction is kept fixed at 100%
+# # - Minimum field 0.05 T
 
 table_Inst_variosH = ld.it_varH_df
 plot_Qc_H_Inst(table_Inst_variosH)
 
 
-# # ## 4 Plotting the ramp profile
+# ## 4 Plotting the ramp profile
 
-# # ## AMR curve
+# ## AMR curve
 
-# # - Fixed regenerator
-# # - Fixed span
-# # - Vary frequency, utilization, ramp and blow fraction
-# # - Magn. Period = Demagn. Period
-# # - High field Period = Low field Period
-# # - Magn Period + High field Period = 50%
-# # 
-# # The period the AMR cycle if $\tau$, divided into a cold stage period $\tau_C$ and a hot stage period $\tau_H$, such that $\tau_c = \tau_H$.
-# # 
-# # The blow fraction $F_B$ is the fraction of the entire cycle where there is fluid blow in a given AMR bed. The cold blow period is $\tau_{CB}$ and the how blow period is $\tau_{HB}$. Because of the symmetry between the cold and hot stages:
-# # 
-# # \begin{equation}
-# # \tau_{CB} = F_B \tau_C = \frac{1}{2} F_B \tau = \tau_{HB}
-# # \end{equation}
-# # 
-# # The high field fraction $F_M$ is the fraction of the entire cycle where the magnetic profile stays  fully magnetized (or, due to symmetry, fully demagnetized). 
+# - Fixed regenerator
+# - Fixed span
+# - Vary frequency, utilization, ramp and blow fraction
+# - Magn. Period = Demagn. Period
+# - High field Period = Low field Period
+# - Magn Period + High field Period = 50%
+# 
+# The period the AMR cycle if $\tau$, divided into a cold stage period $\tau_C$ and a hot stage period $\tau_H$, such that $\tau_c = \tau_H$.
+# 
+# The blow fraction $F_B$ is the fraction of the entire cycle where there is fluid blow in a given AMR bed. The cold blow period is $\tau_{CB}$ and the how blow period is $\tau_{HB}$. Because of the symmetry between the cold and hot stages:
+# 
+# \begin{equation}
+# \tau_{CB} = F_B \tau_C = \frac{1}{2} F_B \tau = \tau_{HB}
+# \end{equation}
+# 
+# The high field fraction $F_M$ is the fraction of the entire cycle where the magnetic profile stays  fully magnetized (or, due to symmetry, fully demagnetized). 
 
-# # Fixed parameters
+# Fixed parameters
 
 FIXED_PARAMETERS_NEW = {
     "D_p[m]": 0.35e-3,
