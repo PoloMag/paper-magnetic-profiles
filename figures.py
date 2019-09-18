@@ -421,6 +421,11 @@ def plot_Qc_phi_Inst(table):
     
     markers=['s','o','x','v','^','h','<']
     colors=["black", "firebrick","darkcyan","indigo","sienna"]
+    
+    # tweak for better visuals
+    Qc_max = 600 
+    COP_max = 3.0
+
     for f in f_vector:    
         table_f = filter_table_from_column(table,ld.FREQUENCY_COLUMN,f)
         
@@ -466,7 +471,15 @@ def plot_Qc_phi_Inst(table):
                     ax.set_xlim(0.2,1)
                     ax.grid(True)
                     refine_yticks(ax,5)
-              
+                
+
+                axis_Qc.set_ylim((-Qc_max,Qc_max))
+                refine_yticks(axis_Qc,5)
+
+                axis_COP.set_ylim((-COP_max,COP_max))
+                refine_yticks(axis_COP,5)
+
+
                 fig_list.append((fig_Qc,fig_COP))
                 
                 
