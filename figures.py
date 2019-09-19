@@ -314,7 +314,7 @@ def plot_W_Inst_vs_CCH(table_inst,table_cch,F_inst,F_CCH, figure_suffix=""):
 
     fig_list = []
     markers=['s','o','x','v','^','h','<']
-    colors=["black", "firebrick","darkcyan","indigo","sienna"]
+    colors=["indigo","sienna","darkgreen"]
     for f in f_vector:    
         table_inst_f = filter_table_from_column(table_inst,ld.FREQUENCY_COLUMN,f)
         table_cch_f = filter_table_from_column(table_cch,ld.FREQUENCY_COLUMN,f)
@@ -393,7 +393,7 @@ def plot_W_Inst_vs_CCH(table_inst,table_cch,F_inst,F_CCH, figure_suffix=""):
             refine_xticks(axis,4)
             refine_yticks(axis,4)
 
-            fig_name = "Wpump_B_comp_f_%d_Phi_%d%s" %(f,1e2*regsim_utilizations[phi],figure_suffix)
+            fig_name = "W_B_comp_f_%d_Phi_%d%s" %(f,1e2*regsim_utilizations[phi],figure_suffix)
             save_figure(fig,fig_name)
             plt.close(fig)
 

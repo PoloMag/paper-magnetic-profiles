@@ -555,13 +555,22 @@ Figure~\ref{fig:cos_ins} shows the cooling capacity attained by the device at a 
 The only exception in this comparison  is seen for the lowest utilization of $\Phi = 0.2$, where the performance is slightly better for the RC profile. Since the blow fraction for the cosine is lower, the mass flow rate \textcolor{black}{is} higher \textcolor{black}{in the latter for} the same utilization (cf. Eq.~\eqref{eq:200}). \textcolor{black}{This} increases \textcolor{black}{the} heat transfer rate, as previously explained ---  outweighing the effects of the magnetic field.
 
 
-The same analysis, but in terms of the coeficient of performance, is shown in \autoref{fig:cos_ins_cop}, with the same trends as for the cooling capacity; however, in this case  the rectified cosine profile yields better results for small to medium values of utilization. This is due to \textcolor{black}{a} lower pumping power, as the mass flow rate for the cosine profile is slightly higher, but also flows for a shorter period of time. \textcolor{black}{Since} in this region the cooling capacity for the RC profile can be close to or higher than the \textcolor{black}{IT} profile (cf. Fig.~\autoref{fig:comp_min}), the coefficient of performance becomes higher for the rectified cosine profile.
+The same analysis, but in terms of the coeficient of performance, is shown in \autoref{fig:cos_ins_cop}, where it can be seen that the instantaneous profile yields better results for medium to high levels of utilization. This is due to some phenomena shown in \autoref{fig:cos_ins_w} for a fixed utilization of 0.6: the magnetic power only change between profiles due to variations in cooling capacity; the valve power is higher for the IT profile since the valves must remain open for longer periods; but the proportional increase in pumping power, due to larger flow rate, is even higher (than the change in valve power).
 
 \begin{figure}[!ht]
   \centering
 \includegraphics[width=7cm]{COP_B_comp_f_1_same_minimum}
   \caption{Coefficient of performance as a function of the  average high magnetic field, for different utilizations. \textcolor{black}{``IT''}: instantaneous (blow fraction of \SI{100}{\percent}); ``RC'': rectified cosine  (blow fraction of \SI{60}{\percent}).}
  \label{fig:cos_ins_cop}
+\end{figure}
+
+
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=10cm]{W_B_comp_f_1_Phi_60_same_minimum}
+  \caption{Power contributions as functions of the average high magnetic field, for a utilization of 0.6. \textcolor{black}{``IT''}: instantaneous (blow fraction of \SI{100}{\percent}); ``RC'': rectified cosine  (blow fraction of \SI{60}{\percent}).}
+  \label{fig:cos_ins_w}
 \end{figure}
 
 In general, considering the goal of achieving target requirements for the cooling capacity, AMRs operating with the instantaneous magnetic profile \textcolor{black}{generate} better \textcolor{black}{performance} results. As can be seen \textcolor{black}{in} Fig.~\ref{fig:cos_ins}, an instantaneous profile with the lowest possible value of $B\ped{min}$ and the highest possible value of $B\ped{max}$, with a flow profile occupying the whole cycle with average values of utilization, results in the highest values of cooling capacity among all simulations. 
