@@ -14,7 +14,7 @@
    viewBox="0 0 300 199.99999"
    version="1.1"
    id="svg8"
-   inkscape:version="0.92.2 5c3e80d, 2017-08-06"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
    sodipodi:docname="amr-casing.svg"
    inkscape:export-filename="/Volumes/GoogleDrive/My Drive/PoloMag/___PoloMag-Publico/Conferences/Themag_VIII_2018/Posters_Thermag_VIII_2018/Fortkamp_Integrated_Design_Poster/amr.png"
    inkscape:export-xdpi="800"
@@ -58,16 +58,16 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.0887604"
-     inkscape:cx="573.04251"
+     inkscape:cx="423.7902"
      inkscape:cy="377.95276"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="true"
      units="cm"
      inkscape:window-width="1920"
-     inkscape:window-height="956"
-     inkscape:window-x="0"
-     inkscape:window-y="0"
+     inkscape:window-height="1017"
+     inkscape:window-x="1912"
+     inkscape:window-y="-8"
      inkscape:window-maximized="1">
     <inkscape:grid
        type="xygrid"
@@ -319,32 +319,6 @@
        id="path1247"
        inkscape:connector-curvature="0"
        transform="matrix(0.26458333,0,0,0.26458333,0,97.000008)" />
-    <text
-       id="text1253"
-       y="133.62596"
-       x="35.099609"
-       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       xml:space="preserve"><tspan
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.87777805px;font-family:Palatino;-inkscape-font-specification:Palatino;stroke-width:0.26458332"
-         y="133.62596"
-         x="35.099609"
-         id="tspan1251"
-         sodipodi:role="line">R<tspan
-   style="font-size:64.99999762%;baseline-shift:sub"
-   id="tspan1255">g</tspan></tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="34.856598"
-       y="265.20447"
-       id="text1261"><tspan
-         sodipodi:role="line"
-         id="tspan1259"
-         x="34.856598"
-         y="265.20447"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.87777805px;font-family:Palatino;-inkscape-font-specification:Palatino;stroke-width:0.26458332">R<tspan
-   style="font-size:64.99999762%;baseline-shift:sub"
-   id="tspan1263">o</tspan></tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
