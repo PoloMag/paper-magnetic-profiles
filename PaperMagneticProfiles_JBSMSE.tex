@@ -16,6 +16,7 @@
 \usepackage{mathptmx}
 \journalname{Journal of the Brazilian Society of Mechanical Sciences and Engineering}
 
+\usepackage[numbers]{natbib}
 \usepackage{graphicx}
 \usepackage{subfig}
 \usepackage{xcolor}
@@ -47,10 +48,13 @@
 
 \begin{document}
 
-\title{Numerical analysis of the influence of magnetic field waveforms on the performance of active magnetic regenerators}
+\title{Numerical analysis of the influence of magnetic field waveforms on the performance of active magnetic regenerators
+\thanks{
+An abridged version of this manuscript was presented at the ABCM International Congress of Mechanical Engineering (COBEM \colorbox{yellow}{Completar... cidade etc}).
+}}
 
 \author{
-Fábio P. Fortkamp \and
+F\'{a}bio P. Fortkamp \and
 Gusttav B. Lang \and
 Jaime A. Lozano \and
 Jader R. Barbosa Jr.
@@ -58,7 +62,7 @@ Jader R. Barbosa Jr.
 
 
 \institute{
-Fábio P. Fortkamp \\
+F\'{a}bio P. Fortkamp \\
 \email{fabio@polo.ufsc.br} \\
 Gusttav B. Lang \and
 Jaime A. Lozano \and
@@ -73,9 +77,9 @@ POLO --- Research Laboratories for Emerging Technologies in Cooling and Thermoph
 \maketitle
 
 \begin{abstract}
-Magnetic cooling is an alternative to vapor compression with no use of hazarduous gases. The refrigerant is a solid material which reacts to oscillations in magnetic field with changes in temperature. In active magnetic regenerators, this magnetocaloric material and its effect are coupled with an oscillating fluid flow to yield a thermodynamic cooling cycle between cold and hot source temperatures. The literature is abundant with studies on the influence of the fluid flow waveform on magnetic refrigeration devices, but the influence of the magnetic field waveform is less investigated. In this work, we simulate a previously developed active magnetic regenerator numerical model with different mathematically-defined waveforms, and determine which operating parameters yield the highest values for cooling capacity and coefficient of performance. Results show that the highests performance levels are achieved when the magnetic field is kept constant for the same duration of the fluid flow through the magnetized material, and that the transition times between high and low levels of the magnetic field should be as fast as possible.
+Magnetic cooling is an alternative to vapor compression that does not rely on the use of hazardous substances. The refrigerant is a solid material which reacts to oscillations in magnetic field by changing its temperature (the magnetocaloric effect). In active magnetic regenerators, the magnetocaloric material arranged as a porous medium is subjected to an oscillating fluid flow to allow heat transfer from a cold source to a hot sink in a thermodynamic cooling cycle. Although the  literature is abundant with studies on the influence of the fluid flow waveform on magnetic refrigeration devices, the influence of the magnetic field waveform has been much less investigated. In this work, we make use of an active magnetic regenerator numerical model with different mathematically-defined waveforms to determine which operating parameters yield the highest values of cooling capacity and coefficient of performance for a specific set of operating conditions. The results show that the best performance is achieved when the magnetic field is kept constant for the same time duration of the fluid flow through the magnetized material, and that the transition times between the high and low levels of the magnetic field should be as short as possible.
 
-\keywords{ magnetic refrigeration \and active magnetic regenerator \and numerical modeling \and magnetocaloric effect}
+\keywords{magnetic refrigeration \and active magnetic regenerator \and numerical modeling \and magnetocaloric effect}
 \end{abstract}
 
 \printnomenclature
@@ -83,40 +87,47 @@ Magnetic cooling is an alternative to vapor compression with no use of hazarduou
 \section{Introduction}
 \label{sec:introduction}
 
-Mechanical vapor compression has been the dominant cooling technology for the past century \cite{bib:nik} but, despite its dominance, it still faces an increasing number of challenges related to the its environmental footprint. In particular, the phase-out of refrigerants \textcolor{black}{with} ozone depleting \textcolor{black}{and global warming potentials has} introduced the use of flammable substances, with their own set of risks for consumer applications \cite{bib:iir-flammable} and technological challenges \cite{bib:lionte18-adapt}.
+Although mechanical vapor compression has been the dominant cooling technology for the past century \cite{bib:nik}, it still faces a number of challenges related to its environmental footprint. For instance, the phase-out of refrigerants with ozone depleting and global warming potentials brought about a more widespread use of flammable substances, which pose a new set of concerns, restrictions and new technological challenges for consumer applications \cite{bib:iir-flammable, bib:lionte18-adapt}.
 
-Magnetic refrigeration (MR) is an advanced cooling technology with no use of hazarduous gases, where a \emph{magnetocaloric material} (MCM) \textcolor{black}{is subjected to a cyclical change of the applied} magnetic field, and its temperature \textcolor{black}{changes as a result} of the \emph{magnetocaloric effect} (MCE). The magnitude of the MCE  \textcolor{black}{depends} on  material parameters, magnetic field variation and temperature, and its maximal at the Curie temperature of the material. For a thorough introduction to the magnetocaloric effect and magnetocaloric materials, the reader is referred to \cite{bib:smith-magneto}.
+Magnetic refrigeration (MR) is an emerging cooling technology which does not rely on hazardous fluids. In MR, the temperature of a  \emph{magnetocaloric material} (MCM) changes as a result of cyclical changes in the applied magnetic field due to the so-called \emph{magnetocaloric effect} (MCE). The magnitude of the MCE depends on  material properties, magnetic field variation and temperature, and it is maximum at the Curie temperature of the material \cite{bib:smith-magneto, bib:kitanovski}. Applications of the MCE at near room-temperature are not restricted to cooling applications; it can also be applied to the development of thermomagnetic motors \cite{bib:kaneko}.   
 
 
 \nomenclature[vm]{MR}{Magnetic (or Magnetocaloric) Refrigeration}
 \nomenclature[vm]{MCM}{Magnetocaloric Material}
 \nomenclature[vm]{MCE}{Magnetocaloric Effect}
 
-For operating conditions typical of a low-temperature span magnetic refrigerator, the MCE is typically \textcolor{black}{on} the order of \num{2}-\SI{5}{\kelvin}. \textcolor{black}{T}o amplify this \textcolor{black}{temperature change}, heat regeneration is usually employed \cite{bib:kitanovski}. Active magnetic regenerators (AMR) are thermal devices where the magnetocaloric material constitutes a solid matrix through which flows an aqueous heat transfer fluid, and which is cyclically magnetized and demagnetized to activate the magnetocaloric effect.  \textcolor{black}{Such a regenerator is essentially a cascade of infinitesimal ``layers'' of MCM that are activated simultaneously} to build up a temperature profile \textcolor{black}{along its length}. These layers can be made of the same material, yielding an homogeneous regenerator; however, given the  dependence  of the MCE with temperature, it is an interesting strategy to build \emph{multilayer} regenerators, where each layer is composed of a different material \textcolor{black}{that} will work around its \textcolor{black}{own} Curie temperature, maximizing the magnetocaloric effect of each portion.
+For operating temperatures typical of household cooling applications, the MCE is of the order of \num{2}-\SI{5} K/T. To amplify this temperature change, heat regeneration is usually employed \cite{bib:kitanovski}. Active magnetic regenerators (AMR) are thermal devices in which the magnetocaloric material is packed as a porous matrix subjected to periodic flow of an aqueous heat transfer fluid. The flow is put in sync with successive magnetization and demagnetization steps of the MCM in the porous bed to produce a refrigerating effect. Thus, the AMR is essentially a cascade of infinitesimal ``layers'' of MCM that are activated simultaneously to build up a longitudinal temperature profile in the matrix. The layers can be made of the same material, resulting in a homogeneous regenerator. However, given the dependence of the MCE on temperature, it is desirable to build \emph{multilayer} regenerators, where each adjacent layer has a slightly different composition that will function around its own Curie temperature, maximizing the magnetocaloric effect of each portion.
+
+
 
 \nomenclature[vm]{AMR}{Active Magnetic Regenerator}
 
 
-Magnetic refrigerators can operate according to different thermodynamic cycles, but the stages are roughly as follows. The magnetic circuit magnetizes the MCM, increasing its temperature due to the MCE. During the so-called \emph{cold blow}, cold fluid from the cold source flows through the warm bed and absorbs its energy, releasing it to the external heat exchanger. On the return of the fluid, the solid is demagnetized and cooled down, and in the \emph{hot blow} the fluid relases energy to the bed, decreasing its temperature so it can absorb the thermal load at the cold source. The cycle then repeats; different cycles can be configured by different durations and synchronization steps between these two \emph{characteristic waveforms}:
+A typical AMR cycle is comprised of the following steps: (i) The magnetic circuit magnetizes the MCM, thereby increasing its temperature due to the MCE; (ii) During the \emph{cold blow}, cold fluid previously in thermal contact with the low-temperature source flows through the warm bed, absorbs its energy and releases it as heat to the high-temperature sink through the hot heat exchanger; (iii) The MCM is demagnetized and coold down as a result; (iv) As the fluid flow is reversed (\emph{hot blow}), it releases energy to the bed, decreases its temperature so it can absorb the thermal load at the cold heat exchanger in contact with the low-temperature source. Different cycles can be devised by changing the duration and synchronization  between the two cycle \emph{characteristic waveforms}:
 
 \begin{enumerate}
-\item The \emph{magnetic profile}, which describes the oscillating magnetic field over one regenerator;
+\item The \emph{applied magnetic field profile}, which describes the oscillating magnetic field over one regenerator;
 \item The \emph{fluid flow profile}, which describes the time-variation of flow rate through one bed.
 \end{enumerate}
 
-Fluid flow profiles are more easily investigated with experimental methods, since they can be altered with modifications in the fluid flow system. In particular, the \emph{duration} of blows have been extensively investigated \cite{bib:teyber17_exper,bib:nakashima18-influen-exp,FORTKAMP2018}, and the literature shows that the cooling capacity of magnetic refrigerators can be increased by focusing fluid flows during periods where the magnetic field is at its extrema values.
+Fluid flow profiles can be more easily investigated  experimentally, as no changes in the fluid flow hardware are required. In particular, the effect of the \emph{duration} of the fluid blows has been extensively investigated \cite{bib:teyber17_exper,bib:nakashima18-influen-exp,FORTKAMP2018}. There appears to be a consensus in the literature that the cooling capacity of magnetic refrigerators can be increased by displacing the fluid during periods where the magnetic field is at its extreme values. 
 
-In this work, we focus on magnetic profiles, which are less studied in the literature.
-These waveforms are usually investigated in terms of their synchronization with the fluid flow profile \cite{TUSEK20111507,bib:bjoerk11_amr}. This paper uses the AMR model developed by \cite{bib:trevizoli16_perfor_model}, and the same authors had studied magnetic profiles waveforms in an earlier work \cite{bib:asme-mce}. However, their amplitudes was not varied, nor were they investigated with different geometries.
+In contrast, because of the complexities involved in designing and fabricating magnetic circuits, the applied magnetic field profiles (or simply the magnetic waveforms) are much less studied. Magnetic waveforms are usually investigated in terms of their synchronization with the fluid flow profile \cite{TUSEK20111507,bib:bjoerk11_amr}. \colorbox{yellow}{acho q cabe explicar brevemente o que os trabalhos de \cite{TUSEK20111507} e \cite{bib:bjoerk11_amr} fizeram...}. Trevizoli et al.~\cite{bib:trevizoli16_perfor_model} carried out a numerical comparison of the square wave (step change), sinusoidal and rectified cosine magnetic profiles. However, no systematic assessment of the effect of amplitude was performed nor did they investigate different geometries \colorbox{yellow}{nao estah claro o que vc quer dizer por geometries}.
 
-The present work combines the gaps from the above cited papers in investigating the performance of a magnetic refrigerator under different magnetic profile waveforms. These waveforms are mathematically modeled, and the cooling capacity and coefficient of performance are calculated based on the profiles parameters, while also investigated how the AMR geometry affect the performance in combinations with the magnetic profile. The fluid flow profile is assumed fixed in shape, although its parameters are also varied. To emulate constraints on an operating point of actual magnetic refrigeration devices, the temperature span is set fixed, and hence few comments are made on second-law efficiency.
+
+\colorbox{yellow}{Fabio, acho que revisao bibliografica tem que ser expandida, trazendo trabalhos mais recentes em refrigeracao magnetica.}
+
+\colorbox{yellow}{Tambem tem que trazer aqui para a revisao os nossos artigos que mediram/testaram/modelaram as valvulas.}
+
+
+The present work bridges the gaps left in previous studies by investigating the performance of a magnetic refrigerator under different magnetic profile waveforms. These waveforms are mathematically modeled, and the cooling capacity and coefficient of performance are calculated based on the profiles parameters, while also investigated how the AMR geometry affect the performance in combinations with the magnetic profile. The fluid flow profile is assumed fixed in shape, although its parameters are also varied. To emulate constraints on an operating point of actual magnetic refrigeration devices, the temperature span is set fixed, and hence few comments are made on second-law efficiency.
 
 
 
 \section{Materials and methods}
 \label{sec:materials-methods}
 
-As previuosly explained, we perform numerical simulations of a previously developed AMR model, varying the profile-specific and geometric parameters. We also couple a model for calculating  the power comsumption of a proposed fluid management system, a topic understudied in the literature. The output of this integrated model are cooling capacity, power contributions and the coefficient of performance (COP).
+As previuosly explained, we performed numerical simulations using a previously developed AMR model, varying the profile-specific and geometric parameters. We also implemented a model to calculate the power consumption of a novel fluid management system, which is a topic not yet extensively studied in the literature. The output variables from this integrated model are the cooling capacity, the several power contributions (\colorbox{yellow}{specify}) and the coefficient of performance (COP).
 
 \nomenclature[ac]{COP}{coefficient of performance}
 
@@ -126,7 +137,7 @@ As previuosly explained, we perform numerical simulations of a previously develo
 \subsubsection{Governing equations}
 \label{sec:governing-equations}
 
-Simulations were performed using a one-dimensional AMR mathematical model, implemented using the Finite Volumes Method \cite{bib:trevizoli16_perfor_model}. Here we will show a summarized version focusing on the governing equations. This model solves momentum and energy balance equations for the solid and fluid phases, represented by indices `s' and `f', respectively. The model geometry is depicted in \autoref{fig:amrmodel}, and assumes regenerators composed of monodisperse packed spheres with porosity $\varepsilon$.
+Simulations were performed using a one-dimensional AMR mathematical model, implemented using the Finite Volume Method \cite{bib:trevizoli16_perfor_model}. The model solves momentum and energy balance equations for the solid and fluid phases, represented by indices `s' and `f', respectively. The model geometry is shown in \autoref{fig:amrmodel}, and assumes that the regenerator is composed of monodisperse packed spheres with porosity $\varepsilon$.
 
 \nomenclature[is]{s}{solid phase}
 \nomenclature[if]{f}{fluid phase}
@@ -138,7 +149,7 @@ Simulations were performed using a one-dimensional AMR mathematical model, imple
   \label{fig:amrmodel}
 \end{figure}
 
-The momentum equation for the fluid domain is:
+The momentum equation for the fluid domain is given by:
 
 \begin{equation}
 \label{eq:75}
@@ -195,11 +206,14 @@ The energy equation for the fluid phase can be written as:
   \rho\ped{s} c\ped{s}(1 - \varepsilon)\diffp{T\ped{s}}{t} = \hheat\ped{sf}\beta(T\ped{f}-T\ped{s}) + (1-\varepsilon)k\ped{s}\ap{eff}\diffp[2]{T\ped{s}}{z}
 \end{equation}
 
-Initial and boundary conditions, solution methods, convergence analyses, and closure relations for the porous media terms are described in \cite{bib:trevizoli16_perfor_model}. This AMR model solves the above equations for one regenerator operating between given sources temperatures (assuming ideal heat exchangers in contact with the thermal reservoirs), during one full cycle (hot and cold blows and  magnetization and demagnetization periods), given specified operating conditions (to be discussed later).
+\colorbox{yellow}{Fabio, talvez valha a pena explicar quem eh quem nos termos das equacoes da Q movimento e energias...}
 
-The casing heat transfer term $\rate{q}\ped{csg}$ in \autoref{eq:78} is calculated solving the heat conduction in the regenerators casing \cite{bib:trevizoli16_perfor_model}, and can be neglected to simplify some analyses. More details are provided in \autoref{sec:results-discussions}.
 
-\subsubsection{How the fluid flow profile is used}
+Initial and boundary conditions, closure relations for the porous media terms, solution methods and convergence criteria and analyses are discussed in detail in \cite{bib:trevizoli16_perfor_model}. This AMR model solves the above equations for one regenerator operating between given sources temperatures (assuming ideal heat exchangers in contact with the thermal reservoirs), during one full cycle (hot and cold blows and  magnetization and demagnetization periods), given specified operating conditions (to be discussed later).
+
+The casing heat transfer term $\rate{q}\ped{csg}$ in \autoref{eq:78} is calculated solving the heat conduction equation in the regenerator casing \cite{bib:trevizoli16_perfor_model}. It can be neglected in some circumstances if an insulating casing material is assumed, which greatly simplifies the analysis. %More details are provided in \autoref{sec:results-discussions}.
+
+\subsubsection{Fluid flow profile modeling}
 \label{sec:how-fluid-flow}
 
 The pressure gradient in \autoref{eq:75} is modeled as:
@@ -209,12 +223,12 @@ The pressure gradient in \autoref{eq:75} is modeled as:
 -\diffp{P}{z} = \rho\ped{f} A\ped{t} g(t)
 \end{equation}
 
-\noindent where \(g(t)\) is a dimensionless function that expresses the mathematical waveform of the pressure gradient, and  \(A\ped{t}\) is its amplitude,  adjusted in a convergence loop; the mass flow rate calculated from the Darcy velocity from \autoref{eq:75} is compared with the input value of mass flow rate until these values converge. The waveform $g(t)$ represents the fluid flow profile used.
+\noindent where \(g(t)\) is a dimensionless function that expresses the mathematical waveform of the pressure gradient, and  \(A\ped{t}\) is its amplitude,  adjusted in a convergence loop. In this loop, the mass flow rate calculated in term of the Darcy velocity from \autoref{eq:75} is compared with the input   mass flow rate until convergence is obtained. %The waveform $g(t)$ represents the fluid flow profile used.
 
 \nomenclature[ag]{$g(t)$}{dimensional waveform of the pressure gradient term in the fluid momentum equation}
 \nomenclature[aA]{$A\ped{t}$}{amplitude of the pressure gradient waveform in the fluid momentum equation [\si{\meter\per\second\square}]}
 
-The canonical fluid flow profile considered in this work \textcolor{black}{ is the square wave or \emph{instantaneous profile}}, because of the instantaneous change in flow rate, as shown in \autoref{fig:mprofile}. 
+The canonical fluid flow profile considered in this work is the square wave or \emph{instantaneous profile}, because of the instantaneous change in flow rate, as shown in \autoref{fig:mprofile}. 
 
 \begin{figure}[!ht]
   \centering
@@ -223,13 +237,12 @@ The canonical fluid flow profile considered in this work \textcolor{black}{ is t
   \label{fig:mprofile}
 \end{figure}
 
-The \textcolor{black}{instantaneous mass flow rate}, \(\rate{m}\ped{f}(t)\), is defined over a cycle with \textcolor{black}{a} period \(\tau\), and represents the fluid flow \textcolor{black}{through} a given regenerator bed. The so-called \emph{hot cycle}, \textcolor{black}{during which} the MCM is magnetized, occupies the \textcolor{black}{time interval} \(0 \le t < \nicefrac{\tau}{2}\), while the \emph{cold cycle}
-lies \textcolor{black}{between} \(\nicefrac{\tau}{2} \le t \le \tau\). The flow profile oscillates between two plateaus of equal magnitude
-\(\rate{m}\ped{f,max}\) \textcolor{black}{and} opposite directions, \textcolor{black}{which} are centered in each half-cycle. During the hot cycle, the cold
-blow period is \(\tau\ped{CB}\), and during the cold cycle the hot blow period is \(\tau\ped{HB}\). If the flow is balanced, then \(\tau\ped{CB} = \tau\ped{HB}\).
+The instantaneous mass flow rate, \(\rate{m}\ped{f}(t)\), is defined over a cycle with a period \(\tau\), and represents the fluid flow through a given regenerator bed. The so-called \emph{hot cycle}, during which the MCM is magnetized, occupies the time interval \(0 \le t < \nicefrac{\tau}{2}\), while the \emph{cold cycle} lies between \(\nicefrac{\tau}{2} \le t \le \tau\). The flow profile oscillates between two plateaus of equal magnitude
+\(\rate{m}\ped{f,max}\) and opposite directions, which are centered in each half-cycle. During the hot cycle, the cold
+blow period is \(\tau\ped{CB}\), and during the cold cycle the hot blow period is \(\tau\ped{HB}\). If balanced flow exists, then \(\tau\ped{CB} = \tau\ped{HB}\).
 
 
-During each half cycle, there are periods \textcolor{black}{without}  fluid flow, defined as:
+During each half cycle, there are periods without  fluid flow defined as:
 
 \begin{equation}
 \label{eq:48}
@@ -241,7 +254,7 @@ During each half cycle, there are periods \textcolor{black}{without}  fluid flow
 \tau\ped{0,CC} = \frac{\nicefrac{\tau}{2} - \tau\ped{HB}}{2}
 \end{equation}
 
-where HC and CC stand for hot \textcolor{black}{cycle} and cold cycle, respectively.
+where HC and CC stand for hot cycle and cold cycle, respectively.
 
 \nomenclature[vh]{HC}{hot cycle}
 \nomenclature[vc]{CC}{cold cycle}
@@ -260,7 +273,7 @@ The profile can be mathematically defined as:
 \label{eq:50}
 \end{equation}
 
-When the blows have different time durations, the AMR cycle is considered unbalanced, and this \textcolor{black}{is known to have} a negative effect on performance \cite{bib:eriksen16_effec,bib:nakashima18-influen-exp}. In this work, the blows are always balanced, hence the blow fraction, the ratio of blow durations to cycle period \cite{bib:nakashima18-influen-exp}, can be evaluated as:
+When the blows have different time durations, the AMR cycle is considered unbalanced, and that is known to have a negative effect on performance \cite{bib:eriksen16_effec,bib:nakashima18-influen-exp}. In this work, the blows are always balanced, hence the blow fraction, i.e., the ratio of blow durations to cycle period \cite{bib:nakashima18-influen-exp}, can be evaluated as:
 
 \begin{equation}
 \label{eq:59}
@@ -271,10 +284,10 @@ F\ped{B} = \frac{2\tau\ped{B}}{\tau}
 
 \nomenclature[bt]{$\tau\ped{B}$}{blow duration [\si{\second}]}
 
-\subsubsection{How the magnetic profile is used}
+\subsubsection{Magnetic profile modeling}
 \label{sec:how-magnetic-profile}
 
-The magnetic profile is modeled by a waveform of magnetic field strength $H(t)$ applied perpendicular to the regenerators, as shown in \autoref{fig:amrmodel}. The magnetic field is assumed uniform throughout the beds. The applied field is corrected from demagnetization effects to yield the effective field inside the regenerators:
+The magnetic profile is modeled by a waveform of magnetic field strength, $H(t)$, applied perpendicular to the regenerators, as shown in \autoref{fig:amrmodel}. The magnetic field is assumed uniform throughout the beds. The applied field is corrected from demagnetization effects to yield the effective field inside the regenerators:
 
 \begin{equation}
   \label{eq:6}
@@ -296,11 +309,11 @@ The magnetocaloric effect is implemented in the so-called discrete approach \cit
 
 \nomenclature[bt]{$\dtad$}{adiabatic temperature variation [\si{\kelvin}]}
 
-\noindent where the adiabatic temperature variation $\dtad$, a standard measure of the MCE, is calculated from \textcolor{black}{tabulated} experimental \textcolor{black}{data} for magnetocaloric materials as function of temperature and effective field. \cite{bib:trevizoli16_perfor_model}.
+\noindent where the adiabatic temperature variation, $\dtad$, a standard measure of the MCE, is calculated from tabulated experimental data for magnetocaloric materials as function of temperature and effective field. \cite{bib:trevizoli16_perfor_model}.
 
 The magnetic profiles considered in this work are presented in terms of the flux density $B = \mu_0 H$, where $\mu_0$ is the permeability of free space; the magnetic field $H$ is used in the evaluation of the magnetocaloric effect (cf. Sec.~\ref{sec:how-magnetic-profile}).
 
-The instantaneous profile (represented by the subscript ``IT'') and the rectified cosine profile (represented by ``RC'') are defined solely in terms of the \textcolor{black}{extreme} values $B\ped{min}$ and $B\ped{min}$, and are shown in \autoref{fig:itrc}.
+The instantaneous (square wave) profile (represented by the subscript ``IT'') and the rectified cosine profile (represented by ``RC'') are defined solely in terms of the extreme values $B\ped{min}$ and $B\ped{min}$, and are shown in \autoref{fig:itrc}.
 
 \nomenclature[vi]{IT}{instantaneous magnetic profile}
 \nomenclature[vr]{RC}{rectified cosine magnetic profile}
@@ -326,7 +339,7 @@ The instantaneous profile (represented by the subscript ``IT'') and the rectifie
   \label{fig:itrc}
 \end{figure}
 
-A suitable approximation of the instantaneous profile is the \textcolor{black}{\emph{magnetic ramp profile}, shown} in \autoref{fig:ramp}, with finite transition times between the levels of constant magnetization. The magnetic profile oscillates  between a low value \({B}\ped{min}\) and a high value \({B}\ped{max}\), and \textcolor{black}{remains} at each plateau for a period of \(\tau\ped{M}\). The plateaus are balanced and centered at each half-cycle.
+A suitable approximation of the instantaneous profile is the \emph{magnetic ramp profile}, shown in \autoref{fig:ramp}, with finite transition times between the levels of constant magnetization. The magnetic profile oscillates  between a low value \({B}\ped{min}\) and a high value \({B}\ped{max}\), and remains at each plateau for a period of \(\tau\ped{M}\). The plateaus are balanced and centered at each half-cycle.
 
 \begin{figure}[!ht]
   \centering
@@ -335,7 +348,7 @@ A suitable approximation of the instantaneous profile is the \textcolor{black}{\
   \label{fig:ramp}
 \end{figure}
 
-The \emph{ramp period} \(\tau\ped{R}\) \textcolor{black}{is} defined as:
+The \emph{ramp period} \(\tau\ped{R}\) is defined as:
 
 \begin{equation}
 \label{eq:201}
@@ -349,11 +362,11 @@ The \emph{ramp period} \(\tau\ped{R}\) \textcolor{black}{is} defined as:
 \tan \theta\ped{R} = \frac{\left({B}\ped{max} - {B}\ped{min}\right)}{2\tau\ped{R}}
 \end{equation}
 
-\nomenclature[azt]{$\tau\ped{R}$}{ramp period in the \textcolor{black}{magnetic} ramp profile [\si{\second}]}
-\nomenclature[azt]{$\tau\ped{M}$}{magnetization period in the \textcolor{black}{magnetic} ramp  profile [\si{\second}]}
-\nomenclature[azo]{$\theta\ped{R}$}{ramp rate in the \textcolor{black}{magnetic} ramp profile}
+\nomenclature[azt]{$\tau\ped{R}$}{ramp period in the magnetic ramp profile [\si{\second}]}
+\nomenclature[azt]{$\tau\ped{M}$}{magnetization period in the magnetic ramp  profile [\si{\second}]}
+\nomenclature[azo]{$\theta\ped{R}$}{ramp rate in the magnetic ramp profile}
 
-The magnetization fraction, \(F\ped{M}\), is the fraction of the cycle \textcolor{black}{during which} the magnetocaloric material is \textcolor{black}{subjected to a} constant magnetic field:
+The magnetization fraction, \(F\ped{M}\), is the fraction of the cycle during which the magnetocaloric material is subjected to a constant magnetic field:
 
 \begin{equation}
 \label{eq:204}
@@ -378,23 +391,26 @@ The ramp profile (``RM'') can be mathematically defined as:
 
 \nomenclature[vr]{RM}{rectified cosine magnetic profile}
 
-Additionally, the average values of the magnetic field during each half-AMR cycle are considered for comparison between profiles. The average magnetic profile during the hot cycle ($0 \le t < \nicefrac{\tau}{2}$) is denoted $\average{B}\ped{high}$ and the average during the cold cycle  ($ \nicefrac{\tau}{2} \le t < \tau$) is denoted $\average{B}\ped{low}$. For the instantaneous waveform, these average values are identical to the extrema values.
+Additionally, the average values of the magnetic field during each half-AMR cycle are considered for comparison between profiles. The average magnetic profile during the hot cycle ($0 \le t < \nicefrac{\tau}{2}$) is denoted by $\average{B}\ped{high}$ and the average during the cold cycle  ($ \nicefrac{\tau}{2} \le t < \tau$) is denoted by $\average{B}\ped{low}$. For the instantaneous waveform, these average values are identical to the extreme values.
 
 
 \subsubsection{Evaluation of solid and fluid properties}
 \label{sec:eval-solid-fluid}
 
-The fluid properties are considered constant in the momentum equation to decouple the solution \textcolor{black}{procedures to determine} the velocity and temperature fields. The properties are computed at the average temperature between the hot and cold sources temperatures, and are evaluated from interpolated tables exported from the EES software \cite{bib:klein13-ees}. In all simulations shown in this work, the heat transfer fluid is a mixture of water/ethylene-glycol with concentration \num{80}/\SI{20}{\percent} vol. For the energy equations, the fluid properties are also calculated from tabulated data, but the temperature dependence is considered.
+The fluid properties are considered constant in the momentum equation to decouple the solution procedures to determine the velocity and temperature fields. The properties are computed at the average temperature between the hot and cold sources, and are evaluated from interpolation of tables imported from the EES software \cite{bib:klein13-ees}. In all simulations shown in this work, the heat transfer fluid is a \num{80}/\SI{20}{\percent} vol.~mixture of water/ethylene-glycol. For the energy equations, the fluid properties are also calculated from tabulated data, but the temperature dependence is considered.
 
-In this work, both single- and multilayer regenerators are considered. Single-layer regenerators are composed of gadolinium,  a benchmark material with a Curie temperature of \SI{290}{\kelvin}. \textcolor{black}{For simplicity, the solid} density is assumed constant at $\rho\ped{s} = \SI{7900}{\kg\per\cubic\meter}$ and the solid \textcolor{black}{thermal} conductivity is set to $k\ped{s} = \SI{10.5}{\watt\per\meter\per\kelvin}$. The specific heat \textcolor{black}{capacity} of \ce{Gd} is calculated as a function of temperature and magnetic field based on experimental \textcolor{black}{data}, using a bi-linear interpolation scheme; more details on the experimental dataset \textcolor{black}{are available} in \cite{bib:trevizoli16_perfor_model}. 
 
-For the multilayer simulations, alloys of gadolinium and yttrium are used in the form \ce{Gd_{1-x}Y_x}, where $x$ is the yttrium fraction.  \textcolor{black}{This fraction} decreases the Curie temperature  \textcolor{black}{of the} alloy relative to that of pure gadolinium. Due to the lack of experimental  \textcolor{black}{data on the magnetocaloric properties of} \ce{Gd_{1-x}Y_x} alloys at the time \textcolor{black}{this analysis was made}, a simpler approach was used \textcolor{black}{in which} the properties of alloys with {a} low yttrium fraction are \textcolor{black}{identical to those} of pure gadolinium, except for the Curie temperature \textcolor{black}{(which is shifted to lower values)}. 
+Both single- and multilayer regenerators are considered in this study. Single-layer regenerators are composed of gadolinium,  a benchmark material with a Curie temperature of \SI{290}{\kelvin}. For simplicity, the solid density is assumed constant at $\rho\ped{s} = \SI{7900}{\kg\per\cubic\meter}$ and the solid thermal conductivity is set to $k\ped{s} = \SI{10.5}{\watt\per\meter\per\kelvin}$. The specific heat capacity of \ce{Gd} is calculated as a function of temperature and magnetic field based on experimental data, using a bi-linear interpolation scheme; more details on the experimental dataset are available in \cite{bib:trevizoli16_perfor_model}. 
+
+For the multilayer simulations, alloys of gadolinium and yttrium are used in the form \ce{Gd_{1-x}Y_x}, where $x$ is the yttrium fraction.  This fraction reduces the Curie temperature of the alloy relative to that of pure gadolinium. Due to the lack of experimental  data on the magnetocaloric properties of \ce{Gd_{1-x}Y_x} alloys at the time this analysis was made, a simpler approach was used in which the \textcolor{blue}{dependence of magnetization, specific heat capacity and entropy with respect to the magnetic field for} alloys with a low yttrium fraction are identical to those of pure gadolinium, \textcolor{blue}{but are shifted to a lower} Curie temperature (corresponding to the yttrium fraction). 
+
+\colorbox{yellow}{Fabio, veja se o texto acima estah ok...}
 
 
 \subsubsection{Performance metrics}
 \label{sec:performance-metrics}
 
-The AMR model considers only one bed and assumes $N\ped{r}$ identical beds experience the same cycle, multiplying the performance metrics below by this factor.
+The AMR model is solved for only one bed, but  assumes that the $N\ped{r}$ identical beds experience the same cycle. Thus, the extensive performance parameters are multiplied by that factor.
 
 \nomenclature[an]{$N\ped{r}$}{number of regenerators}
 
@@ -412,14 +428,15 @@ The cooling capacity is calculated as \cite{bib:trevizoli16_perfor_model}:
 \nomenclature[vc]{C}{cold source}
 \nomenclature[vc]{H}{hot source}
 
-The magnetic power to operate the AMR cycle is modeled as the ideal Carnot power, ignoring most thermal irreversibilities:
+
+\textcolor{blue}{As pointed out in \colorbox{yellow}{citar o paper da ATE - Design trade-offs}, since external sources of irreversibility (e.g., heat transfer with a finite temperature difference in the heat exchangers) are ignored and no eddy currents and hysteresis losses are present,} the magnetic power required to \textcolor{blue}{magnetize the solid refrigerant and produce the MCE} in the AMR cycle is given by the product of the Carnot efficiency and the cooling capacity as follows:
 
 \begin{equation}
 \label{eq:100}
 \wmag = \qc \frac{T\ped{H} - \tc}{\tc}
 \end{equation}
 
-\noindent while the fluid friction irreversibility is accounted for in the calculation of the pumping power:
+Irreversibility due to fluid friction is accounted for in the calculation of the pumping power:
 
 \begin{equation}
 \label{eq:103}
@@ -436,11 +453,17 @@ The magnetic power to operate the AMR cycle is modeled as the ideal Carnot power
 \label{sec:hydr-syst-model}
 
 
-The hydraulic system to modulate the fluid flow through different regenerators at different time instants is composed of a pump and a set of electronic valves which can be precisely controlled to yield the desired blow durations. The electrical power consumed by the valve array is computed separately from other work contributions. An application of electronic valves in AMR devices has been presented by \cite{bib:nakashima18-perfor-asses-solen-valves-flow}.
+The hydraulic system designed to modulate the fluid flow through different regenerators at different time instants is composed of a pump and a set of electronic valves which can be precisely controlled to yield the desired blow durations. The electrical power consumed by the valve array is computed separately from other work contributions. An application of electronic valves in AMR devices has been presented by \cite{bib:nakashima18-perfor-asses-solen-valves-flow}.
 
-Due to evolving developments in our group, two types of valves are considered, as will be elaborated in \autoref{sec:results-discussions}.
+\colorbox{yellow}{Fabio, a ultima frase do paragrafo acima nao  cabe aqui... quero dizer que a aplicacao deveria ter sido discutida na revisao bibliografica, a qual precisa ser expandida}
 
-The first approach, called \emph{Type B valves}, uses the  model \textcolor{black}{of} \cite{bib:cardoso16_trans}, assuming that the individual consumption of each valve is independent of frequency and blow fraction. The valve power  $\wvalve$ can be computed as:
+%Due to evolving developments in our group, two types of valves are considered, as will be elaborated in \autoref{sec:results-discussions}.
+
+In the present analysis, two types of valves are considered. In the first approach, called \emph{Type B valves}, the  model proposed in Ref.~\cite{bib:cardoso16_trans} is used, assuming that the individual consumption of each valve is independent of frequency and blow fraction. The valve power  $\wvalve$ can be computed as:
+
+\colorbox{yellow}{da mesma forma, o trabalho \cite{bib:cardoso16_trans} tem que constar da revisao bibliografica...}
+
+\colorbox{yellow}{fica estranho o \textbf{primeiro} approach ser Type B e o \textbf{segundo} ser Type A...}
 
 \begin{equation}
   \label{eq:58}
@@ -461,9 +484,11 @@ In the second approach, \emph{Type A} valves are used, with  nominal power lower
   \wvalve\,[\si{\watt}]= N\ped{v}\left(0.927 f\,[\si{\hertz}] + 1.023 F\ped{B} + 0.226 f\,[\si{\hertz}] F\ped{B} - 0.037\right)
 \end{equation}
 
-Equation~\eqref{eq:198} was correlated for blow fractions of \num{50} and \SI{100}{\percent} and for frequencies in the range \textcolor{black}{of} \num{0.2}--\SI{1.6}{\hertz}, with an uncertainty \textcolor{black}{on} the order of \SI{0.4}{\watt} for a single valve. The use of different valve types will be discussed among the presented results.
+\colorbox{yellow}{A equacao acima precisa ser melhor contextualizada. Talvez os revisores pecam para dar uma descricao minima do experimento. Uma saida para nao ter que fazer isso seria revisar na introducao o trabalho nosso que mediu e propos a correlacao (foi o do Pedroca)  }
 
-Indepedent of the valve type used, it is also assumed that this valve system can produce the fluid flow profile \textcolor{black}{shown in} \autoref{fig:mprofile}, where the displaced fluid mass during one blow in one regenerator bed is $\rate{m}\ped{f,max} F\ped{B} \nicefrac{\tau}{2}$. The \emph{utilization factor} can then be calculated as:
+Equation~\eqref{eq:198} was correlated for blow fractions of \num{50} and \SI{100}{\percent} and frequencies in the range of \num{0.2}--\SI{1.6}{\hertz}, with an uncertainty on the order of \SI{0.4}{\watt} for a single valve. The use of different valve types will be discussed among the presented results.
+
+Independent of the valve type used, it is also assumed that each valve system can produce the fluid flow profile shown in \autoref{fig:mprofile}, where the displaced fluid mass during one blow in one regenerator bed is $\rate{m}\ped{f,max} F\ped{B} \nicefrac{\tau}{2}$. The \emph{utilization factor} can then be calculated as:
 
 \begin{equation}
   \label{eq:110}
@@ -471,7 +496,7 @@ Indepedent of the valve type used, it is also assumed that this valve system can
 \end{equation}
 
 \nomenclature[bf]{$\Phi$}{utilization factor}
-\noindent and in all results shown in this work, the number of valves is \textcolor{black}{calculated as}:
+\noindent and in all results shown in this work, the number of valves is calculated as:
 
 \begin{equation}
   \label{eq:111}
@@ -481,7 +506,7 @@ Indepedent of the valve type used, it is also assumed that this valve system can
 \subsection{Calculation of the coefficient of performance}
 \label{sec:calc-coeff-perf}
 
-The coefficient of performance \textcolor{black}{takes} the cooling capacity as \textcolor{black}{the main} output \textcolor{black}{parameter from} the AMR model, \textcolor{black}{in addition to} all previously cited power contributions:
+The coefficient of performance takes the cooling capacity as the main output parameter from the AMR model, in addition to all previously cited power contributions:
 
 \begin{equation}
   \label{eq:112}
@@ -493,16 +518,16 @@ The coefficient of performance \textcolor{black}{takes} the cooling capacity as 
 \section{Results and Discussions}
 \label{sec:results-discussions}
 
-The analysis of magnetic profiles was performed in two different stages in the research of our group, as discussed below.
+The analysis of magnetic profiles was performed at two different stages. Initially, the instantaneous (square-wave) and the rectified cosine profiles are compared using a simpler approach (i.e., neglecting casing losses). Later, based on the selection of the most promising magnetic profile, a more in-depth analysis is carried out to determine the optimal geometric and operating parameters of the AMR system.
 
 \subsection{Comparison of instantaneous and rectified cosine profiles using a simplified model}
 \label{sec:comp-cosine-inst}
 
-In the first stage, the instantaneous and rectified cosine profiles are compared in the AMR model, considering monolayer regenerators without casing losses, and using Type B valves. The parameters used in all simulations are presented in \autoref{tab:params-cobem}.
+At the first stage of the present analysis, the instantaneous and rectified cosine profiles are compared considering a single-layer regenerator  without casing losses, using Type B valves. The parameters used in all simulations are presented in \autoref{tab:params-cobem}.
 
 \begin{table}[!ht]
   \centering
-  \caption{AMR parameters kept fixed in the simulations with different magnetic profiles}
+  \caption{AMR parameters kept fixed in the simulations with different magnetic profiles \colorbox{yellow}{Fabio, acho que as variaveis nao foram apresentadas na lista de simbolos}}
   \begin{tabular}{c|c}
 \hline
 \textbf{Parameter} & \textbf{Value}\\
@@ -524,16 +549,16 @@ $\w\ped{R}$ & \SI{0.36}{\watt}\\
 \end{table}
 
 
-When comparing the \textcolor{black}{performances resulting from the application of the different} magnetic profiles, the average magnetic field during the hot cycle \textcolor{black}{will be considered} the same; this implies a higher peak for the rectified cosine. For the cold cycle,  the minimum values for both profiles is the same, as shown in \autoref{fig:comparison-methods-profiles}. \textcolor{black}{For} reference, in all simulations,  the minimum value for the rectified cosine was fixed at ${B}\ped{min} = \SI{0.1}{\tesla}$. 
+When comparing the performances resulting from the application of the different magnetic profiles, the same average magnetic field during the hot cycle will be considered; this implies a higher peak for the rectified cosine. For the cold cycle, the minimum values for both profiles are the same, as shown in \autoref{fig:comparison-methods-profiles}. For reference, in all simulations,  the minimum value for the rectified cosine was fixed at ${B}\ped{min} = \SI{0.1}{\tesla}$. 
 
 \begin{figure}[!ht]
   \centering
 \includegraphics[width=8cm]{profiles_it_and_rc_same_minimum}
-  \caption{Configuration of average and extrema values of the instantaneous and rectified cosine profiles }
+  \caption{Configuration of average and extreme values of the instantaneous and rectified cosine profiles }
   \label{fig:comparison-methods-profiles}
 \end{figure}
 
-Simulations were \textcolor{black}{carried out} for various values of blow fraction; the rectified cosine profile can benefit from a smaller blow fraction because this can concentrate the flow during the periods of very high or low fields. In this section, all results use the critical value of blow fraction that maximized the cooling capacity: fluid flowing during the entire period for the instantaneous profile, and only during \SI{60}{\percent}  of the period (the smallest blow fraction tested) for the cosine profile; this latter case is shown in \autoref{fig:cos-inst-60}.
+Simulations were carried out for various values of blow fraction. The rectified cosine profile can benefit from a smaller blow fractions that concentrate the flow during the periods of very high and very low fields. In this section, all results use the critical value of blow fraction that maximized the cooling capacity: fluid flowing during the entire period for the instantaneous profile, and only during \SI{60}{\percent} of the period (the smallest blow fraction tested) for the cosine profile; this latter case is shown in \autoref{fig:cos-inst-60}.
 
 \begin{figure}[!ht]
   \centering
@@ -542,7 +567,7 @@ Simulations were \textcolor{black}{carried out} for various values of blow fract
   \label{fig:cos-inst-60}
 \end{figure}
 
-Figure~\ref{fig:cos_ins} shows the cooling capacity attained by the device at a frequency of \SI{1}{\hertz} and different utilizations. The horizontal axis shows the average value during the high field region. The instantaneous profile almost always yields a higher performance, and cince the average \textcolor{black}{field} during the hot cycle (high field stage) is the same, the main difference is due to the low magnetic field levels. For the ``same minimum'' comparison, the instantaneous profile is capable of keeping the magnetic field at low levels for the whole half-cycle, which is beneficial for performance;  for $\Phi=1.0$ and $B\ped{high} = \SI{1.40}{\tesla}$, the cooling capacity for the instantaneous profile is $\SI{196.3}{\percent}$ higher than for the cosine profile.  As demonstrated by \cite{bib:asme-mce}, a higher average magnetic field during the low-field stage increases the solid temperature and consequently results in  warmer fluid entering the cold heat exchanger, representing a thermal loss. 
+Figure~\ref{fig:cos_ins} shows the cooling capacity attained by the device at a frequency of \SI{1}{\hertz} and different utilizations. The horizontal axis shows the average field value during the high field region. The instantaneous profile almost always yields a higher performance, and since the average field during the hot cycle (high field stage) is the same, the main difference is due to the low magnetic field levels. For the ``same minimum'' comparison, the instantaneous profile is capable of keeping a low magnetic field over the entire half-cycle, which is beneficial for performance;  for $\Phi=1.0$ and $B\ped{high} = \SI{1.40}{\tesla}$, the cooling capacity for the instantaneous profile is $\SI{196.3}{\percent}$ higher than for the cosine profile.  As demonstrated by \cite{bib:asme-mce}, a higher average magnetic field during the low-field stage increases the solid temperature and consequently results in  warmer fluid entering the cold heat exchanger, representing a thermal loss. 
 
 
 \begin{figure}[!ht]
@@ -552,15 +577,16 @@ Figure~\ref{fig:cos_ins} shows the cooling capacity attained by the device at a 
  \label{fig:cos_ins}
 \end{figure}
 
-The only exception in this comparison  is seen for the lowest utilization of $\Phi = 0.2$, where the performance is slightly better for the RC profile. Since the blow fraction for the cosine is lower, the mass flow rate \textcolor{black}{is} higher \textcolor{black}{in the latter for} the same utilization (cf. Eq.~\eqref{eq:200}). \textcolor{black}{This} increases \textcolor{black}{the} heat transfer rate, as previously explained ---  outweighing the effects of the magnetic field.
+The only exception in this comparison is observed for the lowest utilization of $\Phi = 0.2$, where the performance is slightly better for the RC profile. Since the blow fraction for the cosine is smaller, the mass flow rate is higher in the latter for the same utilization (cf. Eq.~\eqref{eq:200}). This increases the heat transfer rate, as previously explained ---  outweighing the effects of the magnetic field.
 
 
-The same analysis, but in terms of the coeficient of performance, is shown in \autoref{fig:cos_ins_cop}, where it can be seen that the instantaneous profile yields better results for medium to high levels of utilization. This is due to some phenomena shown in \autoref{fig:cos_ins_w} for a fixed utilization of 0.6: the magnetic power only change between profiles due to variations in cooling capacity; the valve power is higher for the IT profile since the valves must remain open for longer periods; but the proportional increase in pumping power, due to larger flow rate, is even higher (than the change in valve power).
+
+The same analysis, but in terms of the coefficient of performance, is shown in \autoref{fig:cos_ins_cop}, where  the instantaneous profile yields better results for medium to high levels of utilization. This is explained by the behavior of the magnetic, valve and pumping power shown in   \autoref{fig:cos_ins_w} for a fixed utilization of 0.6. As can be seen, the magnetic power only differs between the profiles due to changes in cooling capacity. Also, the valve power is higher for the instantaneous profile since the valves must remain open for longer periods. However, the proportional increase in pumping power, due to arger larger flow rates, is even higher (than the change in valve power).
 
 \begin{figure}[!ht]
   \centering
 \includegraphics[width=7cm]{COP_B_comp_f_1_same_minimum}
-  \caption{Coefficient of performance as a function of the  average high magnetic field, for different utilizations. \textcolor{black}{``IT''}: instantaneous (blow fraction of \SI{100}{\percent}); ``RC'': rectified cosine  (blow fraction of \SI{60}{\percent}).}
+  \caption{Coefficient of performance as a function of the  average high magnetic field, for different values of utilization. ``IT'': instantaneous (blow fraction of \SI{100}{\percent}); ``RC'': rectified cosine  (blow fraction of \SI{60}{\percent}).}
  \label{fig:cos_ins_cop}
 \end{figure}
 
@@ -569,25 +595,25 @@ The same analysis, but in terms of the coeficient of performance, is shown in \a
 \begin{figure}[!ht]
   \centering
   \includegraphics[width=10cm]{W_B_comp_f_1_Phi_60_same_minimum}
-  \caption{Power contributions as functions of the average high magnetic field, for a utilization of 0.6. \textcolor{black}{``IT''}: instantaneous (blow fraction of \SI{100}{\percent}); ``RC'': rectified cosine  (blow fraction of \SI{60}{\percent}).}
+  \caption{Power contributions as functions of the average high magnetic field, for a utilization of 0.6. ``IT'': instantaneous (blow fraction of \SI{100}{\percent}); ``RC'': rectified cosine  (blow fraction of \SI{60}{\percent}).}
   \label{fig:cos_ins_w}
 \end{figure}
 
-In general, considering the goal of achieving target requirements for the cooling capacity, AMRs operating with the instantaneous magnetic profile \textcolor{black}{generate} better \textcolor{black}{performance} results. As can be seen \textcolor{black}{in} Fig.~\ref{fig:cos_ins}, an instantaneous profile with the lowest possible value of $B\ped{min}$ and the highest possible value of $B\ped{max}$, with a flow profile occupying the whole cycle with average values of utilization, results in the highest values of cooling capacity among all simulations. 
+In general, considering target values for the cooling capacity, AMRs operating with the instantaneous magnetic profile lead to better performance results. As can be seen in Fig.~\ref{fig:cos_ins}, an instantaneous profile with the lowest possible value of $B\ped{min}$ and the highest possible value of $B\ped{max}$, with a flow profile occupying the whole cycle with average values of utilization, results in the highest values of cooling capacity among all simulations. 
 
-The rectified cosine profile, found in compact systems using Halbach arrays, can \textcolor{black}{surely} benefit from reducing the blow fraction, both in terms of cooling capacity and temperature span. However, for the typical parameters \textcolor{black}{evaluated} in this Thesis, even if the blow fraction is optimized for the ``RC'' profile, the ``IT'' profile still yields better results.
+The rectified cosine profile, found in compact systems using Halbach arrays, can surely benefit from reducing the blow fraction, both in terms of cooling capacity and temperature span. However, for the typical parameters evaluated in this paper, even if the blow fraction is optimized for the ``RC'' profile, the ``IT'' profile still gives better results.
 
 \subsubsection{Analysis of the instantaneous profile}
 \label{sec:deta-analys-inst}
 
-As shown in the previous section, the instantaneous profile \textcolor{black}{generally} yields the highest values \textcolor{black}{of} cooling capacity. Therefore, in this section, a more detailed analysis of \textcolor{black}{this} profile has been carried out, \textcolor{black}{where the} maximum field  \textcolor{black}{is} varied, while the minimum value is kept at \SI{0.05}{\tesla}. Figure~\ref{fig:qc_phi_inst} shows the cooling capacity as a function of \textcolor{black}{the} utilization, for several levels of the maximum magnetic field \textcolor{black}{and} two different operating frequencies. Because of the conflict between a low heat transfer rate for flow rates \textcolor{black}{that are} too low and losses in regenerator effectiveness in flow rates \textcolor{black}{that are} too high, there are critical values of utilization that maximize \textcolor{black}{the} cooling capacity, and this critical values increase with the magnetic field. \textcolor{black}{For} higher magnetic fields, the increase in the MCE surpasses the loss of effectiveness, and one can go to higher flow rates without losing performance. It can also be seen in Fig.~\ref{fig:qc_phi_inst} that at  higher frequencies the values of cooling power are higher, and also the critical values of utilization are lower; however, this \textcolor{black}{is} usually achieved at the \textcolor{black}{expense} of \textcolor{black}{a} higher power consumption in AMR devices at higher frequencies \cite{bib:lei15_study,NIKNIA2016601}.
+As shown in the previous section, the instantaneous profile generally yields the highest values of cooling capacity. Therefore, in this section, a more detailed analysis of this profile is carried out, where the maximum field is varied, but the minimum value is kept at \SI{0.05}{\tesla}. Figure~\ref{fig:qc_phi_inst} shows the cooling capacity as a function of the utilization, for several levels of the maximum magnetic field and two different operating frequencies. Because of the conflict between a low heat transfer rate for flow rates that are too low and losses in regenerator effectiveness in flow rates that are too high, there are critical values of utilization that maximize the cooling capacity, and these critical values increase with the magnetic field. For higher magnetic fields, the increase in the MCE surpasses the loss of effectiveness, and one can go to higher flow rates without losing performance. It can also be seen in Fig.~\ref{fig:qc_phi_inst} that at  higher frequencies the values of cooling power are higher, and also the critical values of utilization are lower. However, this is usually achieved at the expense of a higher power consumption in AMR devices at higher frequencies \cite{bib:lei15_study,NIKNIA2016601}.
 
 \begin{figure}[!ht]
   \centering
 \subfloat[$f = \SI{1}{\hertz}$]{\includegraphics[width=8cm]{Qc_Phi_inst_f_1_Hmin_005_FB_100}\label{fig:Qc_phi_inst_1}}
 \,
   \subfloat[$f = \SI{2}{\hertz}$]{\includegraphics[width=8cm]{Qc_Phi_inst_f_2_Hmin_005_FB_100}\label{fig:Qc_phi_inst_2}}
-  \caption{Cooling capacity as a function of utilization, for various values of the high magnetic field  \textcolor{black}{for} the instantaneous profile}
+  \caption{Cooling capacity as a function of utilization, for various values of the high magnetic field  for the instantaneous profile}
   \label{fig:qc_phi_inst}
 \end{figure}
 
@@ -596,19 +622,20 @@ As shown in the previous section, the instantaneous profile \textcolor{black}{ge
   \subfloat[Cooling capacity]{\includegraphics[width=9cm]{Qc_H_inst_f_1_Phi_40}\label{fig:Qc_H_inst_f_1_Phi_40}}
 \quad
   \subfloat[Coefficient of performance]{\includegraphics[width=9cm]{COP_H_inst_f_1_Phi_40}\label{fig:COP_H_inst_f_1_Phi_40}}
-  \caption{Performance metrics as a function of \textcolor{black}{the} regenerator height (all other parameters \textcolor{black}{were set as in} Table~\ref{tab:params-cobem}, \textcolor{black}{for}  utilization factor of 0.4) for various values of the high magnetic field of the instantaneous profile}
+  \caption{Performance metrics as a function of the regenerator height (all other parameters were set as in Table~\ref{tab:params-cobem}, for utilization factor of 0.4) for various values of the high magnetic field of the instantaneous profile}
 \label{fig:Qc_H_inst}
 \end{figure}
 
-The geometric parameters in \autoref{tab:params-cobem} were chosen from preliminary simulations, \textcolor{black}{so} they are not  optimal. To understand the impact of \textcolor{black}{the} regenerator geometry on the performance with the instantaneous profile, the regenerator height was varied in Fig.~\ref{fig:Qc_H_inst}, and all other parameters from \autoref{tab:params-cobem} were kept fixed and with $\phi=0.4$. As expected, higher magnetic fields allow for smaller regenerators (hence more compact systems) to achieve a \textcolor{black}{desired} cooling capacity. For instance, to achieve a capacity of \SI{100}{\watt}, increasing the field from \num{1.0} to \SI{1.2}{\tesla} \textcolor{black}{results} in regenerators \textcolor{black}{that are} \SI{36}{\percent} smaller. Comparing results \textcolor{black}{for} cooling capacity and coefficient of performance, the trends are largely the same, as the former is more sensitive to variations in the magnetic field and regenerator height than the components of power.
+
+The geometric parameters in \autoref{tab:params-cobem} were chosen from preliminary simulations, so they are not  optimal. To understand the impact of the regenerator geometry on the system performance with the instantaneous profile, the regenerator height was varied in Fig.~\ref{fig:Qc_H_inst}, and all other parameters from \autoref{tab:params-cobem} were kept fixed and with $\phi=0.4$. As expected, higher magnetic fields allow for smaller regenerators (hence more compact systems) to achieve a desired cooling capacity. For instance, to achieve a capacity of \SI{100}{\watt}, increasing the field from \num{1.0} to \SI{1.2}{\tesla} results in regenerators that are \SI{36}{\percent} smaller. Comparing the results for the cooling capacity and coefficient of performance, the trends are largely the same, as the former is more sensitive to variations in the magnetic field and regenerator height than the components of power.
 
 
 \subsection{In-depth analysis of the  magnetic \textcolor{black}{ramp} profile}
 \label{sec:performance-an-amr-1}
 
-Based on the better performance of the instantaneous profile, the ramp profile is assumed as a suitable target profile for the design of magnetic refrigerators, and will be analyzed in this section, representing the second stage in the analysis of magnetic profiles.
+Based on the better performance of the instantaneous profile, the ramp profile is a naturally suitable target profile for the design of magnetic refrigerators, and will be analyzed in this section, representing the second stage in the analysis of magnetic profiles.
 
-Moving towards a more realistic model, casing losses are included, using the model from \cite{bib:trevizoli16_perfor_model}. The bed is enclosed in a solid casing of thickness $h\ped{csg}$, and two air layers of thickness $h\ped{air}$ separate \textcolor{black}{the AMR and its casing} from the inner and outer \textcolor{black}{magnet} cylinders, as shown in \autoref{fig:amr-casing}. These magnetic cylinders can be designed to yield the desired magnetic profiles, as will be shown in future studies by our group. 
+Moving towards a more realistic model, casing losses are included, using the model from \cite{bib:trevizoli16_perfor_model}. The bed is enclosed in a solid casing of thickness $h\ped{csg}$, and two air layers of thickness $h\ped{air}$ separate the AMR and its casing from the inner and outer magnet cylinders, as shown in \autoref{fig:amr-casing}. The optimal design of such magnetic cylinders aiming at a particular magnetic profile  will be the subject of future publications. 
 
 \begin{figure}[!ht]
   \centering
@@ -619,9 +646,9 @@ Moving towards a more realistic model, casing losses are included, using the mod
 
 \nomenclature[ia]{air}{air layer between magnets and regenerators}
 
-Preliminary analyses \textcolor{black}{carried out by} \cite{bib:peixer17-perfor-amrs} showed that a stainless steel casing \textcolor{black}{with a} thickness \textcolor{black}{of} $h\ped{csg} = \SI{0.5}{\mm}$ is thick enough to ensure mechanical integrity and easy manufacturing, while being thin enough to accommodate the material \textcolor{black}{with a low} thermal conductivity.
+Preliminary analyses carried out by \cite{bib:peixer17-perfor-amrs} showed that a stainless steel casing with a thickness of $h\ped{csg} = \SI{0.5}{\mm}$ is thick enough to ensure mechanical integrity and easy manufacturing, while being thin enough to accommodate the material with a low thermal conductivity.
 
-In addition, \textcolor{black}{in the present study}, an air gap clearance thickness was set at $h\ped{air} = \SI{1}{\mm}$. This value \textcolor{black}{gave rise to a} peak in cooling capacity due to the compromise between minimizing losses and maximizing the magnetocaloric mass.  The thermophysical properties of stainless steel and air were also obtained with interpolation of tables exported by the EES software \cite{bib:klein13-ees}.
+In addition, in the present study, an air gap clearance thickness was set at $h\ped{air} = \SI{1}{\mm}$. This value gave rise to a peak in cooling capacity due to the compromise between minimizing losses and maximizing the magnetocaloric mass.  The thermophysical properties of stainless steel and air were also obtained with interpolation of tables exported by the EES software \cite{bib:klein13-ees}.
 
 The simulations in this section also use multilayer regenerators. A summary of all parameters adopted in this section, including the Curie temperatures and volumetric fractions (relative to the length of the bed) of each layer is presented in \autoref{tab:params-ramp}.
 
@@ -652,7 +679,7 @@ Length fractions of each layer & \num{20}, \num{20}, \SI{60}{\percent}\\
   \label{tab:params-ramp}
 \end{table}
 
- Figure~\ref{fig:ramp-inst} shows the two profiles that will be used in this section and how they are synchronized. Regarding the magnetic profile, the \textcolor{black}{magnitude of the} high value will be varied to investigate the performance of the AMR system, while the minimum will be kept at $\bmin = \SI{0.05}{\tesla}$. 
+ Figure~\ref{fig:ramp-inst} shows the two profiles that will be used in this section and how they are synchronized. Regarding the magnetic profile, the magnitude of the high value will be varied to investigate the performance of the AMR system, while the minimum will be kept at $\bmin = \SI{0.05}{\tesla}$. 
 
 \begin{figure}[!ht]
   \centering
@@ -661,12 +688,12 @@ Length fractions of each layer & \num{20}, \num{20}, \SI{60}{\percent}\\
   \label{fig:ramp-inst}
 \end{figure}
  
-\subsubsection{Performance curves for varying blow and magnetization fractions}
+\subsubsection{Performance curves for variable blow and magnetization fractions}
 \label{sec:perf-curv-vary}
 
-Figure~\ref{fig:Qc_COP_curves_phi40} shows the cooling capacity and coefficient of performance of the AMR system for a fixed utilization factor of \num{0.4} and for a magnetic profile with \textcolor{black}{a} maximum at \SI{1.3}{\tesla}, for \textcolor{black}{variable} blow and magnetization fractions. \textcolor{black}{To facilitate the analysis, the} results are plotted in terms of the ratio $\nicefrac{F\ped{M}}{F\ped{B}}$, with curves for different \textcolor{black}{values of} $F\ped{B}$. It is clear \textcolor{black}{that both the cooling capacity and the coefficient of performance exhibit a peak at} $F\ped{M} = F\ped{B}$. Moreover,  \textcolor{black}{to the right of the peak, i.e., for higher values of $F\ped{M}$, the}  reduction \textcolor{black}{of} both \textcolor{black}{performance} metrics \textcolor{black}{is} slower, meaning it is better to have a magnetization plateau wider than the fluid flow plateau 
+Figure~\ref{fig:Qc_COP_curves_phi40} shows the cooling capacity and coefficient of performance of the AMR system for a fixed utilization factor of \num{0.4} and for a magnetic profile with a maximum at \SI{1.3}{\tesla}, for variable blow and magnetization fractions. To facilitate the analysis, the results are plotted in terms of the ratio $\nicefrac{F\ped{M}}{F\ped{B}}$, with curves for different values of $F\ped{B}$. It is clear that both the cooling capacity and the coefficient of performance exhibit a peak at $F\ped{M} = F\ped{B}$. Moreover, to the right of the peak, i.e., for higher values of $F\ped{M}$, the reduction of both performance metrics is slower, meaning it is better to have a magnetization plateau that is wider than the fluid flow plateau.
 
-The reduction in performance for $F\ped{M} > F\ped{B}$ \textcolor{black}{can be explained by an increase in} heat leakage through the casing, as the solid begins to lose energy to the environment \textcolor{black}{when} the fluid is not flowing. For $F\ped{M} < F\ped{B}$,  the fluid begins to flow when the solid is not totally warmed up, losing effectiveness.
+The reduction in performance for $F\ped{M} > F\ped{B}$ can be explained by an increase in heat leakage through the casing, as the solid begins to lose energy to the environment when the fluid is not flowing. For $F\ped{M} < F\ped{B}$,  the fluid begins to flow when the solid is not totally warmed up, losing effectiveness.
 
 \begin{figure}[!ht]
   \centering
@@ -677,7 +704,7 @@ The reduction in performance for $F\ped{M} > F\ped{B}$ \textcolor{black}{can be 
   \label{fig:Qc_COP_curves_phi40}
 \end{figure}
 
-The influence of utilization is demonstrated in \autoref{fig:Qc_curves_ramp_phi}, where the cooling capacity \textcolor{black}{is} plotted for different utilization factors. For increasing $\Phi$ in this range, not only do the overall values of cooling capacity increase, but also the importance of choosing the blow fraction becomes clearer. In \textcolor{black}{these ranges} of utilization and blow fraction,  the cooling capacity increases because the higher transfer rate associated with higher flow rates \textcolor{black}{dominates} over the loss of regenerator effectiveness.
+The influence of the utilization is demonstrated in \autoref{fig:Qc_curves_ramp_phi}, where the cooling capacity is plotted for different utilization factors. For increasing $\Phi$ in this range, not only do the overall values of cooling capacity increase, but also the importance of choosing the blow fraction becomes clearer. In these ranges of utilization and blow fraction,  the cooling capacity increases because the higher transfer rate associated with higher flow rates dominates over the loss of regenerator effectiveness.
 
 \begin{figure}[!ht]
   \centering
@@ -689,7 +716,7 @@ The influence of utilization is demonstrated in \autoref{fig:Qc_curves_ramp_phi}
   \label{fig:Qc_curves_ramp_phi}
 \end{figure}
 
-The \textcolor{black}{above} results can be \textcolor{black}{evaluated from} another point of view with \autoref{fig:COP_maps_ramp_FM}, where the coefficient of performance is plotted as contour levels. This type of map is useful because, since $\bmin$ and $\tau$ are fixed, each point in this graph completely characterizes a magnetic \textcolor{black}{ramp} profile, and each subplot with fixed $\Phi$ and $F\ped{B}$ characterizes the fluid flow profile. As expected, the performance increases for the higher values both $\bmax$ and $F\ped{M}$, where the  magnetic \textcolor{black}{ramp} profile tends to the instantaneous magnetic profile with a large amplitude. Confirming the previous trends, the results are less sensitive to the magnetization fraction when $F\ped{M} \ge F\ped{B}$. 
+The above results can be evaluated from another point of view with \autoref{fig:COP_maps_ramp_FM}, where the coefficient of performance is plotted as contour levels. This type of map is useful because, since $\bmin$ and $\tau$ are fixed, each point in this graph completely characterizes a magnetic ramp profile, and each subplot with fixed $\Phi$ and $F\ped{B}$ characterizes the fluid flow profile. As expected, the performance increases for the higher values both $\bmax$ and $F\ped{M}$, where the  magnetic ramp profile tends to the instantaneous magnetic profile with a large amplitude. Confirming the previous trends, the results are less sensitive to the magnetization fraction when $F\ped{M} \ge F\ped{B}$. 
 
 \begin{figure}[!ht]
   \centering
@@ -703,12 +730,12 @@ The \textcolor{black}{above} results can be \textcolor{black}{evaluated from} an
   \label{fig:COP_maps_ramp_FM}
 \end{figure}
 
-\subsubsection{Geometric analysis of the regenerators using the ramp magnetic profile}
+\subsubsection{Geometric analysis of the regenerators using the magnetic ramp profile}
 \label{sec:geom-analys-regen}
 
-\textcolor{black}{All} previous results assumed a fixed regenerator geometry, with the goal of identifying the optimal fluid and magnetic profile parameters. \textcolor{black}{It became clear that the} magnetization fraction should be as large as possible, but that raises some challenges in realizing abrupt changes in the magnetic field. The value of $F\ped{M} = \SI{70}{\percent}$ is then chosen as a compromise, with \textcolor{black}{a corresponding} $F\ped{B} = F\ped{M}$. The mean value of \textcolor{black}{the} utilization factor of $\Phi = 0.4$ is also chosen as reference in the next results.
+All previous results assumed a fixed regenerator geometry, with the goal of identifying the optimal fluid and magnetic profile parameters. It became clear that the magnetization fraction should be as large as possible, but that raises some challenges in realizing abrupt changes in the magnetic field. The value of $F\ped{M} = \SI{70}{\percent}$ is then chosen as a compromise, with a corresponding $F\ped{B} = F\ped{M}$. The mean value of the utilization factor of $\Phi = 0.4$ is also chosen as reference in the next results.
 
-Figure~\ref{fig:qc-cop-eta-amr-height} shows the cooling capacity, coefficient of performance and second-law efficiency for varying magnetic field and regenerator height. \textcolor{black}{As} expected, larger regenerators can \textcolor{black}{produce} the desired performance with lower magnetic fields. It can also be seen that this configuration for an AMR system can achieve values of $\etasec$ compatible with conventional vapor compression systems \cite{HERMES20081341,NEGRAO20113051}, although these numerical results do not include mechanical losses.
+Figure~\ref{fig:qc-cop-eta-amr-height} shows the cooling capacity, coefficient of performance and second-law efficiency for varying magnetic field and regenerator height. As expected, larger regenerators can produce the desired performance with lower magnetic fields. It can also be seen that this configuration for an AMR system can achieve values of $\etasec$ compatible with conventional vapor compression systems \cite{HERMES20081341,NEGRAO20113051}, although these numerical results do not include mechanical losses.
 
 \begin{figure}[!ht]
   \centering
@@ -720,28 +747,33 @@ Figure~\ref{fig:qc-cop-eta-amr-height} shows the cooling capacity, coefficient o
 \end{figure}
 
 
-\section{Final considerations}
+\section{Conclusions}
 \label{sec:final-considerations}
 
-To the authors' knowledge, this is the first study where magnetic profiles for AMR model are mathematically modeled and the model parameters are changed in a systematic way. The instantaneous, rectified cosine and ramp magnetic profiles were implemented in an AMR model, and the profile parameters were varied simultaneously with regenerator geometric parameters. These waveforms can be found in existing MR devices published in the literature.
+To the authors' knowledge, this is the first study where magnetic profiles for AMR model are mathematically modeled and the model parameters are changed in a systematic way. The instantaneous (square wave), rectified cosine and ramp magnetic profiles were implemented in an AMR model, and the profile parameters were varied simultaneously with the regenerator geometric parameters. These waveforms can be found in existing MR devices published in the literature.
 
-Using a simplified model, the instantaneous profile yields higher cooling capacity, even by reducing the blow fraction on rectified cosine, at least up to levels achieved by pumping and valving systems; further reductions of the blow fraction is mainly restricted by valve opening times. This means that, even if sinusoidal profiles can be obtained with more compact magnetic circuit systems, the performance of MR systems can be maximized by using instantaneous variations of the magnetic field, and then optimizing the regenerator height and blow duration.
+Using a simplified model, the instantaneous profile resulted in a higher cooling capacity, even by reducing the blow fraction on rectified cosine, at least up to levels achieved by pumping and valving systems; further reductions of the blow fraction is mainly restricted by valve opening times. This means that, even if sinusoidal profiles can be obtained with more compact magnetic circuit systems, the performance of magnetic refrigeration systems can be maximized by using instantaneous variations of the magnetic field, and then optimizing the regenerator height and blow duration. \colorbox{yellow}{Fabio, tive dificuldade em entender o que voce quis concluir neste paragrafo... talvez seja uma boa tentar expandir seu conteudo}
 
-The ramp profile is a feasible approximation for the instantaneous
-profile without abrupt changes in the magnetic field plateaus. This waveform can be optimized for increasing cooling capacity, in particular by synchronizing the plateau durations between fluid and magnetic profiles.
+The ramp profile is a feasible approximation for the instantaneous profile without abrupt changes in the magnetic field plateaus. This waveform can be optimized for increasing cooling capacity, in particular by synchronizing the plateau durations between fluid and magnetic profiles. \colorbox{yellow}{Fabio, acho que seria bom trazer alguns dados quantitativos para ca, tipo ganhos percentuais etc.}
 
-\begin{acknowledgements}
-The authors duly acknowledge the financial support from CNPq (Grant no. 443696/2014-4), Capes (PTI program, Process no. 88887.194773/2018-00), Embraco and the EMBRAPII Unit Polo/UFSC.
-\end{acknowledgements}
+\section*{Conflict of Interest Statement}
+
+There is no actual or potential conflict of interest including any financial, personal or other relationships with other people or organizations that could inappropriately influence, or be perceived to influence, the present work.
+
+\acknowledgement{This work was funded by the Brazilian Federal Government (CAPES PTI program, Process no. 88887.194773/2018-00, CNPq Grant no. 443696/2014-4 and EMBRAPII) and by the State of Santa Catarina (FAPESC/INCT). The authors acknowledge the continuous support from Embraco.
+}
+
 
 % BibTeX users please use one of
 %\bibliographystyle{spbasic}      % basic style, author-year citations
 %\bibliographystyle{spmpsci}      % mathematics and physical sciences
-\bibliographystyle{spphys}       % APS-like style for physics
+\bibliographystyle{unsrtnat}
+%\renewcommand{\refname}{}
+%\bibliographystyle{spphys}       % APS-like style for physics
 
 \bibliography{thermo-ref/Thermo-Foam-Ref,thermo-ref/thesis}
 
-\end{document}
+\end{document}             
 
 %%% Local Variables:
 %%% mode: latex
