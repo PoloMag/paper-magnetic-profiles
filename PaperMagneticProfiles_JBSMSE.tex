@@ -189,7 +189,6 @@ The energy equation for the fluid phase can be written as:
 \nomenclature[ak]{$k\ap{eff}$}{effective thermal conductivity [\si{\watt\per\meter\per\kelvin}]}
 \nomenclature[ad]{$D\ped{ld}$}{dispersion term in the AMR model [\si{\meter\square\per\second}]}
 \nomenclature[af]{$f$}{cycle frequency [\si{\hertz}]}
-\nomenclature[bf]{$\Phi$}{utilization}
 \nomenclature[am]{$m$}{mass [\si{\kg}]}
 
 \nomenclature[bt]{$\tau$}{time period [\si{\second}]}
@@ -539,6 +538,8 @@ $\w\ped{R}$ & \SI{0.36}{\watt}\\
   \label{tab:params-cobem}
 \end{table}
 
+\nomenclature[ad]{$D\ped{p}$}{particle diameter [\si{meter}]}
+
 
 When comparing the performances resulting from the application of the different magnetic profiles, the same average magnetic field during the hot cycle will be considered; this implies a higher peak for the rectified cosine. For the cold cycle, the minimum values for both profiles are the same, as shown in \autoref{fig:comparison-methods-profiles}. For reference, in all simulations,  the minimum value for the rectified cosine was fixed at ${B}\ped{min} = \SI{0.1}{\tesla}$. 
 
@@ -558,7 +559,7 @@ Simulations were carried out for various values of blow fraction. The rectified 
   \label{fig:cos-inst-60}
 \end{figure}
 
-Figure~\ref{fig:cos_ins} shows the cooling capacity attained by the device at a frequency of \SI{1}{\hertz} and different utilizations. The horizontal axis shows the average field value during the high field region. The instantaneous profile almost always yields a higher performance, and since the average field during the hot cycle (high field stage) is the same, the main difference is due to the low magnetic field levels. For the ``same minimum'' comparison, the instantaneous profile is capable of keeping a low magnetic field over the entire half-cycle, which is beneficial for performance;  for $\Phi=1.0$ and $B\ped{high} = \SI{1.40}{\tesla}$, the cooling capacity for the instantaneous profile is $\SI{196.3}{\percent}$ higher than for the cosine profile.  As demonstrated by \cite{bib:asme-mce}, a higher average magnetic field during the low-field stage increases the solid temperature and consequently results in  warmer fluid entering the cold heat exchanger, representing a thermal loss. 
+Figure~\ref{fig:cos_ins} shows the cooling capacity attained by the device at a frequency of \SI{1}{\hertz} and different utilizations. The horizontal axis shows the average field value during the high field region. The instantaneous profile almost always yields a higher performance, and since the average field during the hot cycle (high field stage) is the same, the main difference is due to the low magnetic field levels. In this comparison, the instantaneous profile is capable of keeping a low magnetic field over the entire half-cycle, which is beneficial for performance;  for $\Phi=1.0$ and $B\ped{high} = \SI{1.40}{\tesla}$, the cooling capacity for the instantaneous profile is $\SI{196.3}{\percent}$ higher than for the cosine profile.  As demonstrated by \cite{bib:asme-mce}, a higher average magnetic field during the low-field stage increases the solid temperature and consequently results in  warmer fluid entering the cold heat exchanger, representing a thermal loss. 
 
 
 \begin{figure}[!ht]
