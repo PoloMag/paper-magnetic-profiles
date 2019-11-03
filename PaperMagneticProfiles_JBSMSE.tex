@@ -450,13 +450,11 @@ Irreversibility due to fluid friction is accounted for in the calculation of the
 
 The hydraulic system designed to modulate the fluid flow through different regenerators at different time instants is composed of a pump and a set of electronic valves which can be precisely controlled to yield the desired blow durations. The electrical power consumed by the valve array is computed separately from other work contributions.
 
-%Due to evolving developments in our group, two types of valves are considered, as will be elaborated in \autoref{sec:results-discussions}.
+% Type R = Type B (BuRkert)
+% Type S = Type A (ASco)
 
-In the present analysis, two types of valves are considered. In the first approach, called \emph{Type B valves}, the  model proposed in Ref.~\cite{bib:cardoso16_trans} is used, assuming that the individual consumption of each valve is independent of frequency and blow fraction. The valve power  $\wvalve$ can be computed as:
+In the present analysis, two types of valves are considered. In the first approach, called \emph{Type R valves}, the  model proposed in \cite{bib:cardoso16_trans} is used, assuming that the individual consumption of each valve is independent of frequency and blow fraction. The valve power  $\wvalve$ can be computed as:
 
-\colorbox{yellow}{da mesma forma, o trabalho \cite{bib:cardoso16_trans} tem que constar da revisao bibliografica...}
-
-\colorbox{yellow}{fica estranho o \textbf{primeiro} approach ser Type B e o \textbf{segundo} ser Type A...}
 
 \begin{equation}
   \label{eq:58}
@@ -470,7 +468,7 @@ In the present analysis, two types of valves are considered. In the first approa
 \nomenclature[aw]{$\wvalven$}{nominal power comsumption of one valve [\si{\watt}]}
 \nomenclature[aw]{$\wrelayn$}{nominal power comsumption of one relay [\si{\watt}]}
 
-In the second approach, \emph{Type A} valves are used, with  nominal power lower in magnitude but which depends on frequency and blow fraction. For these valves, the valve power was experimentally correlated as:
+In the second approach, \emph{Type S} valves are used, with  nominal power lower in magnitude but which depends on frequency and blow fraction. For these valves, the valve power was experimentally correlated as:
 
 \begin{equation}
   \label{eq:198}
@@ -516,7 +514,7 @@ The analysis of magnetic profiles was performed at two different stages. Initial
 \subsection{Comparison of instantaneous and rectified cosine profiles using a simplified model}
 \label{sec:comp-cosine-inst}
 
-At the first stage of the present analysis, the instantaneous and rectified cosine profiles are compared considering a single-layer regenerator  without casing losses, using Type B valves. The parameters used in all simulations are presented in \autoref{tab:params-cobem}.
+At the first stage of the present analysis, the instantaneous and rectified cosine profiles are compared considering a single-layer regenerator  without casing losses, using Type R valves. The parameters used in all simulations are presented in \autoref{tab:params-cobem}.
 
 \begin{table}[!ht]
   \centering
@@ -643,7 +641,7 @@ Preliminary analyses carried out by \cite{bib:peixer17-perfor-amrs} showed that 
 
 In addition, in the present study, an air gap clearance thickness was set at $h\ped{air} = \SI{1}{\mm}$. This value gave rise to a peak in cooling capacity due to the compromise between minimizing losses and maximizing the magnetocaloric mass.  The thermophysical properties of stainless steel and air were also obtained with interpolation of tables exported by the EES software \cite{bib:klein13-ees}.
 
-The simulations in this section also use multilayer regenerators. A summary of all parameters adopted in this section, including the Curie temperatures and volumetric fractions (relative to the length of the bed) of each layer is presented in \autoref{tab:params-ramp}.
+The simulations in this section also use multilayer regenerators. A summary of all parameters adopted in this section, including the Curie temperatures and volumetric fractions (relative to the length of the bed) of each layer is presented in \autoref{tab:params-ramp}. In addition, in the following results, Type S valves are used, with valve power calculated by \autoref{eq:198}.
 
 \begin{table}[!ht]
   \centering
