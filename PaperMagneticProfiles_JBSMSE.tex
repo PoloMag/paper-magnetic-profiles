@@ -160,7 +160,7 @@ The momentum equation for the fluid domain is given by:
 \nomenclature[bu]{$\mu$}{dynamic viscosity [\si{\pascal\second}]}
 
 
-\noindent and is solved for the time-dependent uniform fluid velocity $V_z$ through the bed. 
+\noindent where the macroscopic inertial term on the left-hand side is balanced with the pressure gradient, Darcy stress and Forchheimer drag \cite{bib:nield06_convec_porous_media}. The momentum equation is solved for the time-dependent uniform fluid velocity $V_z$ through the bed. 
 
 The energy equation for the fluid phase can be written as:
 
@@ -173,6 +173,8 @@ The energy equation for the fluid phase can be written as:
 & + \rate{q}\ped{csg}  
 \end{split}
 \end{equation}
+
+\noindent where the left-hand side includes the inertial and advection terms, and the right-hand side includes terms for the solid-fluid heat transfer, viscous dissipation, heat conduction, porous-media dispersion, and casing losses.
 
 \nomenclature[at]{$T$}{temperature [\si{\kelvin}]}
 \nomenclature[at]{$t$}{time [\si{\second}]}
@@ -194,15 +196,14 @@ The energy equation for the fluid phase can be written as:
 \nomenclature[ac]{$c$}{specific heat [\si{\joule\per\kg\per\kelvin}]}
 
 
-\noindent while the energy equation for the solid phase is written as:
+The energy equation for the solid phase is written as:
 
 \begin{equation}
 \label{eq:88}
   \rho\ped{s} c\ped{s}(1 - \varepsilon)\diffp{T\ped{s}}{t} = \hheat\ped{sf}\beta(T\ped{f}-T\ped{s}) + (1-\varepsilon)k\ped{s}\ap{eff}\diffp[2]{T\ped{s}}{z}
 \end{equation}
 
-\colorbox{yellow}{Fabio, talvez valha a pena explicar quem eh quem nos termos das equacoes da Q movimento e energias...}
-
+\noindent where the terms represent respectively inertia, solid-fluid heat transfer and heat conduction.
 
 Initial and boundary conditions, closure relations for the porous media terms, solution methods and convergence criteria and analyses are discussed in detail in \cite{bib:trevizoli16_perfor_model}. This AMR model solves the above equations for one regenerator operating between given sources temperatures (assuming ideal heat exchangers in contact with the thermal reservoirs), during one full cycle (hot and cold blows and  magnetization and demagnetization periods), given specified operating conditions (to be discussed later).
 
