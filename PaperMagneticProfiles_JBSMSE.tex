@@ -207,7 +207,7 @@ The energy equation for the solid phase is written as:
 
 Initial and boundary conditions, closure relations for the porous media terms, solution methods and convergence criteria and analyses are discussed in detail in \cite{bib:trevizoli16_perfor_model}. This AMR model solves the above equations for one regenerator operating between given sources temperatures (assuming ideal heat exchangers in contact with the thermal reservoirs), during one full cycle (hot and cold blows and  magnetization and demagnetization periods), given specified operating conditions (to be discussed later).
 
-The casing heat transfer term $\rate{q}\ped{csg}$ in \autoref{eq:78} is calculated solving the heat conduction equation in the regenerator casing \cite{bib:trevizoli16_perfor_model}. It can be neglected in some circumstances if an insulating casing material is assumed, which greatly simplifies the analysis. %More details are provided in \autoref{sec:results-discussions}.
+The casing heat transfer term $\rate{q}\ped{csg}$ in \autoref{eq:78} is calculated solving the heat conduction equation in the regenerator casing \cite{bib:trevizoli16_perfor_model}. It can be neglected in some circumstances if an insulating casing material is assumed, which greatly simplifies the analysis. 
 
 \subsubsection{Fluid flow profile modeling}
 \label{sec:how-fluid-flow}
@@ -219,7 +219,7 @@ The pressure gradient in \autoref{eq:75} is modeled as:
 -\diffp{P}{z} = \rho\ped{f} A\ped{t} g(t)
 \end{equation}
 
-\noindent where \(g(t)\) is a dimensionless function that expresses the mathematical waveform of the pressure gradient, and  \(A\ped{t}\) is its amplitude,  adjusted in a convergence loop. In this loop, the mass flow rate calculated in term of the Darcy velocity from \autoref{eq:75} is compared with the input   mass flow rate until convergence is obtained. %The waveform $g(t)$ represents the fluid flow profile used.
+\noindent where \(g(t)\) is a dimensionless function that expresses the mathematical waveform of the pressure gradient, and  \(A\ped{t}\) is its amplitude,  adjusted in a convergence loop. In this loop, the mass flow rate calculated in term of the Darcy velocity from \autoref{eq:75} is compared with the input   mass flow rate until convergence is obtained. 
 
 \nomenclature[ag]{$g(t)$}{dimensional waveform of the pressure gradient term in the fluid momentum equation}
 \nomenclature[aA]{$A\ped{t}$}{amplitude of the pressure gradient waveform in the fluid momentum equation [\si{\meter\per\second\square}]}
@@ -229,7 +229,7 @@ The canonical fluid flow profile considered in this work is the square wave or \
 \begin{figure}[!ht]
   \centering
   \includegraphics[width=8cm]{mprofile}
-  \caption{Instantaneous fluid flow profile}
+  \caption{Instantaneous fluid flow profile. Adapated from \cite{bib:fortkamp20-desig}.}
   \label{fig:mprofile}
 \end{figure}
 
@@ -398,10 +398,9 @@ The fluid properties are considered constant in the momentum equation to decoupl
 
 Both single- and multilayer regenerators are considered in this study. Single-layer regenerators are composed of gadolinium,  a benchmark material with a Curie temperature of \SI{290}{\kelvin}. For simplicity, the solid density is assumed constant at $\rho\ped{s} = \SI{7900}{\kg\per\cubic\meter}$ and the solid thermal conductivity is set to $k\ped{s} = \SI{10.5}{\watt\per\meter\per\kelvin}$. The specific heat capacity of \ce{Gd} is calculated as a function of temperature and magnetic field based on experimental data, using a bi-linear interpolation scheme; more details on the experimental dataset are available in \cite{bib:trevizoli16_perfor_model}. 
 
-For the multilayer simulations, alloys of gadolinium and yttrium are used in the form \ce{Gd_{1-x}Y_x}, where $x$ is the yttrium fraction.  This fraction reduces the Curie temperature of the alloy relative to that of pure gadolinium. Due to the lack of experimental  data on the magnetocaloric properties of \ce{Gd_{1-x}Y_x} alloys at the time this analysis was made, a simpler approach was used in which the \textcolor{blue}{dependence of magnetization, specific heat capacity and entropy with respect to the magnetic field for} alloys with a low yttrium fraction are identical to those of pure gadolinium, \textcolor{blue}{but are shifted to a lower} Curie temperature (corresponding to the yttrium fraction). 
+For the multilayer simulations, alloys of gadolinium and yttrium are used in the form \ce{Gd_{1-x}Y_x}, where $x$ is the yttrium fraction.  This fraction reduces the Curie temperature of the alloy relative to that of pure gadolinium. Due to the lack of experimental  data on the magnetocaloric properties of \ce{Gd_{1-x}Y_x} alloys at the time this analysis was made, a simpler approach was used in which the dependence of magnetization, specific heat capacity and entropy with respect to the magnetic field for alloys with a low yttrium fraction are identical to those of pure gadolinium, but are shifted to a lower Curie temperature (corresponding to the yttrium fraction). 
 
-\colorbox{yellow}{Fabio, veja se o texto acima estah ok...}
-
+\nomenclature[ix]{$x$}{yttrium fraction}
 
 \subsubsection{Performance metrics}
 \label{sec:performance-metrics}
