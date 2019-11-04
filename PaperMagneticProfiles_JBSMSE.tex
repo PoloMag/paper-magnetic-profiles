@@ -144,6 +144,11 @@ Simulations were performed using a one-dimensional AMR mathematical model, imple
   \label{fig:amrmodel}
 \end{figure}
 
+\nomenclature[ah]{$H\ped{reg}$}{regenerator height [\si{\meter}]}
+\nomenclature[aw]{$W\ped{reg}$}{regenerator width [\si{\meter}]}
+\nomenclature[al]{$L\ped{reg}$}{regenerator length [\si{\meter}]}
+\nomenclature[ah]{$H$}{magnetic field [\si{\henry}]}
+
 The momentum equation for the fluid domain is given by:
 
 \begin{equation}
@@ -151,13 +156,13 @@ The momentum equation for the fluid domain is given by:
   \frac{\rho\ped{f}}{\varepsilon} \diffp{V_z}{t}= -\diffp{P}{z} - \frac{\mu\ped{f}}{K} V_z - \frac{c\ped{E} \rho\ped{f}}{K^{1/2}} \left| V_z\right| V_z 
 \end{equation}
 
-\nomenclature[ak]{$K$}{permeability of the porous medium [\si{\meter\square}]}
+\nomenclature[ak]{$K$}{permeability of the porous medium [\si{\meter\squared}]}
 \nomenclature[ac]{$c\ped{E}$}{Ergun constant of the porous medium}
 \nomenclature[br]{$\rho$}{density [\si{\kg\per\cubic\meter}]}
 \nomenclature[be]{$\varepsilon$}{porosity}
 \nomenclature[av]{$V$}{velocity [\si{\meter\per\second}]}
 \nomenclature[ap]{$P$}{pressure [\si{\pascal}]}
-\nomenclature[bu]{$\mu$}{dynamic viscosity [\si{\pascal\second}]}
+\nomenclature[bu]{$\mu\ped{f}$}{fluid dynamic viscosity [\si{\pascal\second}]}
 
 
 \noindent where the macroscopic inertial term on the left-hand side is balanced with the pressure gradient, Darcy stress and Forchheimer drag \cite{bib:nield06_convec_porous_media}. The momentum equation is solved for the time-dependent uniform fluid velocity $V_z$ through the bed. 
@@ -178,15 +183,16 @@ The energy equation for the fluid phase can be written as:
 
 \nomenclature[at]{$T$}{temperature [\si{\kelvin}]}
 \nomenclature[at]{$t$}{time [\si{\second}]}
-\nomenclature[az]{$z$}{axial coordinate [\si{\meter}]}
+\nomenclature[ax]{$x,y,z$}{coordinate system variables [\si{\meter}]}
+\nomenclature[ip]{$p$}{constant-pressure}
 
 \nomenclature[aq]{$\rate{q}\ped{csg}$}{volumetric casing losses in the AMR model [\si{\watt\per\cubic\meter}]}
 \nomenclature[ic]{csg}{regenerator casing}
 \nomenclature[ah]{$\hheat$}{heat transfer coefficient [\si{\watt\per\meter\squared\per\kelvin}]}
 \nomenclature[aa]{$A\ped{sf}$}{contact surface area between solid and fluid phases in the regenerator [\si{\meter^2}]}
 \nomenclature[is]{sf}{relative to the heat transfer between solid and fluid phases in the regenerator}
-\nomenclature[bb]{$\beta$}{surface area density [\si{\squared\meter\per\cubic\meter}]}
-\nomenclature[ak]{$k\ap{eff}$}{effective thermal conductivity [\si{\watt\per\meter\per\kelvin}]}
+\nomenclature[bb]{$\beta$}{surface area density [\si{\square\meter\per\cubic\meter}]}
+\nomenclature[ak]{$k$}{thermal conductivity [\si{\watt\per\meter\per\kelvin}]}
 \nomenclature[ad]{$D\ped{ld}$}{dispersion term in the AMR model [\si{\meter\square\per\second}]}
 \nomenclature[af]{$f$}{cycle frequency [\si{\hertz}]}
 \nomenclature[am]{$m$}{mass [\si{\kg}]}
@@ -221,7 +227,7 @@ The pressure gradient in \autoref{eq:75} is modeled as:
 \noindent where \(g(t)\) is a dimensionless function that expresses the mathematical waveform of the pressure gradient, and  \(A\ped{t}\) is its amplitude,  adjusted in a convergence loop. In this loop, the mass flow rate calculated in term of the Darcy velocity from \autoref{eq:75} is compared with the input   mass flow rate until convergence is obtained. 
 
 \nomenclature[ag]{$g(t)$}{dimensional waveform of the pressure gradient term in the fluid momentum equation}
-\nomenclature[aA]{$A\ped{t}$}{amplitude of the pressure gradient waveform in the fluid momentum equation [\si{\meter\per\second\square}]}
+\nomenclature[aA]{$A\ped{t}$}{amplitude of the pressure gradient waveform in the fluid momentum equation [\si{\meter\per\second\squared}]}
 
 The canonical fluid flow profile considered in this work is the square wave or \emph{instantaneous profile}, because of the instantaneous change in flow rate, as shown in \autoref{fig:mprofile}. 
 
@@ -253,6 +259,8 @@ where HC and CC stand for hot cycle and cold cycle, respectively.
 
 \nomenclature[vh]{HC}{hot cycle}
 \nomenclature[vc]{CC}{cold cycle}
+\nomenclature[vc]{CB}{cold blow}
+\nomenclature[bt]{$\tau\ped{0,CC}, \tau\ped{0,HC}$  }{time periods without fluid flow in the respective half-cycle (see list of Abbreviations) [\si{\second}]}
 
 The profile can be mathematically defined as:
 
@@ -278,6 +286,7 @@ F\ped{B} = \frac{2\tau\ped{B}}{\tau}
 \noindent where $\tau\ped{B}$ is the duration of one blow.
 
 \nomenclature[bt]{$\tau\ped{B}$}{blow duration [\si{\second}]}
+\nomenclature[af]{$F\ped{B}$}{blow fraction}
 
 \subsubsection{Magnetic profile modeling}
 \label{sec:how-magnetic-profile}
@@ -289,8 +298,9 @@ The magnetic profile is modeled by a waveform of magnetic field strength, $H(t)$
   H\ap{eff} = H - N\ped{D} M
 \end{equation}
 
-\nomenclature[am]{$M$}{magnetization field [\si{\ampere\per\meter}]}
+\nomenclature[am]{$M$}{magnetization field [\si{\henry}]}
 \nomenclature[an]{$N\ped{D}$}{demagnetization tensor}
+\nomenclature[ie]{eff}{effective}
 
 \noindent where $M$ is the magnetization field of the material, and $N\ped{D}$ is a demagnetization factor.
 
@@ -302,11 +312,15 @@ The magnetocaloric effect is implemented in the so-called discrete approach \cit
 \end{equation}
 
 
-\nomenclature[bt]{$\dtad$}{adiabatic temperature variation [\si{\kelvin}]}
+\nomenclature[at]{$\dtad$}{adiabatic temperature variation [\si{\kelvin}]}
 
 \noindent where the adiabatic temperature variation, $\dtad$, a standard measure of the MCE, is calculated from tabulated experimental data for magnetocaloric materials as function of temperature and effective field. \cite{bib:trevizoli16_perfor_model}.
 
 The magnetic profiles considered in this work are presented in terms of the flux density $B = \mu_0 H$, where $\mu_0$ is the permeability of free space; the magnetic field $H$ is used in the evaluation of the magnetocaloric effect (cf. Sec.~\ref{sec:how-magnetic-profile}).
+
+\nomenclature[ab]{$B$}{magnetic flux density [\si{\tesla}]}
+\nomenclature[bu]{$\mu_0$}{magnetic permeability of free space [\si{\henry\per\meter}]}
+
 
 The instantaneous (square wave) profile (represented by the subscript ``IT'') and the rectified cosine profile (represented by ``RC'') are defined solely in terms of the extreme values $B\ped{min}$ and $B\ped{min}$, and are shown in \autoref{fig:itrc}.
 
@@ -350,16 +364,16 @@ The \emph{ramp period} \(\tau\ped{R}\) is defined as:
 \tau\ped{R} = \frac{1}{4}\left(\tau - 2 \tau\ped{M}\right)
 \end{equation}
 
-\noindent such that there are four ramp periods in one full cycle. The ramp rate, \(\theta\ped{R}\), is:
+\noindent such that there are four ramp periods in one full cycle. The ramp rate, \(\tan \theta\ped{R}\), is:
 
 \begin{equation}
 \label{eq:202}
 \tan \theta\ped{R} = \frac{\left({B}\ped{max} - {B}\ped{min}\right)}{2\tau\ped{R}}
 \end{equation}
 
-\nomenclature[azt]{$\tau\ped{R}$}{ramp period in the magnetic ramp profile [\si{\second}]}
-\nomenclature[azt]{$\tau\ped{M}$}{magnetization period in the magnetic ramp  profile [\si{\second}]}
-\nomenclature[azo]{$\theta\ped{R}$}{ramp rate in the magnetic ramp profile}
+\nomenclature[bt]{$\tau\ped{R}$}{ramp period in the magnetic ramp profile [\si{\second}]}
+\nomenclature[bt]{$\tau\ped{M}$}{magnetization period in the magnetic ramp  profile [\si{\second}]}
+\nomenclature[bo]{$\tan \theta\ped{R}$}{ramp rate in the magnetic ramp profile [\si{\tesla\per\second}]}
 
 The magnetization fraction, \(F\ped{M}\), is the fraction of the cycle during which the magnetocaloric material is subjected to a constant magnetic field:
 
@@ -384,10 +398,9 @@ The ramp profile (``RM'') can be mathematically defined as:
 \label{eq:203}
 \end{equation}
 
-\nomenclature[vr]{RM}{rectified cosine magnetic profile}
+\nomenclature[vr]{RM}{ramp magnetic profile}
 
 Additionally, the average values of the magnetic field during each half-AMR cycle are considered for comparison between profiles. The average magnetic profile during the hot cycle ($0 \le t < \nicefrac{\tau}{2}$) is denoted by $\average{B}\ped{high}$ and the average during the cold cycle  ($ \nicefrac{\tau}{2} \le t < \tau$) is denoted by $\average{B}\ped{low}$. For the instantaneous waveform, these average values are identical to the extreme values.
-
 
 \subsubsection{Evaluation of solid and fluid properties}
 \label{sec:eval-solid-fluid}
@@ -404,15 +417,15 @@ For the multilayer simulations, alloys of gadolinium and yttrium are used in the
 \subsubsection{Performance metrics}
 \label{sec:performance-metrics}
 
-The AMR model is solved for only one bed, but  assumes that the $N\ped{r}$ identical beds experience the same cycle. Thus, the extensive performance parameters are multiplied by that factor.
+The AMR model is solved for only one bed, but  assumes that the $N\ped{reg}$ identical beds experience the same cycle. Thus, the extensive performance parameters are multiplied by that factor.
 
-\nomenclature[an]{$N\ped{r}$}{number of regenerators}
+\nomenclature[an]{$N\ped{reg}$}{number of regenerators}
 
 The cooling capacity is calculated as \cite{bib:trevizoli16_perfor_model}:
 
 \begin{equation}
 \label{eq:99}
-\qc = N\ped{r}\frac{1}{\tau} \int_{\tau\ped{HB}} \mrate\ped{f}(t) c_{p,\mathrm{f}} \left( T\ped{C} -T\ped{f,CE} \right) \diffd{t}
+\qc = N\ped{reg}\frac{1}{\tau} \int_{\tau\ped{HB}} \mrate\ped{f}(t) c_{p,\mathrm{f}} \left( T\ped{C} -T\ped{f,CE} \right) \diffd{t}
 \end{equation}
 
 
@@ -421,6 +434,7 @@ The cooling capacity is calculated as \cite{bib:trevizoli16_perfor_model}:
 \nomenclature[am]{$\mrate\ped{f}$}{mass flow rate [\si{\kg\per\second}]}
 \nomenclature[vc]{C}{cold source}
 \nomenclature[vc]{H}{hot source}
+\nomenclature[aq]{$\qc$}{cooling capacity [\si{\watt}]}
 
 
 As pointed out in \cite{bib:fortkamp20-desig}, since external sources of irreversibility (e.g., heat transfer with a finite temperature difference in the heat exchangers) are ignored and no eddy currents and hysteresis losses are present, the magnetic power required to magnetize the solid refrigerant and produce the MCE in the AMR cycle is given by the product of the Carnot efficiency and the cooling capacity as follows:
@@ -434,14 +448,14 @@ Irreversibility due to fluid friction is accounted for in the calculation of the
 
 \begin{equation}
 \label{eq:103}
-\wpump = N\ped{r}\frac{1}{\tau}\int_0^{\tau}\frac{\rate{m}\ped{f}}{\rho\ped{f}} \Delta P \diffd{t}
+\wpump = N\ped{reg}\frac{1}{\tau}\int_0^{\tau}\frac{\rate{m}\ped{f}}{\rho\ped{f}} \Delta P \diffd{t}
 \end{equation}
 
-\noindent where $\Delta P$ is the total pressure drop through the regenerator.
+\noindent where $\Delta P$ is the total pressure drop through the regenerator (including one hot and one cold blow).
 
 \nomenclature[awm]{$\wpump$}{pumping power [\si{\watt}]}
 \nomenclature[awm]{$\wmag$}{magnetic power [\si{\watt}]}
-\nomenclature[ap]{$\Delta P$}{pressure drop across one region [\si{\pascal}]}
+\nomenclature[ap]{$\Delta P$}{total pressure drop across one regenerator [\si{\pascal}]}
 
 \subsection{Hydraulic system  and fluid flow profile model}
 \label{sec:hydr-syst-model}
@@ -460,9 +474,9 @@ In the present analysis, two types of valves are considered. In the first approa
   \wvalve = N\ped{v}F\ped{B}\left(\wvalven + \frac{1}{2}\wrelayn\right)
 \end{equation}
 
-\noindent where $N\ped{v}$ is the number of valves, $\wvalven$ is the measured average nominal power for one normally-closed electronic valve and $\wrelayn$ is the nominal power for one controlling relay. The factor $\nicefrac{1}{2}$ is due to two valves being controlled by one relay.
+\noindent where $N\ped{valve}$ is the number of valves, $\wvalven$ is the measured average nominal power for one normally-closed electronic valve and $\wrelayn$ is the nominal power for one controlling relay. The factor $\nicefrac{1}{2}$ is due to two valves being controlled by one relay.
 
-\nomenclature[an]{$N\ped{v}$}{number of valves}
+\nomenclature[an]{$N\ped{valve}$}{number of valves}
 \nomenclature[aw]{$\wvalve$}{valve power [\si{\watt}]}
 \nomenclature[aw]{$\wvalven$}{nominal power comsumption of one valve [\si{\watt}]}
 \nomenclature[aw]{$\wrelayn$}{nominal power comsumption of one relay [\si{\watt}]}
@@ -471,7 +485,7 @@ In the second approach, \emph{Type S} valves are used, with  nominal power lower
 
 \begin{equation}
   \label{eq:198}
-  \wvalve\,[\si{\watt}]= N\ped{v}\left(0.927 f\,[\si{\hertz}] + 1.023 F\ped{B} + 0.226 f\,[\si{\hertz}] F\ped{B} - 0.037\right)
+  \wvalve\,[\si{\watt}]= N\ped{valve}\left(0.927 f\,[\si{\hertz}] + 1.023 F\ped{B} + 0.226 f\,[\si{\hertz}] F\ped{B} - 0.037\right)
 \end{equation}
 
 \colorbox{yellow}{A equacao acima precisa ser melhor contextualizada. Talvez os revisores pecam para dar uma descricao minima do experimento. Uma saida para nao ter que fazer isso seria revisar na introducao o trabalho nosso que mediu e propos a correlacao (foi o do Pedroca)  }
@@ -490,7 +504,7 @@ Independent of the valve type used, it is also assumed that each valve system ca
 
 \begin{equation}
   \label{eq:111}
-  N\ped{v} = 2 N\ped{r}
+  N\ped{valve} = 2 N\ped{reg}
 \end{equation}
 
 \subsection{Calculation of the coefficient of performance}
@@ -517,28 +531,28 @@ At the first stage of the present analysis, the instantaneous and rectified cosi
 
 \begin{table}[!ht]
   \centering
-  \caption{AMR parameters kept fixed in the simulations with different magnetic profiles \colorbox{yellow}{Fabio, acho que as variaveis nao foram apresentadas na lista de simbolos}}
+  \caption{AMR parameters kept fixed in the simulations with different magnetic profiles}
   \begin{tabular}{c|c}
 \hline
 \textbf{Parameter} & \textbf{Value}\\
 \hline
    $D\ped{p}$ & \SI{0.5}{\mm}\\
-$H\ped{r}$ & \SI{20}{\mm}\\
-$W\ped{r}$ & \SI{25}{\mm}\\
-$L\ped{r}$ & \SI{100}{\mm}\\
-$N\ped{r}$ & 11 \\
-$N\ped{v}$ & 22 \\
+$H\ped{reg}$ & \SI{20}{\mm}\\
+$W\ped{reg}$ & \SI{25}{\mm}\\
+$L\ped{reg}$ & \SI{100}{\mm}\\
+$N\ped{reg}$ & 11 \\
+$N\ped{valve}$ & 22 \\
 $T\ped{H}$ & \SI{298}{\kelvin}\\
 $\tc$ & \SI{278}{\kelvin}\\
-$\w\ped{NV}$ & \SI{4}{\watt}\\
-$\w\ped{R}$ & \SI{0.36}{\watt}\\
+$\wvalven$ & \SI{4}{\watt}\\
+$\wrelayn$ & \SI{0.36}{\watt}\\
 \hline
   \end{tabular}
 
   \label{tab:params-cobem}
 \end{table}
 
-\nomenclature[ad]{$D\ped{p}$}{particle diameter [\si{meter}]}
+\nomenclature[ad]{$D\ped{p}$}{particle diameter [\si{\meter}]}
 
 
 When comparing the performances resulting from the application of the different magnetic profiles, the same average magnetic field during the hot cycle will be considered; this implies a higher peak for the rectified cosine. For the cold cycle, the minimum values for both profiles are the same, as shown in \autoref{fig:comparison-methods-profiles}. For reference, in all simulations,  the minimum value for the rectified cosine was fixed at ${B}\ped{min} = \SI{0.1}{\tesla}$. 
@@ -637,6 +651,7 @@ Moving towards a more realistic model, casing losses are included, using the mod
 \end{figure}
 
 \nomenclature[ia]{air}{air layer between magnets and regenerators}
+\nomenclature[ah]{$h$}{thickness [\si{\meter}]}
 
 Preliminary analyses carried out by \cite{bib:peixer17-perfor-amrs} showed that a stainless steel casing with a thickness of $h\ped{csg} = \SI{0.5}{\mm}$ is thick enough to ensure mechanical integrity and easy manufacturing, while being thin enough to accommodate the material with a low thermal conductivity.
 
@@ -650,11 +665,10 @@ The simulations in this section also use multilayer regenerators. A summary of a
 \hline
     \textbf{Parameter} & \textbf{Value} \\
 \hline
-$R\ped{o}$ & \SI{40}{\mm} \\
-$W\ped{r}$ & \SI{30}{\mm} \\
-$L\ped{r}$ & \SI{85}{\mm} \\
-$N\ped{r}$ & \num{8} \\
-$N\ped{v}$ & \num{16} \\
+$W\ped{reg}$ & \SI{30}{\mm} \\
+$L\ped{reg}$ & \SI{85}{\mm} \\
+$N\ped{reg}$ & \num{8} \\
+$N\ped{valve}$ & \num{16} \\
 $f$ & \SI{1}{\hertz} \\
 $T\ped{H}$ & \SI{305.5}{\kelvin} = \SI{32.5}{\celsius} \\
 $\tc$ & \SI{270.5}{\kelvin} = \SI{-2.5}{\celsius} \\
