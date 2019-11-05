@@ -109,7 +109,7 @@ A typical AMR cycle is comprised of the following steps: (i) The magnetic circui
 
 Fluid flow profiles can be more easily investigated  experimentally, as no changes in the fluid flow hardware are required, provided a reliable and flexible valving system is in place. In particular, the effect of the \emph{duration} of the fluid blows has been extensively investigated \cite{bib:teyber17_exper,bib:nakashima18-influen-exp,FORTKAMP2018}. There appears to be a consensus in the literature that the cooling capacity of magnetic refrigerators can be increased by displacing the fluid during periods where the magnetic field is at its extreme values. 
 
-The control of these blow durations can be achieved with the use of solenoid valves; a model for a digital hydraulic system and a calculation of valve power has been presented by  \cite{bib:cardoso16_trans}, who showed that, if the opening and closing times are fast enough compared to the cycle period, then valve power is indepedent of frequency and proportional to the blow duration.  An application of  electronic valves in AMR devices has been presented by \cite{bib:nakashima18-perfor-asses-solen-valves-flow}, using the control logic (for synchronizing the valve operation with the magnetic profile) described by \cite{bib:hoffmann17-actuat}.
+The control of these blow durations can be achieved with the use of solenoid valves; a model for a digital hydraulic system and a calculation of valve power has been presented by  \cite{bib:cardoso16_trans} and \cite{bib:cardoso18}.  An application of  electronic valves in AMR devices has been presented by \cite{bib:nakashima18-perfor-asses-solen-valves-flow}, using the control logic (for synchronizing the valve operation with the magnetic profile) described by \cite{bib:hoffmann17-actuat}.
 
 In contrast, because of the complexities involved in designing and fabricating magnetic circuits, the applied magnetic field profiles (or simply the magnetic waveforms) are much less studied, and are usually investigated in terms of their synchronization with the fluid flow profile with numerical investigations. Considering a trapezoidal magnetic profile and a square fluid flow waveform, a numerical analysis showed that small delays between the increase of the magnetic field and the start of the fluid flow is beneficial for the cooling capacity, to assure the solid is fully magnetized before the fluid starts transfering energy from it \cite{bib:bjoerk11_amr}. To the authors' knowledge, the only work that experimentally varied the magnetic profile, by controlling the rotation of magnetic cylinders, is the work by \cite{bib:benedict16_desig}, which also showed that cooling capacity of an AMR device is dependent on this lag between magnetization and fluid flow.
 
@@ -481,14 +481,12 @@ In the present analysis, two types of valves are considered. In the first approa
 \nomenclature[aw]{$\wvalven$}{nominal power comsumption of one valve [\si{\watt}]}
 \nomenclature[aw]{$\wrelayn$}{nominal power comsumption of one relay [\si{\watt}]}
 
-In the second approach, \emph{Type S} valves are used, with  nominal power lower in magnitude but which depends on frequency and blow fraction. For these valves, the valve power was experimentally correlated as:
+In the second approach, \emph{Type S} valves are used, with  nominal power lower in magnitude but which depends on frequency and blow fraction. These valves were experimentally characterized by \cite{bib:cardoso18}, where a single valve was attached to a measurement circuit and set to operate for varying values of blow fraction and frequency; the valve power was calculated from the averaged values of voltage and current after periodic steady state was reached. From these experiments, the valve power was experimentally correlated as:
 
 \begin{equation}
   \label{eq:198}
   \wvalve\,[\si{\watt}]= N\ped{valve}\left(0.927 f\,[\si{\hertz}] + 1.023 F\ped{B} + 0.226 f\,[\si{\hertz}] F\ped{B} - 0.037\right)
 \end{equation}
-
-\colorbox{yellow}{A equacao acima precisa ser melhor contextualizada. Talvez os revisores pecam para dar uma descricao minima do experimento. Uma saida para nao ter que fazer isso seria revisar na introducao o trabalho nosso que mediu e propos a correlacao (foi o do Pedroca)  }
 
 Equation~\eqref{eq:198} was correlated for blow fractions of \num{50} and \SI{100}{\percent} and frequencies in the range of \num{0.2}--\SI{1.6}{\hertz}, with an uncertainty on the order of \SI{0.4}{\watt} for a single valve. The use of different valve types will be discussed among the presented results.
 
@@ -781,7 +779,7 @@ There is no actual or potential conflict of interest including any financial, pe
 %\renewcommand{\refname}{}
 %\bibliographystyle{spphys}       % APS-like style for physics
 
-\bibliography{thermo-ref/Thermo-Foam-Ref,thermo-ref/thesis}
+\bibliography{thermo-ref/Thermo-Foam-Ref,thesis}
 
 \end{document}             
 
