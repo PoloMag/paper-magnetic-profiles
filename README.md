@@ -1,21 +1,25 @@
-# Paper: Influence of the magnetic field profile on the performance of active magnetic regenerators
+# Paper: Numerical analysis of the influence of magnetic field waveforms on the performance of active magnetic regenerators
 
-This repository contain datasets, scripts and manuscript files for our group's paper on the subject explained below.
+Authors: Fábio P. Fortkamp, Gusttav B. Lang, Jaime A. Lozano, Jader R. Barbosa Jr, all from the Federal University of Santa Catarina, Brazil.
 
-Part of this analysis was already published in:
+Submitted to the [Journal of the Brazilian Society of Mechanical Sciences and Engineering](https://www.springer.com/journal/40430?detailsPage=pltci_2297590).
+
+This repository contain datasets, scripts and manuscript files for our group's paper on the subject explained in the title.
+
+Parts of this analysis were already published in:
 
 - Fortkamp, Fábio P., Lang, Gusttav B., Lozano, Jaime A., & Barbosa Jr., Jader R. (2017). Performance of magnetic refrigerators operating with different magnetic profiles. *Proceedings of the 24th ABCM International Congress of Mechanical Engineering (COBEM 2017)*. Curitiba.
 - Fortkamp, Fábio Pinto (2019). Integrated Design of the Magnet-Regenerator Assembly for a Magnetic Refrigerator. PhD Thesis (Department of Mechanical Engineering). Federal University of Santa Catarina, Florianópolis.
 
 ## Datasets files
 
-Three dataset files are provided with steady state results for an AMR configuration. The magnetic profiles used are identified by the filename.  Different test conditions were used for the different profiles. 
+Dataset files in CSV format, inside the `data` directory, are provided with steady state results for an AMR configuration. The magnetic profiles used are identified by the filename.  Different test conditions were used for the different profiles, as explained in the sections below. The columns of these spreadsheets represent the model variables, and each row is a different simulation, with different input parameters (such as amplitude and frequency of the magnetic profile, utilization factor, regenerator geometry) and the resulting output values (pressure drop, power contributions, cooling capacity, coefficient of performance).
 
 The AMR model is described in detail in:
 
 - Trevizoli, P. V. (2015). Development of thermal tegenerators for magnetic cooling applications. PhD Thesis (Department of Mechanical Engineering), Federal University of Santa Catarina, Florianópolis.
 
-and was implemented in the RegSim software.
+and was implemented in the RegSim software developed by the author above. Unfortunately, we cannot make this software available; the numerical values output by RegSim in its results files were manually inserted into the spreadsheets explained below.
 
 ### Common parameters for `Instantaneous.csv` and `RectifiedCosine.csv`
 
@@ -34,7 +38,7 @@ For the instantaneous and rectified cosine profiles, the common AMR parameters u
 In addition, a digital hydraulic system was used with the following parameters:
 
 - 22 valves
-- Nominal power for one valve of 4 W (the so-called "Type B" valve)
+- Nominal power for one valve of 4 W (the so-called "Type R" valve)
 - Nominal power for one controlling relay of 0.36 W (and one relay can be used to control 2 valves)
 
 The simulations for these profiles also considered adiabatic regenerators.
@@ -56,7 +60,7 @@ The simulations for the ramp magnetic profile dataset also considered:
 
 - Casing losses
 - Multilayer renegerators (consisted of "shifted" Gd layers)
-- Low-consumption valves ("Type A" valves), whose power depends on frequency and blow fraction
+- Low-consumption valves ("Type S" valves), whose power depends on frequency and blow fraction
 
 Common parameters:
 
@@ -70,8 +74,6 @@ Common parameters:
 - Hot side temperature of 305.5 K
 - Particle diameter of 350 um
 - Regenerators with three layers, with Curie temperatures of {273, 283, 290} K and respective length fractions of {20, 20, 60} % of the regenerator length
-
-In addition to the canonical `Ramp.csv`, there are also files entitled `Ramp-BmaxXXXXmT.csv`, with results with the maximum field fixed at the value indicated by `XXXX` (e.g. 1200 mT = 1.2 T).
 
 ### Common parameters for `Ramp-varH.csv`
 
@@ -103,22 +105,11 @@ The columns name for the `Instantaneous.csv` and `Instantaneous-varH.csv` datase
 
 For the `RectifiedCosine.csv` dataset, there is an additional column, `H_max_equiv[T]`, which represents the equivalent instantaneous magnetic profile with the same average field *during the entire half-cycle period*, i.e. this value is not dependent on blow fraction. In addition for this dataset, the minimum applied field is set fixed to 0.1 T.
 
-The files `Ramp-Bmax.csv`, in addition of the columns shown above, also has the following fields:
-
-* `F_R[%]`: fraction of the cycle where the magnetic field is changing (the "ramp fraction")
-* `F_M_High[%]`: fraction of the cycle where the magnetic field is at its maximum level
-* `ReDp_CB[-]`: particle diameter-based Reynolds number during cold blow
-* `ReDp_HB[-]`: particle diameter-based Reynolds number during hot blow
-* `U_CB[-]`: cold blow utilization factor
-* `dPHB[kPa]`: hot blow pressure drop through one regenerator
-* `dT_reg[K]`: regenerator temperature span (and `Tspan[K]` then represents the system temperature span)
-* `Q_wall-Loss[W]`: heat leakage through the regenerators wall
-
 The identifiers `Test` and `Re_w[-]` can be ignored.
 
 ## Python scripts
 
-The figures for the paper are generated via Python scripts. To reproduce them, it is recommended that you create a conda environment with the specified conda file:
+The figures for the paper are generated via Python scripts contained in the `src` directory; the figures are output to the `figures` directory. To reproduce them, it is recommended that you create a conda environment with the specified conda file:
 
     conda env create -f environment.yml
 
@@ -126,6 +117,23 @@ The environment file specifies the versions of the softwares used to create the 
 
 The scripts are purposed as follows:
 
+* `loaddatasets.py`: reads the tables from the `data` directory and loads them as pandas DataFrames
 * `plotprofiles.py`: generates figures illustrating the different profiles waveforms
+* `figures.py`: generate various types of plots from the datasets. This script was primarily developed by G. B. Lang.
+* `renamefigures.py`: copy figures generated by the above scripts and save copies in the root directory of the paper, preprending figure numbers to the file names. These numbers are hardcoded into the script, reflecting the state of the manuscript before the first submission.
 
-The scripts are set to be saved on disk so that they can be loaded into the LaTeX manuscript.
+To generate and copy *all* figures, you can run:
+
+    python src/runall.py
+
+Notice that this driver script does not compile the manuscript.
+
+## Manuscript
+
+The LaTeX manuscript is `PaperMagneticProfiles_JBSMSE.tex`. It uses templates and instruction provided by the journal.  
+
+The BibTeX files `Thermo-Foam-Ref-bib` and `thesis.bib` are bibliography databases I (F. P. Fortkamp) have been carrying and updating for a long time, so they contain multiple entries not cited in the paper. These files were copied to this folder from [this repository](https://github.com/PoloMag/thermo-ref) by our group.
+
+The best way to compile is with `latexmk`; although a chain of `pdflatex` and `bibtex` commands should work. To compile the list of symbols with the [`nomencl`](https://ctan.org/pkg/nomencl?lang=en) package, the `makeindex` command should be configured as:
+
+    makeindex PaperMagneticProfiles_JBSMSE.nlo -s nomencl.ist -o PaperMagneticProfiles_JBSMSE.nls
