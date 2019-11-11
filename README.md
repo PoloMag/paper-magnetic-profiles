@@ -1,5 +1,8 @@
 # Paper: Numerical analysis of the influence of magnetic field waveforms on the performance of active magnetic regenerators
 
+[![DOI](https://zenodo.org/badge/190606466.svg)](https://zenodo.org/badge/latestdoi/190606466)
+
+
 Authors: Fábio P. Fortkamp, Gusttav B. Lang, Jaime A. Lozano, Jader R. Barbosa Jr, all from the Federal University of Santa Catarina, Brazil.
 
 Submitted to the [Journal of the Brazilian Society of Mechanical Sciences and Engineering](https://www.springer.com/journal/40430?detailsPage=pltci_2297590).
