@@ -1,0 +1,122 @@
+%%
+%% This is file `magref.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% magref.dtx  (with options: `package')
+%% 
+%% This is a generated file.
+%% 
+%% Copyright (C) 2016 by Fabio Fortkamp <fabio@fabiofortkamp.com>
+%% 
+%% This work may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%   http://www.latex-project.org/lppl.txt
+%% and version 1.3 or later is part of all distributions of LaTeX
+%% version 2005/12/01 or later.
+%% 
+%% This work has the LPPL maintenance status `maintained'.
+%% 
+%% The Current Maintainer of this work is Fabio Fortkamp.
+%% 
+%% This work consists of the files magref.dtx and magref.ins
+%% and the derived files magref.sty and magref.pdf.
+%% 
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{magref}[2019/04/22 v0.4]
+
+\RequirePackage{engsymbols}
+\RequirePackage[version=4]{mhchem}
+\RequirePackage[per-mode=symbol]{siunitx}
+\RequirePackage{ifthen}
+
+\newcommand{\qe}{\rate{Q}\ped{e}}
+\newcommand{\dtspan}{\Delta{}T\ped{span}}
+\newcommand{\dtsys}{\Delta{}T\ped{sys}}
+\newcommand{\dtreg}{\Delta{}T\ped{reg}}
+\newcommand{\w}{\rate{W}}
+\newcommand{\wpump}{\w\ped{pump}}
+\newcommand{\wmag}{\w\ped{mag}}
+\newcommand{\wshaft}{\w\ped{shaft}}
+\newcommand{\wvalve}{\w\ped{valve}}
+\newcommand{\wvisc}{\w\ped{visc}}
+\newcommand{\cop}{\mathrm{COP}}
+\newcommand{\dtad}{\Delta{}T\ped{ad}}
+\newcommand{\dsm}{\Delta{}s\ped{M}}
+\newcommand{\tc}{T\ped{C}}
+\ifthenelse{\isundefined{\th}}{\newcommand{\th}{T\ped{H}}}{\renewcommand{\th}{T\ped{H}}}
+\newcommand{\tcend}{T\ped{CE}}
+\newcommand{\thend}{T\ped{HE}}
+\newcommand{\dthhex}{\Delta{}T\ped{HHEX}}
+\newcommand{\dtchex}{\Delta{}T\ped{CHEX}}
+\newcommand{\qc}{\rate{Q}\ped{C}}
+\newcommand{\qh}{\rate{Q}\ped{H}}
+\newcommand{\ths}{T\ped{H,s}}
+\newcommand{\tcs}{T\ped{C,s}}
+\newcommand{\lcool}{\Lambda\ped{cool}}
+\newcommand{\tcurie}{T\ped{Curie}}
+\newcommand{\ntu}{\mathrm{NTU}}
+\newcommand{\mf}{\rate{m}\ped{f}}
+\newcommand{\vvf}{\rate{\vv}\ped{f}}
+\newcommand{\etasec}{\eta\ped{2nd}}
+\newcommand{\rvec}{\nvector{r}}
+\newcommand{\nvh}{\nvector{H}}
+\newcommand{\nvb}{\nvector{B}}
+\newcommand{\nva}{\nvector{A}}
+\newcommand{\nvf}{\nvector{F}^B}
+\newcommand{\nvrem}{\nvector{B}\ped{rem}}
+\newcommand{\nvbrem}{\nvrem}
+\newcommand{\nvm}{\nvector{M}}
+\newcommand{\nvdip}{\nvector{m}}
+\newcommand{\nvnetdip}{\nvector{\mathcal{M}}}
+\newcommand{\nvbremhat}{\hat{\nvector{B}}\ped{rem}}
+\newcommand{\nvbi}{\nvector{B}_k}
+\newcommand{\nvhi}{\nvector{H}_k}
+\newcommand{\nvremi}{\nvector{B}_{\mathrm{rem},k}}
+\newcommand{\nvbremi}{\nvremi}
+\newcommand{\nvai}{\nvector{A}_k}
+\newcommand{\nvha}{\nvh\ped{a}}
+\newcommand{\nvhd}{\nvh\ped{d}}
+\newcommand{\indexremmk}[2]{\mathrm{rem},{#1},{#2}}
+\newcommand{\nvbremmk}[2]{\nvb_{\indexremmk{#1}{#2}}}
+\newcommand{\bremmk}[2]{B_{\indexremmk{#1}{#2}}}
+\newcommand{\alpharemmk}[2]{\alpha_{\indexremmk{#1}{#2}}}
+\newcommand{\nvfremmk}[2]{\nvector{F}^B_{\indexremmk{#1}{#2}}}
+\newcommand{\nvbiii}{\nvb\ped{III}}
+\newcommand{\nha}{H\ped{a}}
+\newcommand{\mur}{\mu\ped{r}}
+\newcommand{\bl}{B\ped{l}}
+\newcommand{\bh}{B\ped{h}}
+\newcommand{\hal}{H\ped{a,l}}
+\newcommand{\hah}{H\ped{a,h}}
+\newcommand{\brem}{B\ped{rem}}
+\newcommand{\muri}{\mu_{\mathrm{r},k}}
+\newcommand{\bremi}{B_{\mathrm{rem},k}}
+\newcommand{\avgb}[1]{\left\langle B^{2/3} \right\rangle\ped{#1}}
+\newcommand{\qmce}{q'\ped{MCE}}
+\newcommand{\ndfeb}{\ce{Nd{-}Fe{-}B} }
+\newcommand{\sigmaxdh}{\sigma \diffd{H\ped{a}}}
+\newcommand{\hxdsigma}{H\ped{a}\diffd{\sigma}}
+\newcommand{\ri}{R\ped{i}}
+\ifthenelse{\isundefined{\ro}}{\newcommand{\ro}{R\ped{o}}}{\renewcommand{\ro}{R\ped{o}}}
+\newcommand{\rg}{R\ped{g}}
+\newcommand{\rs}{R\ped{s}}
+\newcommand{\rc}{R\ped{c}}
+\newcommand{\re}{R\ped{e}}
+\newcommand{\hgap}{h\ped{gap}}
+\newcommand{\acoef}[2]{a_{{#1},\mathrm{#2}}}
+\newcommand{\bcoef}[2]{b_{{#1},\mathrm{#2}}}
+\newcommand{\Azexpr}[1]{A_{\mathrm{#1},z}}
+\newcommand{\bremii}{B_{\mathrm{rem,II}}}
+\newcommand{\bremiv}{B_{\mathrm{rem,IV}}}
+\newcommand{\murn}[1]{\mu\ped{r,#1}}
+\newcommand{\aIII}{\acoef{1}{III}}
+\newcommand{\bIII}{\bcoef{1}{III}}
+\newcommand{\nvbIII}{\nvector{B}\ped{III}}
+\newcommand{\BIII}{B\ped{III}}
+\endinput
+%%
+%% End of file `magref.sty'.

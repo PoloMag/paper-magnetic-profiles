@@ -1,0 +1,83 @@
+%%
+%% This is file `engsymbols.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% engsymbols.dtx  (with options: `package')
+%% 
+%% This is a generated file.
+%% 
+%% Copyright (C) 2014 by Fabio Fortkamp <fabio@fabiofortkamp.com>
+%% 
+%% This work may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%   http://www.latex-project.org/lppl.txt
+%% and version 1.3 or later is part of all distributions of LaTeX
+%% version 2005/12/01 or later.
+%% 
+%% This work has the LPPL maintenance status `maintained'.
+%% 
+%% The Current Maintainer of this work is Fabio Fortkamp.
+%% 
+%% This work consists of the files engsymbols.dtx and engsymbols.ins
+%% and the derived files engsymbols.sty and engsymbols.pdf.
+%% 
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{engsymbols}[2019/04/02 v0.3 Included basic dimensionless numbers in Fluid Mechanics]
+\RequirePackage{bm}
+\RequirePackage{amsmath}
+\RequirePackage{esdiff}
+\newcommand{\ped}[1]{\ensuremath{_{\mathrm{#1}}}}
+\newcommand{\ap}[1]{\ensuremath{^{\mathrm{#1}}}}
+\newcommand{\nvector}[1]{\bm{#1}}
+\newcommand{\nmatrix}[1]{\bm{#1}}
+  \newcommand{\reynolds}{\mathrm{Re}}
+  \newcommand{\nusselt}{\mathrm{Nu}}
+  \newcommand{\prandtl}{\mathrm{Pr}}
+  \newcommand{\peclet}{\mathrm{Pe}}
+\newcommand{\volume}{\mathcal{V}}
+\newcommand{\vv}{\volume}
+\newcommand{\diffd}{\@ifnextchar^{\DIfF}{\DIfF^{}}}
+\def\DIfF^#1{%
+  \mathop{\mathrm{\mathstrut d}}%
+      \nolimits^{#1}\gobblespace}
+\def\gobblespace{%
+  \futurelet\diffarg\opspace}
+\def\opspace{%
+  \let\DiffSpace\!%
+  \ifx\diffarg(%
+      \let\DiffSpace\relax
+  \else
+      \ifx\diffarg[%
+          \let\DiffSpace\relax
+      \else
+          \ifx\diffarg\{%
+              \let\DiffSpace\relax
+          \fi\fi\fi\DiffSpace}
+\newcommand{\hheat}{\hbar}
+\newcommand{\hmass}{\hbar\ped{m}}
+\newcommand{\universalgasconstant}{R\ped{u}}
+\newcommand{\diffusivitybinary}{\mathcal{D}_{12}}
+\newcommand{\normalvector}{\hat{\nvector{n}}}
+\newcommand{\average}[1]{\overline{#1}}
+\newcommand{\rate}[1]{\dot{#1}}
+\newcommand{\flux}[1]{{#1}''}
+\newcommand{\divergent}[1]{\nabla \cdot #1}
+\newcommand{\divergentv}[1]{\divergent{\nvector{#1}}}
+\newcommand{\divergentpar}[1]{\divergent{\left( #1 \right)}}
+\newcommand{\curl}[1]{\nabla\times{#1}}
+\newcommand{\curlv}[1]{\curl{\nvector{#1}}}
+\newcommand{\gradient}[1]{\nabla {#1}}
+\newcommand{\gradientpar}[1]{\gradient{\left( {#1} \right)}}
+\newcommand{\laplacian}[1]{\nabla^2 #1}
+\newcommand{\laplacianpar}[1]{\laplacian{\left( #1 \right)}}
+\newcommand{\vectornorm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\unitvector}[1]{\hat{\nvector{e}}_{#1}}
+\newcommand{\diffpar}[2]{\diff{}{#2} \left( #1 \right)}
+\newcommand{\diffppar}[2]{\diffp{}{#2} \left( #1 \right)}
+\endinput
+%%
+%% End of file `engsymbols.sty'.
