@@ -408,6 +408,128 @@ def plot_W_Inst_vs_CCH(table_inst,table_cch,F_inst,F_CCH, figure_suffix=""):
 
         #plt.show()
 
+
+def plot_W_Inst_vs_CCH_all_Phi(table_inst,table_cch,F_inst,F_CCH, figure_suffix=""):
+    """
+    Plots figures of W x B from data from the DataFrames 'table_inst' and 'table_cch',
+    selecting points with blow fractions 'F_inst' and 'F_CCH',
+    and adding 'figure_suffix' to the end of the filename for each figure
+    
+    Creates one figure for each value of f plotted, or all values of Phi
+    """ 
+
+    regsim_utilizations = {0.1988: 0.2,
+                          0.3977: 0.4,
+                          0.5965: 0.6,
+                          0.7953: 0.8,
+                          0.9942: 1.0}
+    
+    f_vector = table_inst[ld.FREQUENCY_COLUMN].unique()
+
+    # slicing to get first and last element 
+    # from https://stackoverflow.com/questions/12218796/python-slice-first-and-last-element-in-list
+    phi_vector = table_inst[ld.UTILIZATION_HOT_BLOW_COLUMN].unique()
+    phi_vector = phi_vector[::len(phi_vector)-1] 
+    H_max_vector = table_inst[ld.MAXIMUM_PROFILE_COLUMN].unique()
+                    
+    x_min = min(H_max_vector)
+    x_max = max(H_max_vector)
+
+    fig_list = []
+    markers=['s','o','x','v','^','h','<']
+    colors=["black", "firebrick","darkcyan","indigo","sienna"]
+    for f in f_vector:    
+        table_inst_f = filter_table_from_column(table_inst,ld.FREQUENCY_COLUMN,f)
+        table_cch_f = filter_table_from_column(table_cch,ld.FREQUENCY_COLUMN,f)
+           
+        table_inst_f_F = filter_table_from_column(table_inst_f,ld.BLOW_FRACTION_COLUMN,F_inst) 
+        table_cch_f_F = filter_table_from_column(table_cch_f,ld.BLOW_FRACTION_COLUMN,F_CCH)
+        
+        
+        #Para os casos com mesmo minimo e mesma media
+        if  table_inst_f_F[ld.MINIMUM_PROFILE_COLUMN].max() <= 0.1:
+            table_inst_f_F_Hmin = filter_table_from_column(table_inst_f_F,ld.MINIMUM_PROFILE_COLUMN,0.1) 
+            
+        if  table_inst_f_F[ld.MINIMUM_PROFILE_COLUMN].max() > 0.1:
+            table_inst_f_F_Hmin = table_inst_f_F   
+        
+        fig, axis = create_plot(ylabel=W_LABEL,
+                                    xlabel=B_LABEL)
+
+        for (i,phi) in enumerate(phi_vector):
+
+
+            table_inst_f_F_Hmin_phi = filter_table_from_column(table_inst_f_F_Hmin,ld.UTILIZATION_HOT_BLOW_COLUMN,phi)
+            table_cch_f_F_phi = filter_table_from_column(table_cch_f_F,ld.UTILIZATION_HOT_BLOW_COLUMN,phi)
+
+            x_vector = table_inst_f_F_Hmin_phi[ld.MAXIMUM_PROFILE_COLUMN].values
+            Wpump_vector_inst = table_inst_f_F_Hmin_phi[ld.PUMPING_POWER_COLUMN].values
+            Wpump_vector_cch = table_cch_f_F_phi[ld.PUMPING_POWER_COLUMN].values
+            Wmag_vector_inst = table_inst_f_F_Hmin_phi[ld.MAGNETIC_POWER_COLUMN].values
+            Wmag_vector_cch = table_cch_f_F_phi[ld.MAGNETIC_POWER_COLUMN].values
+            Wvalve_vector_inst = table_inst_f_F_Hmin_phi[ld.VALVE_POWER_COLUMN].values
+            Wvalve_vector_cch = table_cch_f_F_phi[ld.VALVE_POWER_COLUMN].values
+
+                    
+            axis.plot(x_vector, Wpump_vector_inst, label='IT Pumping '+r'$\Phi = ' + '%.1f' %(regsim_utilizations[phi]) 
+                      + r'$',               
+                      marker=markers[0],
+                      linestyle='-',
+                      color=colors[i])
+            axis.plot(x_vector, Wpump_vector_cch, label='RC Pumping '+r'$\Phi = ' + '%.1f' %(regsim_utilizations[phi]) 
+                      + r'$',               
+                      marker=markers[0],
+                      linestyle='--', 
+                      color=colors[i])
+
+            axis.plot(x_vector, Wmag_vector_inst, label='IT Magnetic '+r'$\Phi = ' + '%.1f' %(regsim_utilizations[phi]) 
+                      + r'$',               
+                      marker=markers[1],
+                      linestyle='-',
+                      color=colors[i])
+            axis.plot(x_vector, Wmag_vector_cch, label='RC Magnetic '+r'$\Phi = ' + '%.1f' %(regsim_utilizations[phi]) 
+                      + r'$',               
+                    marker=markers[1],
+                    linestyle='--', 
+                    color=colors[i])
+            
+            axis.plot(x_vector, Wvalve_vector_inst, label='IT Valve '+r'$\Phi = ' + '%.1f' %(regsim_utilizations[phi]) 
+                      + r'$',               
+                      marker=markers[2],
+                      linestyle='-',
+                      color=colors[i])
+            axis.plot(x_vector, Wvalve_vector_cch, label='RC Valve '+r'$\Phi = ' + '%.1f' %(regsim_utilizations[phi]) 
+                      + r'$',               
+                      marker=markers[2],
+                      linestyle='--', 
+                      color=colors[i])
+            
+            axis.legend(loc='upper left',
+                   bbox_to_anchor=(1.0,1.0))
+
+            ymax = np.max(
+                [
+                    Wpump_vector_cch,
+                    Wpump_vector_inst,
+                    Wmag_vector_cch,
+                    Wmag_vector_inst,
+                    Wvalve_vector_cch,
+                    Wvalve_vector_inst
+                ]
+            )
+            axis.set_ylim(0,ymax)
+            axis.set_xlim(x_min,x_max)
+            axis.grid(True)
+            refine_xticks(axis,4)
+            refine_yticks(axis,4)
+
+            fig_name = "W_B_comp_f_%d%s" %(f,figure_suffix)
+            save_figure(fig,fig_name)
+            plt.close(fig)
+
+        #plt.show()
+
+
 def plot_Qc_phi_Inst(table):
     """
     Plots figures of Qc x Phi from data from the DataFrame 'table'
@@ -936,70 +1058,70 @@ def main():
     F_B_inst = 100
     F_B_CCH = 60
     fig_suffix = "_same_minimum"
-    plot_Qc_and_COP_Inst_vs_CCH(
-        table_inst, 
-        table_cch,
-        F_B_inst,
-        F_B_CCH,
-        fig_suffix)
+    # plot_Qc_and_COP_Inst_vs_CCH(
+    #     table_inst, 
+    #     table_cch,
+    #     F_B_inst,
+    #     F_B_CCH,
+    #     fig_suffix)
 
-    plot_W_Inst_vs_CCH(table_inst, table_cch,F_B_inst,F_B_CCH,fig_suffix)
+    # plot_W_Inst_vs_CCH(table_inst, table_cch,F_B_inst,F_B_CCH,fig_suffix)
+    plot_W_Inst_vs_CCH_all_Phi(table_inst, table_cch,F_B_inst,F_B_CCH,fig_suffix)
+
+    # # ### Instantaneous profile -  Q_c vs $\Phi$ (one curve for each maximum field)
+
+    # plot_Qc_phi_Inst(table_inst)
+
+    # # # ### Instantaneous profile -  Q_c vs H_reg 
+    # # # 
+    # # # - Width, length and number of regenerators are kept fixed
+    # # # - Blow fraction is kept fixed at 100%
+    # # # - Minimum field 0.05 T
+
+    # table_Inst_variosH = ld.it_varH_df
+    # plot_Qc_H_Inst(table_Inst_variosH)
 
 
-    # ### Instantaneous profile -  Q_c vs $\Phi$ (one curve for each maximum field)
+    # # ## 4 Plotting the ramp profile
 
-    plot_Qc_phi_Inst(table_inst)
+    # # ## AMR curve
 
-    # # ### Instantaneous profile -  Q_c vs H_reg 
+    # # - Fixed regenerator
+    # # - Fixed span
+    # # - Vary frequency, utilization, ramp and blow fraction
+    # # - Magn. Period = Demagn. Period
+    # # - High field Period = Low field Period
+    # # - Magn Period + High field Period = 50%
     # # 
-    # # - Width, length and number of regenerators are kept fixed
-    # # - Blow fraction is kept fixed at 100%
-    # # - Minimum field 0.05 T
+    # # The period the AMR cycle if $\tau$, divided into a cold stage period $\tau_C$ and a hot stage period $\tau_H$, such that $\tau_c = \tau_H$.
+    # # 
+    # # The blow fraction $F_B$ is the fraction of the entire cycle where there is fluid blow in a given AMR bed. The cold blow period is $\tau_{CB}$ and the how blow period is $\tau_{HB}$. Because of the symmetry between the cold and hot stages:
+    # # 
+    # # \begin{equation}
+    # # \tau_{CB} = F_B \tau_C = \frac{1}{2} F_B \tau = \tau_{HB}
+    # # \end{equation}
+    # # 
+    # # The high field fraction $F_M$ is the fraction of the entire cycle where the magnetic profile stays  fully magnetized (or, due to symmetry, fully demagnetized). 
 
-    table_Inst_variosH = ld.it_varH_df
-    plot_Qc_H_Inst(table_Inst_variosH)
-
-
-    # ## 4 Plotting the ramp profile
-
-    # ## AMR curve
-
-    # - Fixed regenerator
-    # - Fixed span
-    # - Vary frequency, utilization, ramp and blow fraction
-    # - Magn. Period = Demagn. Period
-    # - High field Period = Low field Period
-    # - Magn Period + High field Period = 50%
-    # 
-    # The period the AMR cycle if $\tau$, divided into a cold stage period $\tau_C$ and a hot stage period $\tau_H$, such that $\tau_c = \tau_H$.
-    # 
-    # The blow fraction $F_B$ is the fraction of the entire cycle where there is fluid blow in a given AMR bed. The cold blow period is $\tau_{CB}$ and the how blow period is $\tau_{HB}$. Because of the symmetry between the cold and hot stages:
-    # 
-    # \begin{equation}
-    # \tau_{CB} = F_B \tau_C = \frac{1}{2} F_B \tau = \tau_{HB}
-    # \end{equation}
-    # 
-    # The high field fraction $F_M$ is the fraction of the entire cycle where the magnetic profile stays  fully magnetized (or, due to symmetry, fully demagnetized). 
-
-    # Fixed parameters
+    # # Fixed parameters
 
 
-    table = ld.rmdf
+    # table = ld.rmdf
 
-    table_13 = filter_table_from_column(table,ld.MAXIMUM_PROFILE_COLUMN,1.3)
+    # table_13 = filter_table_from_column(table,ld.MAXIMUM_PROFILE_COLUMN,1.3)
 
-    plot_Qc_Ramp(table_13,"_35K_1300mT")
+    # plot_Qc_Ramp(table_13,"_35K_1300mT")
 
-    # ## 5 2D maps
-    plot_slope_2D(ld.rmdf,figure_suffix='_35K_Valv_ASCO')
+    # # ## 5 2D maps
+    # plot_slope_2D(ld.rmdf,figure_suffix='_35K_Valv_ASCO')
 
-    # ## Varying regenerator height
-    # All parameters fixed. Magnetization fraction 70%.
+    # # ## Varying regenerator height
+    # # All parameters fixed. Magnetization fraction 70%.
 
-    table_slope_variosH = ld.rm_varH_df
-    plot_slope_multipleH(table_slope_variosH,figure_suffix='W30')
+    # table_slope_variosH = ld.rm_varH_df
+    # plot_slope_multipleH(table_slope_variosH,figure_suffix='W30')
 
-    plt.close('all')
+    # plt.close('all')
 
 if __name__ == "__main__":
     main()
