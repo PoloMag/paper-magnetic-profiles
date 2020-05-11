@@ -49,7 +49,7 @@ W_PUMP_LABEL = r'$\dot{W}_\mathrm{pump}\,[\mathrm{W}]$'
 W_MAG_LABEL = r'$\dot{W}_\mathrm{mag}\,[\mathrm{W}]$'
 W_VALVE_LABEL = r'$\dot{W}_\mathrm{valve}\,[\mathrm{W}]$'
 PHI_LABEL = r'$\Phi$'
-H_REG_LABEL = r'$H_\mathrm{r}\,[\mathrm{mm}]$'
+H_REG_LABEL = r'$H_\mathrm{reg}\,[\mathrm{mm}]$'
 F_B_LABEL = r'$F_\mathrm{B}\,[\%]$'
 RATIO_F_LABEL = r'$\frac{F_\mathrm{M}}{F_\mathrm{B}}$'
 F_M_LABEL = r'$F_\mathrm{M}\,[\%]$'
@@ -1058,19 +1058,19 @@ def main():
     F_B_inst = 100
     F_B_CCH = 60
     fig_suffix = "_same_minimum"
-    # plot_Qc_and_COP_Inst_vs_CCH(
-    #     table_inst, 
-    #     table_cch,
-    #     F_B_inst,
-    #     F_B_CCH,
-    #     fig_suffix)
+    plot_Qc_and_COP_Inst_vs_CCH(
+        table_inst, 
+        table_cch,
+        F_B_inst,
+        F_B_CCH,
+        fig_suffix)
 
-    # plot_W_Inst_vs_CCH(table_inst, table_cch,F_B_inst,F_B_CCH,fig_suffix)
+    plot_W_Inst_vs_CCH(table_inst, table_cch,F_B_inst,F_B_CCH,fig_suffix)
     plot_W_Inst_vs_CCH_all_Phi(table_inst, table_cch,F_B_inst,F_B_CCH,fig_suffix)
 
     # # ### Instantaneous profile -  Q_c vs $\Phi$ (one curve for each maximum field)
 
-    # plot_Qc_phi_Inst(table_inst)
+    plot_Qc_phi_Inst(table_inst)
 
     # # # ### Instantaneous profile -  Q_c vs H_reg 
     # # # 
@@ -1078,8 +1078,8 @@ def main():
     # # # - Blow fraction is kept fixed at 100%
     # # # - Minimum field 0.05 T
 
-    # table_Inst_variosH = ld.it_varH_df
-    # plot_Qc_H_Inst(table_Inst_variosH)
+    table_Inst_variosH = ld.it_varH_df
+    plot_Qc_H_Inst(table_Inst_variosH)
 
 
     # # ## 4 Plotting the ramp profile
@@ -1106,22 +1106,22 @@ def main():
     # # Fixed parameters
 
 
-    # table = ld.rmdf
+    table = ld.rmdf
 
-    # table_13 = filter_table_from_column(table,ld.MAXIMUM_PROFILE_COLUMN,1.3)
+    table_13 = filter_table_from_column(table,ld.MAXIMUM_PROFILE_COLUMN,1.3)
 
-    # plot_Qc_Ramp(table_13,"_35K_1300mT")
+    plot_Qc_Ramp(table_13,"_35K_1300mT")
 
-    # # ## 5 2D maps
-    # plot_slope_2D(ld.rmdf,figure_suffix='_35K_Valv_ASCO')
+    # ## 5 2D maps
+    plot_slope_2D(ld.rmdf,figure_suffix='_35K_Valv_ASCO')
 
-    # # ## Varying regenerator height
-    # # All parameters fixed. Magnetization fraction 70%.
+    # ## Varying regenerator height
+    # All parameters fixed. Magnetization fraction 70%.
 
-    # table_slope_variosH = ld.rm_varH_df
-    # plot_slope_multipleH(table_slope_variosH,figure_suffix='W30')
+    table_slope_variosH = ld.rm_varH_df
+    plot_slope_multipleH(table_slope_variosH,figure_suffix='W30')
 
-    # plt.close('all')
+    plt.close('all')
 
 if __name__ == "__main__":
     main()
