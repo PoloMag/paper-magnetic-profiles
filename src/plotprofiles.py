@@ -24,9 +24,9 @@ FIGURES_DIR = (ROOT_DIR / "figures").resolve()
 
 # stolen from https://stackoverflow.com/questions/3899980/how-to-change-the-font-size-on-a-matplotlib-plot
 
-SMALL_SIZE = 16
-MEDIUM_SIZE = 20
-BIGGER_SIZE = 24
+SMALL_SIZE = 26
+MEDIUM_SIZE = 28
+BIGGER_SIZE = 30
 
 plt.rc('text', usetex=True)
 plt.rc(
@@ -140,12 +140,12 @@ def plot_all_profiles():
     profile_axes.set_xlim(0,np.max(time))
     profile_axes.set_xticks(np.linspace(0,np.max(time),5))
     profile_axes.xaxis.grid(True)
-    profile_axes.set_xticklabels([r'$0$', r'$\frac{\tau}{4}$', r'$\frac{\tau}{2}$',r'$\frac{3\tau}{4}$',r'$\tau$'])
+    profile_axes.set_xticklabels([r'$0$', r'$\frac{\tau}{4}$', r'$\frac{\tau}{2}$',r'$\frac{3\tau}{4}$',r'$\tau$'],fontsize=SMALL_SIZE)
 
     profile_axes.set_yticks([B_min,(B_max+B_min)/2,B_max])
     profile_axes.set_yticklabels([r'${B}_\mathrm{min}$',
                                   r'$\frac{\left({B}_\mathrm{max}+{B}_\mathrm{min}\right)}{2}$',
-                                  r'${B}_\mathrm{max}$'])
+                                  r'${B}_\mathrm{max}$'],fontsize=SMALL_SIZE)
     profile_axes.yaxis.grid(True)
 
     profile_axes.set_xlabel(r'$t$')
@@ -193,11 +193,11 @@ def plot_it_and_rc_profiles():
     profile_axes.set_xlim(0,np.max(time))
     profile_axes.set_xticks(np.linspace(0,np.max(time),5))
     profile_axes.xaxis.grid(True)
-    profile_axes.set_xticklabels([r'$0$', r'$\frac{\tau}{4}$', r'$\frac{\tau}{2}$',r'$\frac{3\tau}{4}$',r'$\tau$'])
+    profile_axes.set_xticklabels([r'$0$', r'$\frac{\tau}{4}$', r'$\frac{\tau}{2}$',r'$\frac{3\tau}{4}$',r'$\tau$'],fontsize=SMALL_SIZE)
 
     profile_axes.set_yticks([B_min,B_max])
     profile_axes.set_yticklabels([r'$B_\mathrm{min}$',
-                                  r'$B_\mathrm{max}$'])
+                                  r'$B_\mathrm{max}$'],fontsize=SMALL_SIZE)
     profile_axes.yaxis.grid(True)
 
     profile_axes.set_xlabel(r'$t$')
@@ -236,11 +236,11 @@ def plot_it_and_rc_profiles_same_minimum():
     profile_axes.set_xlim(0,np.max(time))
     profile_axes.set_xticks(np.linspace(0,np.max(time),5))
     profile_axes.xaxis.grid(True)
-    profile_axes.set_xticklabels([r'$0$', r'$\frac{\tau}{4}$', r'$\frac{\tau}{2}$',r'$\frac{3\tau}{4}$',r'$\tau$'])
+    profile_axes.set_xticklabels([r'$0$', r'$\frac{\tau}{4}$', r'$\frac{\tau}{2}$',r'$\frac{3\tau}{4}$',r'$\tau$'],fontsize=SMALL_SIZE)
 
     profile_axes.set_yticks([B_min,B_max_ins,])
     profile_axes.set_yticklabels([r'$B_\mathrm{min}$',
-                                  r'$\overline{B}_\mathrm{high}$'])
+                                  r'$\overline{B}_\mathrm{high}$'],fontsize=SMALL_SIZE)
     profile_axes.yaxis.grid(True)
 
     profile_axes.set_xlabel(r'$t$')
@@ -279,12 +279,12 @@ def plot_it_and_rc_profiles_same_average():
     profile_axes.set_xlim(0,np.max(time))
     profile_axes.set_xticks(np.linspace(0,np.max(time),5))
     profile_axes.xaxis.grid(True)
-    profile_axes.set_xticklabels([r'$0$', r'$\frac{\tau}{4}$', r'$\frac{\tau}{2}$',r'$\frac{3\tau}{4}$',r'$\tau$'])
+    profile_axes.set_xticklabels([r'$0$', r'$\frac{\tau}{4}$', r'$\frac{\tau}{2}$',r'$\frac{3\tau}{4}$',r'$\tau$'],fontsize=SMALL_SIZE)
 
     profile_axes.set_yticks([B_min_cos,B_min_ins,B_max_ins])
     profile_axes.set_yticklabels([r'${B}_\mathrm{min}$',
                                   r'$\overline{B}_\mathrm{low}$',
-                                  r'$\overline{B}_\mathrm{high}$'])
+                                  r'$\overline{B}_\mathrm{high}$'],fontsize=SMALL_SIZE)
     profile_axes.yaxis.grid(True)
 
     profile_axes.set_xlabel(r'$t$')
@@ -325,11 +325,11 @@ def plot_it_profile():
     profile_axes.set_xlim(0,np.max(time))
     profile_axes.set_xticks(np.linspace(0,np.max(time),5))
     profile_axes.xaxis.grid(True)
-    profile_axes.set_xticklabels([r'$0$', r'$\frac{\tau}{4}$', r'$\frac{\tau}{2}$',r'$\frac{3\tau}{4}$',r'$\tau$'])
+    profile_axes.set_xticklabels([r'$0$', r'$\frac{\tau}{4}$', r'$\frac{\tau}{2}$',r'$\frac{3\tau}{4}$',r'$\tau$'],fontsize=SMALL_SIZE)
 
     profile_axes.set_yticks([B_min,B_max])
     profile_axes.set_yticklabels([r'$B_\mathrm{min}$',
-                                  r'$B_\mathrm{max}$'])
+                                  r'$B_\mathrm{max}$'],fontsize=SMALL_SIZE)
     profile_axes.yaxis.grid(True)
 
     profile_axes.set_xlabel(r'$t$')
@@ -365,11 +365,11 @@ def plot_rc_profile():
     profile_axes.set_xlim(0,np.max(time))
     profile_axes.set_xticks(np.linspace(0,np.max(time),5))
     profile_axes.xaxis.grid(True)
-    profile_axes.set_xticklabels([r'$0$', r'$\frac{\tau}{4}$', r'$\frac{\tau}{2}$',r'$\frac{3\tau}{4}$',r'$\tau$'])
+    profile_axes.set_xticklabels([r'$0$', r'$\frac{\tau}{4}$', r'$\frac{\tau}{2}$',r'$\frac{3\tau}{4}$',r'$\tau$'],fontsize=SMALL_SIZE)
 
     profile_axes.set_yticks([B_min,B_max])
     profile_axes.set_yticklabels([r'${B}_\mathrm{min}$',
-                                  r'${B}_\mathrm{max}$'])
+                                  r'${B}_\mathrm{max}$'],fontsize=SMALL_SIZE)
     profile_axes.yaxis.grid(True)
 
     profile_axes.set_xlabel(r'$t$')
@@ -402,12 +402,12 @@ def plot_rm_profile():
     profile_axes.set_xlim(0,np.max(time))
     profile_axes.set_xticks(np.linspace(0,np.max(time),5))
     profile_axes.xaxis.grid(True)
-    profile_axes.set_xticklabels([r'$0$', r'$\frac{\tau}{4}$', r'$\frac{\tau}{2}$',r'$\frac{3\tau}{4}$',r'$\tau$'])
+    profile_axes.set_xticklabels([r'$0$', r'$\frac{\tau}{4}$', r'$\frac{\tau}{2}$',r'$\frac{3\tau}{4}$',r'$\tau$'],fontsize=SMALL_SIZE)
 
     profile_axes.set_yticks([B_min,(B_max+B_min)/2,B_max])
     profile_axes.set_yticklabels([r'${B}_\mathrm{min}$',
                                   r'$\frac{\left({B}_\mathrm{max}+{B}_\mathrm{min}\right)}{2}$',
-                                  r'${B}_\mathrm{max}$'])
+                                  r'${B}_\mathrm{max}$'],fontsize=SMALL_SIZE)
     profile_axes.yaxis.grid(True)
 
     profile_axes.set_xlabel(r'$t$')
@@ -479,11 +479,11 @@ def plot_rc_and_flow_instantaneous_profiles():
     profile_axes.set_xlim(0,np.max(time))
     profile_axes.set_xticks(np.linspace(0,np.max(time),5))
     profile_axes.xaxis.grid(True)
-    profile_axes.set_xticklabels([r'$0$', r'$\frac{\tau}{4}$', r'$\frac{\tau}{2}$',r'$\frac{3\tau}{4}$',r'$\tau$'])
+    profile_axes.set_xticklabels([r'$0$', r'$\frac{\tau}{4}$', r'$\frac{\tau}{2}$',r'$\frac{3\tau}{4}$',r'$\tau$'],fontsize=SMALL_SIZE)
 
     profile_axes.set_yticks([B_min,B_max])
     profile_axes.set_yticklabels([r'${B}_\mathrm{min}$',
-                                  r'${B}_\mathrm{max}$'])
+                                  r'${B}_\mathrm{max}$'],fontsize=SMALL_SIZE)
     profile_axes.yaxis.grid(True)
 
     profile_axes.set_xlabel(r'$t$')
@@ -500,7 +500,7 @@ def plot_rc_and_flow_instantaneous_profiles():
     profile_axes_right.set_yticks([-m_max,0,m_max])
     profile_axes_right.set_yticklabels([r'$-\dot{m}_\mathrm{f,max}$',
                                   r'0',
-                                  r'$\dot{m}_\mathrm{f,max}$'])
+                                  r'$\dot{m}_\mathrm{f,max}$'],fontsize=SMALL_SIZE)
 
     profile_axes_right.set_ylabel(r'$\dot{m}_\mathrm{f}$',
                            rotation='horizontal')
@@ -533,12 +533,12 @@ def plot_rm_and_flow_instantaneous_profile():
     profile_axes.set_xlim(0,np.max(time))
     profile_axes.set_xticks(np.linspace(0,np.max(time),5))
     profile_axes.xaxis.grid(True)
-    profile_axes.set_xticklabels([r'$0$', r'$\frac{\tau}{4}$', r'$\frac{\tau}{2}$',r'$\frac{3\tau}{4}$',r'$\tau$'])
+    profile_axes.set_xticklabels([r'$0$', r'$\frac{\tau}{4}$', r'$\frac{\tau}{2}$',r'$\frac{3\tau}{4}$',r'$\tau$'],fontsize=SMALL_SIZE)
 
     profile_axes.set_yticks([B_min,(B_max+B_min)/2,B_max])
     profile_axes.set_yticklabels([r'${B}_\mathrm{min}$',
                                   r'$\frac{\left({B}_\mathrm{max}+{B}_\mathrm{min}\right)}{2}$',
-                                  r'${B}_\mathrm{max}$'])
+                                  r'${B}_\mathrm{max}$'],fontsize=SMALL_SIZE)
     profile_axes.yaxis.grid(True)
 
     profile_axes.set_xlabel(r'$t$')
@@ -565,7 +565,7 @@ def plot_rm_and_flow_instantaneous_profile():
     profile_axes_right.set_yticks([-m_max,0,m_max])
     profile_axes_right.set_yticklabels([r'$-\dot{m}_\mathrm{f,max}$',
                                   r'0',
-                                  r'$\dot{m}_\mathrm{f,max}$'])
+                                  r'$\dot{m}_\mathrm{f,max}$'],fontsize=SMALL_SIZE)
 
     profile_axes_right.set_ylabel(r'$\dot{m}_\mathrm{f}$',
                            rotation='horizontal')
