@@ -97,7 +97,7 @@ Magnetic refrigeration (MR) is an emerging cooling technology which does not rel
 
 For operating temperatures typical of household cooling applications, the MCE is of the order of \num{2}-\SI{5}{\kelvin\per\tesla}. To amplify this temperature change, heat regeneration is usually employed \cite{bib:kitanovski}. Active magnetic regenerators (AMR) are thermal devices in which the magnetocaloric material is packed as a porous matrix subjected to a  periodic flow of an aqueous heat transfer fluid. The flow is \textcolor{blue}{synchronized} with successive magnetization and demagnetization steps of the MCM in the porous bed to produce a refrigerating effect. Thus, the AMR is essentially a cascade of infinitesimal ``layers'' of MCM that are activated simultaneously to build up a longitudinal temperature profile in the matrix. The layers can be made of the same material, resulting in a homogeneous regenerator. However, given the dependence of the MCE on temperature, it is desirable to build \emph{multilayer} regenerators, where each adjacent layer has a slightly different composition that will function around its own Curie temperature, maximizing the magnetocaloric effect of each portion.
 
-\nomenclature[vm]{AMR}{Active Magnetic Regenerator}
+\nomenclature[va]{AMR}{Active Magnetic Regenerator}
 
 A typical AMR cycle is comprised of the following steps: (i) The magnetic circuit magnetizes the MCM, thereby increasing its temperature due to the MCE; (ii) During the \emph{cold blow}, cold fluid previously in thermal contact with the low-temperature source flows through the warm bed, absorbs \textcolor{blue}{part of} its energy and releases it as heat to the high-temperature sink through the hot heat exchanger; (iii) The MCM is demagnetized and cooled down as a result; (iv) As the fluid flow is reversed (\emph{hot blow}), it releases energy to the bed, and decreases its temperature so it can absorb the thermal load at the cold heat exchanger in contact with the low-temperature source. Different cycles can be devised by changing the duration and synchronization  between the two cycle \emph{characteristic waveforms}:
 
@@ -118,6 +118,8 @@ As previously noted, the fluid flow profile is implemented with a proper design 
 
 \textcolor{blue}{As far as the incorporation of the magnetic field waveform in the AMR performance optimization is concerned, the studies published in the open literature can be classified into three categories, namely \textit{segregated}, \textit{semi-segregated} and \textit{integrated} design. In the first category, the magnetic field waveform remains constant (i.e., fixed shape and amplitude) during the AMR optimization. In the semi-segregated approach, parameters associated with the magnetic field waveform are allowed to change, but no consideration is given to the configuration of the magnetic circuit (i.e., magnet materials, geometry, segmentation) needed to generate such waveforms. Finally, in the integrated design approach, the magnetic circuit that generates the waveform is mathematically incorporated in the analysis (through conservation equations and appropriate closure relationships involving the magnetic field), so objective functions may now be formulated involving the mass, size, geometry or material cost of the magnetic circuit. Refs.
 ~\cite{bib:Momen2014,bib:ZhangSR2017} are examples of segregated AMR optimization. In Ref.~\cite{bib:Momen2014}, single-objective optimization coupled with a dimensionless parametric analysis enabled identifying the utilization factor that optimized the performance of Gd-based AMRs in terms of the temperature span and cooling capacity. Ref.~\cite{bib:ZhangSR2017} introduced a detailed numerical model of a sixteen-layer La-Fe-Mn-Si-H parallel-plate AMR, and  coupled it with a DoE-based (Design of Experiment)  optimization method. A square wave magnetic field waveform with a 1.5-T maximum magnetic flux density was applied. Examples of semi-segregated AMR optimization are given in Refs.~\cite{bib:Bouchekara2014,bib:Ganjehsarabi2016,bib:Roy2017}, where  multi-objective optimization techniques were employed to optimize the performance of parallel-plate \cite{bib:Roy2017} and sphere packed-bed AMRs \cite{bib:Ganjehsarabi2016} using methods such as weighted sum, weighted product and genetic algorithms, among others. A common finding to all of such studies is that no configuration exists which can simultaneously optimize all objectives (e.g., cooling capacity and temperature span), so a compromise is required according to specified design constraints. Finally, in their \textit{integrated} approach to AMR optimization, Ref.~\cite{bib:teyber17_perman} employed a topology-based optimization of the magnetic circuit (using genetic algorithms) to reduce to a minimum the cost of cooling. In this sense, not only the capital costs were considered (using simple prismatic magnet segments in the magnetic circuit), but also the operating costs associated with the AMR itself. More recently, in Ref.~\cite{bib:fortkamp20-desig}, a magnetic circuit consisting of concentric Halbach cylinders was analytically modelled and integrated with models for the power expenditure of the flow management system and for the fluid flow and heat transfer in the AMR to determine the geometric characteristics of the latter which maximized its performance. Designer maps, which embodied the existing trade-offs between the system variables, provided easy visual access to the regenerator dimensions which maximized the cooling capacity or the COP.}
+
+\nomenclature[vd]{DoE}{design of experiments}
 
 The present work \textcolor{blue}{complements the} previously mentioned studies by investigating the performance of a magnetic refrigerator \textcolor{blue}{subjected to} different magnetic profile waveforms. The cooling capacity and \textcolor{blue}{the COP} are calculated \textcolor{blue}{taking account of the magnetic profile} parameters, while also \textcolor{blue}{considering} how the AMR geometry affects the performance \textcolor{blue}{parameters in conjunction} with the magnetic profile. \textcolor{blue}{To simplify the analysis,} the \textcolor{blue}{shape of the} fluid flow \textcolor{blue}{waveform} is assumed fixed, \textcolor{blue}{but some of} its parameters are also varied. To emulate constraints on an operating point of actual magnetic refrigeration devices, the temperature span is kept fixed, so a few comments are made \textcolor{blue}{regarding the} second-law efficiency.
 
@@ -191,7 +193,6 @@ The energy equation for the fluid phase can be written as:
 \nomenclature[aq]{$\rate{q}\ped{csg}$}{volumetric casing losses in the AMR model [\si{\watt\per\cubic\meter}]}
 \nomenclature[ic]{csg}{regenerator casing}
 \nomenclature[ah]{$\hheat$}{heat transfer coefficient [\si{\watt\per\meter\squared\per\kelvin}]}
-\nomenclature[aa]{$A\ped{sf}$}{contact surface area between solid and fluid phases in the regenerator [\si{\meter^2}]}
 \nomenclature[is]{sf}{relative to the heat transfer between solid and fluid phases in the regenerator}
 \nomenclature[bb]{$\beta$}{surface area density [\si{\square\meter\per\cubic\meter}]}
 \nomenclature[ak]{$k$}{thermal conductivity [\si{\watt\per\meter\per\kelvin}]}
@@ -473,15 +474,15 @@ In the present analysis, two types of valves are considered. In the first approa
 
 \begin{equation}
   \label{eq:58}
-  \wvalve = N\ped{v}F\ped{B}\left(\wvalven + \frac{1}{2}\wrelayn\right)
+  \wvalve = N\ped{valve}F\ped{B}\left(\wvalven + \frac{1}{2}\wrelayn\right)
 \end{equation}
 
 \noindent where $N\ped{valve}$ is the number of valves, $\wvalven$ is the measured average nominal power for one normally-closed electronic valve and $\wrelayn$ is the nominal power for one controlling relay. The factor $\nicefrac{1}{2}$ is due to two valves being controlled by one relay.
 
 \nomenclature[an]{$N\ped{valve}$}{number of valves}
-\nomenclature[aw]{$\wvalve$}{valve power [\si{\watt}]}
-\nomenclature[aw]{$\wvalven$}{nominal power comsumption of one valve [\si{\watt}]}
-\nomenclature[aw]{$\wrelayn$}{nominal power comsumption of one relay [\si{\watt}]}
+\nomenclature[awn]{$\wvalve$}{valve power [\si{\watt}]}
+\nomenclature[awn]{$\wvalven$}{nominal power comsumption of one valve [\si{\watt}]}
+\nomenclature[awn]{$\wrelayn$}{nominal power comsumption of one relay [\si{\watt}]}
 
 In the second approach, \emph{Type S} valves are used, \textcolor{blue}{which have a} nominal power lower in magnitude, but which depends on the  frequency and blow fraction. These valves were experimentally characterized \textcolor{blue}{in Ref.~\cite{bib:cardoso18}}, where a single valve was attached to a measurement circuit and set to operate for \textcolor{blue}{a range of} values of blow fraction and frequency; the valve power was calculated from the averaged values of voltage and current after the periodic steady state was reached. From those experiments, the valve power was experimentally correlated as:
 
@@ -496,7 +497,7 @@ Independent of the valve type used, it is also assumed that each valve system \t
 
 \begin{equation}
   \label{eq:110}
-  \Phi = \frac{\rate{m}\ped{f,max} F\ped{B} c\ped{f}}{2 f m\ped{s} c\ped{s}}
+  \Phi = \frac{\rate{m}\ped{f,max} F\ped{B} c_{p,\mathrm{f}}}{2 f m\ped{s} c\ped{s}}
 \end{equation}
 
 \nomenclature[bf]{$\Phi$}{utilization factor}
@@ -531,7 +532,7 @@ The maximum possible COP between the source temperatures is the Carnot COP, calc
     \etasec = \frac{\cop}{\cop\ped{Carnot}}
 \end{equation}{}
 
-\nomenclature[azn]{$\etasec$}{second-law efficiency}
+\nomenclature[bn]{$\etasec$}{second-law efficiency}
 \section{Results and Discussions}
 \label{sec:results-discussions}
 
