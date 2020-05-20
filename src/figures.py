@@ -679,10 +679,6 @@ def plot_Qc_H_Inst(table):
                     
                 
             for ax in [axis_Qc, axis_COP]:
-                   
-                ax.plot(x_vector,np.zeros_like(x_vector),
-                        color='grey',
-                         linestyle='-')
                     
                 ax.legend(loc='upper left',
                          bbox_to_anchor=(0,1))    
@@ -691,6 +687,7 @@ def plot_Qc_H_Inst(table):
                 refine_yticks(ax,5)
                 ax.set_xlim(min(x_vector),max(x_vector))
                 ax.set_xticks(x_vector)
+                ax.set_ylim((0,None))
               
             fig_list.append((fig_Qc,fig_COP))
                 
